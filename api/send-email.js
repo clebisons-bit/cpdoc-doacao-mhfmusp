@@ -3,7 +3,6 @@ const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async (req, res) => {
-  // Configuração CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -30,19 +29,18 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'PDF não encontrado' });
     }
 
-    // Monta o Termo em PDF + arquivos do doador como anexos
+    // Lista de anexos usando string Base64 direta (exigência oficial do Resend)
     const attachments = [
       {
         filename: `Termo_Doacao_${protocolo}.pdf`,
-        content: Buffer.from(pdfBase64, 'base64'),
+        content: pdfBase64,
       },
       ...anexosExtras.map((anexo) => ({
         filename: anexo.filename,
-        content: Buffer.from(anexo.base64, 'base64'),
+        content: anexo.base64,
       }))
     ];
 
-    // Envio para o CPDoc
     const data = await resend.emails.send({
       from: 'MHFMUSP Doações <onboarding@resend.dev>',
       to: ['cpdoc.museufm@usp.br'],
@@ -52,7 +50,7 @@ module.exports = async (req, res) => {
         <div style="font-family: Arial, sans-serif; color: #111; max-width: 600px;">
           <div style="background-color: #006747; padding: 16px; border-bottom: 4px solid #009CA6; color: #fff;">
             <h2 style="margin: 0; font-size: 16px;">MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" — FMUSP</h2>
-            <p style="margin: 4px 0 0; font-size: 12px;">Centro de Pesquisa e Documentação (CPDoc)</p>
+            <p style="margin: 4px 0 0 0; font-size: 12px;">Centro de Pesquisa e Documentação (CPDoc)</p>
           </div>
           <div style="padding: 18px; border: 1px solid #ddd; border-top: none;">
             <p style="font-size: 14px; font-weight: bold; color: #006747;">
@@ -62,8 +60,11 @@ module.exports = async (req, res) => {
             <p style="font-size: 13px;"><strong>Doador:</strong> ${doadorNome}</p>
             <p style="font-size: 13px;"><strong>E-mail:</strong> ${doadorEmail}</p>
             <p style="font-size: 13px;"><strong>Item:</strong> ${bemNome}</p>
-            <p style="font-size: 12px; color: #555; margin-top: 16px;">
-              O Termo assinado digitalmente em PDF e todos os documentos/fotos anexados estão disponíveis nos anexos desta mensagem.
+            <p style="font-size: 13px; color: #006747; font-weight: bold; margin-top: 14px;">
+              Total de anexos anexados à mensagem: ${attachments.length}
+            </p>
+            <p style="font-size: 12px; color: #555;">
+              O Termo assinado em PDF e os comprovantes/fotos originais estão anexados a este e-mail.
             </p>
           </div>
         </div>
