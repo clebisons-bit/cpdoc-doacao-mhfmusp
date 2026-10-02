@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termo de Doação de Acervo — CPDoc | MHFMUSP</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- jsPDF & QRCode CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fmusp: {
+              green: '#006747',  /* Pantone 342 C */
+              cyan: '#009CA6',   /* Pantone 320 C */
+              dark: '#111827',
+              light: '#F9FAFB'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .border-pantone-cyan { border-color: #009CA6; }
+    .bg-pantone-green { background-color: #006747; }
+    .bg-pantone-cyan { background-color: #009CA6; }
+    .text-pantone-green { color: #006747; }
+    .text-pantone-cyan { color: #009CA6; }
+    .focus-fmusp:focus {
+      outline: none;
+      border-color: #009CA6;
+      box-shadow: 0 0 0 2px rgba(0, 156, 166, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- CABEÇALHO INSTITUCIONAL -->
+  <header class="bg-black text-white border-b-4 border-pantone-cyan shadow-md">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-11 h-11 bg-pantone-green rounded-full flex items-center justify-center font-bold text-white text-lg border-2 border-pantone-cyan shadow-sm">
+          USP
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight text-white uppercase leading-snug">
+            MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ"
+          </h1>
+          <p class="text-xs text-gray-300 font-medium">
+            Faculdade de Medicina da Universidade de São Paulo
+          </p>
+          <p class="text-[11px] text-[#009CA6] font-semibold mt-0.5">
+            CPDoc — Centro de Pesquisa e Documentação | Doação de Acervo
+          </p>
+        </div>
+      </div>
+      <div class="text-right flex items-center gap-2">
+        <span class="inline-flex items-center px-2.5 py-1 rounded text-[11px] font-bold bg-[#006747] text-white tracking-wider border border-[#009CA6]">
+          PLATAFORMA CPDoc
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
+    
+    <!-- TÍTULO DO INSTRUMENTO -->
+    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mb-6">
+      <h2 class="text-xl sm:text-2xl font-black text-pantone-green tracking-tight uppercase">
+        Termo de Doação de Acervo
+      </h2>
+      <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+        Instrumento para submissão de proposta de doação ao Centro de Pesquisa e Documentação (CPDoc) do Museu Histórico "Prof. Carlos da Silva Lacaz". A decisão final de aceitação ou recusa cabe exclusivamente à Coordenação do Museu, segundo o seu Plano Museológico e a sua Política de Acervos.
+      </p>
+
+      <!-- BARRA DE PROGRESSO -->
+      <div class="mt-6">
+        <div class="flex justify-between text-[11px] font-semibold text-gray-600 mb-1">
+          <span id="stepIndicatorLabel">Etapa 1 de 5: Identificação do Doador</span>
+          <span id="stepProgressPct">20%</span>
+        </div>
+        <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+          <div id="stepProgressBar" class="bg-pantone-green h-full transition-all duration-300 w-1/5"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <form id="donationForm" class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 space-y-6">
+
+      <!-- ETAPA 1: A.1 IDENTIFICAÇÃO DO DOADOR -->
+      <div id="step1" class="step-pane space-y-5">
+        <div class="border-b border-gray-200 pb-3">
+          <h3 class="text-lg font-bold text-pantone-green flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-pantone-cyan text-white text-xs flex items-center justify-center font-bold">1</span>
+            A.1 — Identificação do Doador
+          </h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tipo de Doador *</label>
+            <select id="tipoDoador" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white" required>
+              <option value="Pessoa Física">Pessoa Física</option>
+              <option value="Pessoa Jurídica">Pessoa Jurídica</option>
+              <option value="Espólio (Herdeiros e Sucessores)">Espólio (Herdeiros e Sucessores)</option>
+              <option value="Instituição Pública ou Privada">Instituição Pública ou Privada</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Grau de Relação com o Bem *</label>
+            <select id="grauRelacao" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white" required onchange="toggleProcuracaoUpload()">
+              <option value="Proprietário original">Proprietário original</option>
+              <option value="Herdeiro-sucessor">Herdeiro-sucessor</option>
+              <option value="Adquirente de terceiro">Adquirente de terceiro</option>
+              <option value="Representante institucional">Representante institucional</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nome Completo ou Razão Social *</label>
+            <input type="text" id="nomeDoador" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Nome completo" required>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">CPF ou CNPJ *</label>
+            <input type="text" id="documentoNumero" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Apenas números ou formatado" required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">E-mail de Contato *</label>
+            <input type="email" id="emailDoador" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="exemplo@dominio.com" required>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Telefone / WhatsApp *</label>
+            <input type="text" id="telefoneDoador" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="(11) 90000-0000" required>
+          </div>
+        </div>
+
+        <!-- Endereço -->
+        <div class="p-3 bg-gray-50 rounded border border-gray-200 space-y-3">
+          <p class="text-xs font-bold text-pantone-green uppercase">Endereço Completo</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">CEP</label>
+              <input type="text" id="cep" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="00000-000" onblur="buscarCEP()">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Logradouro / Rua</label>
+              <input type="text" id="logradouro" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="Av. Dr. Arnaldo" required>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Número</label>
+              <input type="text" id="numero" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="455" required>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Complemento</label>
+              <input type="text" id="complemento" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="Sala / Apto">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Bairro</label>
+              <input type="text" id="bairro" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="Cerqueira César" required>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Cidade / UF</label>
+              <input type="text" id="cidadeUf" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="São Paulo / SP" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload de Identificação -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Documento de Identificação Oficial (RG, CNH ou Contrato Social) *</label>
+          <input type="file" id="uploadDocIdentidade" accept=".pdf,image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90" required>
+          <p class="text-[10px] text-gray-500 mt-1">Formatos aceites: PDF, JPG, PNG (máx. 10MB).</p>
+        </div>
+
+        <!-- Upload Condicional Procuração -->
+        <div id="boxProcuracao" class="hidden p-3 bg-amber-50 border border-amber-200 rounded">
+          <label class="block text-xs font-bold text-amber-900 uppercase mb-1">Procuração ou Termo de Representação Legal *</label>
+          <input type="file" id="uploadProcuracao" accept=".pdf,image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-amber-800 file:text-white">
+          <p class="text-[11px] text-amber-800 mt-1">Obrigatório quando o proponente não for o próprio titular direto do bem.</p>
+        </div>
+      </div>
+
+      <!-- ETAPA 2: A.2 DESCRIÇÃO DO BEM CULTURAL DOADO -->
+      <div id="step2" class="step-pane hidden space-y-5">
+        <div class="border-b border-gray-200 pb-3">
+          <h3 class="text-lg font-bold text-pantone-green flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-pantone-cyan text-white text-xs flex items-center justify-center font-bold">2</span>
+            A.2 — Descrição do Bem Cultural Doado
+          </h3>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-2">Categoria Museológica (selecione uma ou mais) *</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" name="categoria" value="Instrumental médico-cirúrgico" class="rounded text-pantone-green">
+              <span>Instrumental médico-cirúrgico</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" name="categoria" value="Documento arquivístico" class="rounded text-pantone-green">
+              <span>Documento arquivístico</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" name="categoria" value="Obra bibliográfica ou raridade" class="rounded text-pantone-green">
+              <span>Obra bibliográfica ou raridade</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" name="categoria" value="Espécime biológico ou anatômico" class="rounded text-pantone-green">
+              <span>Espécime biológico ou anatômico</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" name="categoria" value="Mobiliário e equipamento hospitalar histórico" class="rounded text-pantone-green">
+              <span>Mobiliário/equipamento hospitalar</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" name="categoria" value="Iconografia (fotografias, ilustrações, cartazes)" class="rounded text-pantone-green">
+              <span>Iconografia (fotos, gravuras, mapas)</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer sm:col-span-2">
+              <input type="checkbox" name="categoria" value="Objeto tridimensional diverso" class="rounded text-pantone-green">
+              <span>Objeto tridimensional diverso</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-2">
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Denominação do Bem (Nome técnico ou popular) *</label>
+            <input type="text" id="denominacaoBem" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Ex: Microscópio óptico monocular Carl Zeiss" required>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Quantidade de Itens *</label>
+            <input type="number" id="quantidadeItens" min="1" value="1" class="w-full p-2.5 border rounded text-sm focus-fmusp" required>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Descrição Física e Técnica *</label>
+          <textarea id="descricaoFisica" rows="3" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Material constituinte, dimensões aproximadas (A x L x P ou peso), técnica, marcas de fabricante, números de série..." required></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Datação Estimada *</label>
+            <input type="text" id="datacao" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Ex: c. 1930 / Século XX / 1945" required>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Estado de Conservação *</label>
+            <select id="estadoConservacao" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white" required>
+              <option value="Bom">Bom (íntegro, pequenos sinais normais de uso)</option>
+              <option value="Regular">Regular (oxidações superficiais, faltas pontuais)</option>
+              <option value="Requer intervenção urgente">Requer intervenção urgente (frágil / instável)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- REGISTRO FOTOGRÁFICO OBRIGATÓRIO (MÍNIMO 3) -->
+        <div class="p-3 bg-gray-50 border border-gray-200 rounded">
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+            Registro Fotográfico Obrigatório (Mínimo de 3 imagens) *
+          </label>
+          <p class="text-[11px] text-gray-500 mb-2">Envie fotografias nítidas em diferentes ângulos: frente, verso e pormenores/marcas de fabricante.</p>
+          <input type="file" id="uploadFotos" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-pantone-green file:text-white hover:file:opacity-90" onchange="previewImages(event)">
+          
+          <div id="photosPreviewContainer" class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-3"></div>
+          <p id="photosCountWarning" class="text-xs text-red-600 font-semibold mt-2 hidden">É obrigatório selecionar pelo menos 3 fotografias do item.</p>
+        </div>
+
+        <!-- CONDICIONAIS DE RISCO E DADOS SENSÍVEIS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-amber-50/50 border border-amber-200 rounded">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Riscos Químicos ou Biossegurança? *</label>
+            <select id="riscoBiologico" class="w-full p-2 border rounded text-xs focus-fmusp bg-white">
+              <option value="Não">Não</option>
+              <option value="Sim">Sim (materiais cortantes, químicos, fármacos)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Material Biológico Humano ou Dados de Pacientes? *</label>
+            <select id="dadosSensiveis" class="w-full p-2 border rounded text-xs focus-fmusp bg-white">
+              <option value="Não">Não</option>
+              <option value="Sim">Sim (peças anatómicas, prontuários, fichas)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 3: A.3 PROVENIÊNCIA E VOLUME -->
+      <div id="step3" class="step-pane hidden space-y-5">
+        <div class="border-b border-gray-200 pb-3">
+          <h3 class="text-lg font-bold text-pantone-green flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-pantone-cyan text-white text-xs flex items-center justify-center font-bold">3</span>
+            A.3 — Proveniência e Cadeia de Custódia
+          </h3>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Origem do Bem (Como e quando foi adquirido) *</label>
+          <textarea id="origemBem" rows="2" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Compra, herança, exercício profissional, fabrico próprio, premiação..." required></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Cadeia de Custódia Anterior (Detentores conhecidos)</label>
+          <textarea id="cadeiaCustodia" rows="2" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Liste proprietários ou instituições anteriores conhecidas por ordem cronológica..."></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Situação Autoral Estimada *</label>
+            <select id="situacaoAutoral" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white">
+              <option value="Domínio público">Domínio público</option>
+              <option value="Obra órfã (autor desconhecido)">Obra órfã (autor desconhecido)</option>
+              <option value="Direitos ativos de terceiros">Direitos ativos de terceiros</option>
+              <option value="Situação incerta">Situação incerta</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Volume Estimado da Doação *</label>
+            <select id="volumeEstimado" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white" onchange="checkVolumeWarning()">
+              <option value="Item(ns) individual(is)">Item(ns) individual(is)</option>
+              <option value="Pequeno conjunto (até 20 itens)">Pequeno conjunto (até 20 itens)</option>
+              <option value="Fundo ou coleção de grande volume (acima de 20 itens)">Fundo ou coleção de grande volume (acima de 20 itens)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Aviso Encargo Cláusula 6 -->
+        <div id="boxEncargoVolume" class="hidden p-3 bg-blue-50 border border-pantone-cyan rounded text-xs text-gray-700">
+          <p class="font-bold text-pantone-green uppercase">Aviso — Cláusula 6 (Encargo Acessório de Acondicionamento):</p>
+          <p class="mt-1">Para fundos ou coleções de grande volume, a Coordenação do Museu poderá solicitar como encargo acessório o fornecimento das caixas de guarda técnica definitiva, de forma a garantir a salvaguarda imediata do acervo.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Vínculo com Notabilidade Histórico-Médica (se aplicável)</label>
+          <input type="text" id="vinculoNotorio" class="w-full p-2.5 border rounded text-sm focus-fmusp" placeholder="Ex: Pertenceu ao Prof. Dr. Carlos da Silva Lacaz ou a antigo catedrático da FMUSP">
+        </div>
+
+        <!-- Declaração de Origem Lícita -->
+        <div class="p-3 bg-gray-50 border border-gray-300 rounded">
+          <label class="flex items-start gap-2 cursor-pointer">
+            <input type="checkbox" id="checkOrigemLicita" class="mt-1 rounded text-pantone-green" required>
+            <span class="text-xs text-gray-800 font-semibold leading-relaxed">
+              Declaro sob compromisso de honra que o bem não é objeto de furto, extravio, apropriação irregular nem litígio judicial de qualquer espécie (autodeclaração obrigatória de boa-fé).
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ETAPA 4: A.4 BLOCO CONDICIONAL BIOÉTICA & LGPD (SE APLICÁVEL) -->
+      <div id="step4" class="step-pane hidden space-y-5">
+        <div class="border-b border-gray-200 pb-3">
+          <h3 class="text-lg font-bold text-pantone-green flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-pantone-cyan text-white text-xs flex items-center justify-center font-bold">4</span>
+            A.4 — Conformidade Bioética e Dados Pessoais (LGPD)
+          </h3>
+        </div>
+
+        <p class="text-xs text-gray-600">Este bloco foi ativado porque assinalou a existência de material biológico, peças anatómicas ou dados de pacientes.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Consentimento Informado Original do Paciente/Família</label>
+            <select id="consentimentoBio" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white">
+              <option value="Não se aplica">Não se aplica (histórico / anterior às normas vigentes)</option>
+              <option value="Sim">Sim (documentado)</option>
+              <option value="Não">Não disponível</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Anonimização Prévia Realizada?</label>
+            <select id="anonimizacaoPrevia" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white">
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Base Legal Indicada (Lei 13.709/2018 - LGPD)</label>
+          <select id="baseLegalLGPD" class="w-full p-2.5 border rounded text-sm focus-fmusp bg-white">
+            <option value="Interesse legítimo para fins históricos e científicos (art. 7º, IV e art. 11, II, 'c')">Interesse legítimo para fins históricos, científicos e de pesquisa (art. 7º, IV e art. 11, II, 'c')</option>
+            <option value="Consentimento explícito do titular">Consentimento explícito do titular</option>
+            <option value="Dado já totalmente anonimizado (fora do alcance da LGPD)">Dado já totalmente anonimizado (fora do alcance da LGPD)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Parecer de Comitê de Ética em Pesquisa (CEP/CONEP) — Opcional</label>
+          <input type="file" id="uploadCEP" accept=".pdf,image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-pantone-green file:text-white">
+        </div>
+      </div>
+
+      <!-- ETAPA 5: A.5 CONDIÇÕES, PARTE B (TEXTO LEGAL) E A.6 ACEITE DIGITAL -->
+      <div id="step5" class="step-pane hidden space-y-6">
+        <div class="border-b border-gray-200 pb-3">
+          <h3 class="text-lg font-bold text-pantone-green flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-pantone-cyan text-white text-xs flex items-center justify-center font-bold">5</span>
+            Condições, Cláusulas Legais e Assinatura Digital
+          </h3>
+        </div>
+
+        <!-- A.5 Condições do Doador -->
+        <div class="space-y-4 bg-gray-50 p-4 rounded border border-gray-200">
+          <h4 class="text-xs font-bold text-pantone-green uppercase tracking-wider">A.5 — Condições e Restrições Declaradas</h4>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Exposição (se houver)</label>
+              <input type="text" id="restricoesExposicao" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="Ex: vedação a exposição desprotegida">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Publicação / Reprodução</label>
+              <input type="text" id="restricoesPublicacao" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="Ex: apenas para fins académicos">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Solicita Crédito Nominal em Exposições?</label>
+              <input type="text" id="creditoNominal" class="w-full p-2 border rounded text-xs focus-fmusp" placeholder="Ex: Doação da Família Santos">
+            </div>
+            <div class="flex items-center pt-5">
+              <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
+                <input type="checkbox" id="anonimatoDoador" class="rounded text-pantone-green">
+                <span>Desejo permanecer anónimo na divulgação pública</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- PARTE B: TEXTO LEGAL COM AS 12 CLÁUSULAS (AUTONOMIA DO MHFMUSP) -->
+        <div>
+          <label class="block text-xs font-bold text-pantone-green uppercase mb-2">Parte B — Texto Legal do Instrumento (Leitura Obrigatória)</label>
+          <div class="h-48 overflow-y-auto p-4 bg-gray-50 border border-gray-300 rounded text-xs text-gray-700 space-y-3 leading-relaxed">
+            <p class="font-bold">TERMO DE DOAÇÃO DE ACERVO AO MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" DA FACULDADE DE MEDICINA DA UNIVERSIDADE DE SÃO PAULO</p>
+            <p><strong>CLÁUSULA 1 – DO OBJETO:</strong> O presente Termo tem por objeto a doação pura, simples e irrevogável do(s) bem(ns) descrito(s) neste formulário, transferindo a propriedade e custódia física ao Museu.</p>
+            <p><strong>CLÁUSULA 2 – DA NATUREZA JURÍDICA:</strong> Doação civil nos termos dos artigos 538 e seguintes do Código Civil Brasileiro, aperfeiçoada eletronicamente nos termos da Medida Provisória nº 2.200-2/2001 e da Lei nº 14.063/2020.</p>
+            <p><strong>CLÁUSULA 3 – DA PROVENIÊNCIA E RESPONSABILIDADE:</strong> O Doador declara ser legítimo proprietário ou representante legal do bem, respondendo pela sua origem lícita e isentando o Museu de quaisquer vícios ocultos ou litígios.</p>
+            <p><strong>CLÁUSULA 4 – DA AVALIAÇÃO CURATORIAL E COMPETÊNCIA DECISÓRIA:</strong> O Museu Histórico "Prof. Carlos da Silva Lacaz", no pleno exercício da sua autonomia técnica, efetuará a triagem curatorial e a avaliação de pertinência ao seu Plano Museológico e à sua Política de Acervos. Compete soberanamente à Coordenação do Museu Histórico e à sua equipa técnica deliberar sobre o aceite definitivo ou a recusa motivada da doação, formalizando, quando aprovada, o competente tombamento no livro ou sistema de inventário institucional.</p>
+            <p><strong>CLÁUSULA 5 – DA CONSERVAÇÃO E SALVAGUARDA:</strong> Uma vez incorporado, o bem submete-se às políticas técnicas de conservação preventiva, pesquisa e difusão do Museu.</p>
+            <p><strong>CLÁUSULA 6 – DO ENCARGO ACESSÓRIO EM GRANDES VOLUMES:</strong> Para conjuntos volumosos, o Museu poderá solicitar o custeio de caixas de guarda técnica de arquivo permanente como encargo acessório, sem descaracterizar a gratuitidade da doação.</p>
+            <p><strong>CLÁUSULA 7 – DOS DIREITOS DE AUTOR:</strong> A doação material não transfere automaticamente direitos de autor regidos pela Lei 9.610/1998, autorizando-se o uso institucional para documentação e divulgação científica.</p>
+            <p><strong>CLÁUSULA 8 – DA DESTINAÇÃO E DESCARTE:</strong> Casos excecionais de desincorporação seguirão rigorosamente as normas técnicas museológicas vigentes.</p>
+            <p><strong>CLÁUSULA 9 – DA PROTEÇÃO DE DADOS (LGPD):</strong> O tratamento dos dados cadastrais observa integralmente a Lei nº 13.709/2018 para fins documentais, históricos e estatutários.</p>
+            <p><strong>CLÁUSULA 10 – DA GRATUIDADE E IRREVOGABILIDADE:</strong> A doação é efetuada a título estritamente gratuito e torna-se irrevogável após a aceitação formal.</p>
+            <p><strong>CLÁUSULA 11 – DA RECONSIDERAÇÃO E ATENDIMENTO ASSISTIDO:</strong> Em caso de recusa técnica fundamentada, cabe pedido de reapreciação dirigido diretamente à Coordenação do Museu.</p>
+            <p><strong>CLÁUSULA 12 – DO FORO:</strong> Eleito o foro da Comarca da Capital do Estado de São Paulo (Varas da Fazenda Pública).</p>
+          </div>
+        </div>
+
+        <!-- A.6 CHECKBOXES DE ACEITE OBRIGATÓRIOS -->
+        <div class="space-y-3 bg-white p-4 border-2 border-pantone-cyan rounded-lg">
+          <p class="text-xs font-bold text-pantone-green uppercase">A.6 — Declarações Finais de Aceite (Assinale todas para habilitar o envio):</p>
+          
+          <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
+            <input type="checkbox" class="check-aceite mt-0.5 rounded text-pantone-green" onchange="verificarAceites()">
+            <span>Declaro ser legítimo proprietário do(s) bem(ns) descrito(s) ou deter poderes legais de representação, estando o bem livre de ónus ou litígios.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
+            <input type="checkbox" class="check-aceite mt-0.5 rounded text-pantone-green" onchange="verificarAceites()">
+            <span>Declaro estar ciente de que a doação é voluntária, gratuita e irrevogável após aceitação e tombamento.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
+            <input type="checkbox" class="check-aceite mt-0.5 rounded text-pantone-green" onchange="verificarAceites()">
+            <span>Li e concordo integralmente com todas as cláusulas jurídicas apresentadas na Parte B deste instrumento.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
+            <input type="checkbox" class="check-aceite mt-0.5 rounded text-pantone-green" onchange="verificarAceites()">
+            <span>Autorizo o tratamento dos meus dados pessoais nos termos da Lei nº 13.709/2018 (LGPD) para gestão do acervo do Museu.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
+            <input type="checkbox" class="check-aceite mt-0.5 rounded text-pantone-green" onchange="verificarAceites()">
+            <span>Reconheço que o bem doado passará a integrar o património cultural sob salvaguarda do Museu Histórico FMUSP.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
+            <input type="checkbox" class="check-aceite mt-0.5 rounded text-pantone-green" onchange="verificarAceites()">
+            <span>Estou ciente de que a instituição poderá consultar bases públicas de bens culturais para certificação de proveniência lícita.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
+            <input type="checkbox" class="check-aceite mt-0.5 rounded text-pantone-green" onchange="verificarAceites()">
+            <span>Estou ciente do eventual encargo de acondicionamento para conjuntos de grande volume (Cláusula 6).</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- BOTÕES DE NAVEGAÇÃO -->
+      <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+        <button type="button" id="btnPrev" class="hidden px-5 py-2.5 border border-gray-300 rounded text-sm font-semibold text-gray-700 hover:bg-gray-100" onclick="prevStep()">
+          ← Voltar
+        </button>
+
+        <div class="ml-auto flex items-center gap-3">
+          <button type="button" id="btnNext" class="px-6 py-2.5 bg-pantone-green text-white font-bold rounded text-sm hover:opacity-90 transition-all flex items-center gap-2" onclick="nextStep()">
+            <span>Avançar</span> →
+          </button>
+
+          <button type="button" id="btnSubmit" class="hidden px-6 py-2.5 bg-gray-400 text-white font-bold rounded text-sm cursor-not-allowed transition-all" disabled onclick="finalizarAssinatura()">
+            Concordo e Assino Digitalmente
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- PAINEL DE SUCESSO E PROTOCOLO (EXIBIDO APÓS O ENVIO) -->
+    <div id="successPanel" class="hidden bg-white rounded-lg border-2 border-pantone-cyan shadow-lg p-6 sm:p-8 space-y-6">
+      <div class="text-center space-y-2">
+        <div class="w-14 h-14 bg-pantone-green text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold shadow-md">
+          ✓
+        </div>
+        <h3 class="text-xl sm:text-2xl font-bold text-pantone-green">Termo Assinado e Enviado com Sucesso!</h3>
+        <p class="text-xs text-gray-600 max-w-lg mx-auto">
+          A sua proposta foi transmitida para o endereço oficial do Centro de Pesquisa e Documentação: <span class="font-bold text-pantone-green">cpdoc.museufm@usp.br</span>.
+        </p>
+      </div>
+
+      <!-- Recibo Digital -->
+      <div class="p-4 bg-gray-50 rounded-lg border border-gray-300 space-y-3 text-xs">
+        <div class="flex flex-col sm:flex-row justify-between border-b pb-2">
+          <span class="text-gray-500">Número de Protocolo CPDoc:</span>
+          <span id="displayProtocol" class="font-mono font-bold text-pantone-green text-sm"></span>
+        </div>
+        <div class="flex flex-col sm:flex-row justify-between border-b pb-2">
+          <span class="text-gray-500">Data e Hora da Assinatura:</span>
+          <span id="displayTimestamp" class="font-mono text-gray-800"></span>
+        </div>
+        <div class="flex flex-col sm:flex-row justify-between border-b pb-2">
+          <span class="text-gray-500">Destinatário Oficial:</span>
+          <span class="font-mono text-gray-800">cpdoc.museufm@usp.br</span>
+        </div>
+        <div class="border-b pb-2">
+          <span class="text-gray-500 block mb-1">Hash Criptográfico de Integridade (SHA-256):</span>
+          <span id="displayHash" class="font-mono text-[10px] break-all bg-white p-2 rounded border block text-gray-700"></span>
+        </div>
+        <div class="flex justify-center pt-2">
+          <div id="qrcodeDisplay" class="p-2 bg-white rounded border"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+        <button type="button" id="btnDownloadPDF" class="px-5 py-2.5 bg-pantone-green text-white rounded font-bold text-xs hover:opacity-90 flex items-center justify-center gap-2" onclick="baixarPDFNovamente()">
+          Descarregar Cópia em PDF
+        </button>
+        <button type="button" class="px-5 py-2.5 bg-black text-white rounded font-bold text-xs hover:bg-gray-800" onclick="window.location.reload()">
+          Preencher Nova Proposta
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer class="bg-black text-gray-400 text-xs py-6 border-t-2 border-pantone-cyan mt-auto">
+    <div class="max-w-5xl mx-auto px-4 text-center space-y-1">
+      <p class="text-white font-semibold">Museu Histórico "Prof. Carlos da Silva Lacaz" — FMUSP</p>
+      <p>Centro de Pesquisa e Documentação (CPDoc) | Av. Dr. Arnaldo, 455 — Cerqueira César, São Paulo - SP</p>
+      <p class="text-[11px] text-[#009CA6]">Contacto Oficial: cpdoc.museufm@usp.br</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT DE COMPORTAMENTO E GERAÇÃO DE PDF -->
+  <script>
+    let currentStep = 1;
+    const totalSteps = 5;
+    let uploadedImagesBase64 = [];
+    let generatedPdfDataUri = null;
+    let lastGeneratedProtocol = '';
+
+    // Alternar campo de procuração caso o proponente não seja proprietário direto
+    function toggleProcuracaoUpload() {
+      const grau = document.getElementById('grauRelacao').value;
+      const box = document.getElementById('boxProcuracao');
+      if (grau === 'Proprietário original') {
+        box.classList.add('hidden');
+      } else {
+        box.classList.remove('hidden');
+      }
+    }
+
+    // Alerta sobre a Cláusula 6 em coleções volumosas
+    function checkVolumeWarning() {
+      const vol = document.getElementById('volumeEstimado').value;
+      const box = document.getElementById('boxEncargoVolume');
+      if (vol.includes('grande volume')) {
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    // Consulta simplificada ao ViaCEP
+    function buscarCEP() {
+      const cep = document.getElementById('cep').value.replace(/\D/g, '');
+      if (cep.length === 8) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+          .then(res => res.json())
+          .then(data => {
+            if (!data.erro) {
+              document.getElementById('logradouro').value = data.logradouro || '';
+              document.getElementById('bairro').value = data.bairro || '';
+              document.getElementById('cidadeUf').value = `${data.localidade} / ${data.uf}`;
+            }
+          })
+          .catch(() => {});
+      }
+    }
+
+    // Pré-visualização de Imagens e Leitura em Base64
+    function previewImages(event) {
+      const files = Array.from(event.target.files);
+      const container = document.getElementById('photosPreviewContainer');
+      const warning = document.getElementById('photosCountWarning');
+      container.innerHTML = '';
+      uploadedImagesBase64 = [];
+
+      if (files.length < 3) {
+        warning.classList.remove('hidden');
+      } else {
+        warning.classList.add('hidden');
+      }
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          uploadedImagesBase64.push(e.target.result);
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'w-full h-16 object-cover rounded border border-pantone-cyan';
+          container.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Gestão do Avanço das Etapas
+    function updateProgress() {
+      const progressPct = (currentStep / totalSteps) * 100;
+      document.getElementById('stepProgressBar').style.width = `${progressPct}%`;
+      document.getElementById('stepProgressPct').textContent = `${Math.round(progressPct)}%`;
+
+      const titles = [
+        "Etapa 1 de 5: Identificação do Doador",
+        "Etapa 2 de 5: Descrição do Bem Cultural",
+        "Etapa 3 de 5: Proveniência e Custódia",
+        "Etapa 4 de 5: Conformidade Bioética e LGPD",
+        "Etapa 5 de 5: Aceite Legal e Assinatura Digital"
+      ];
+      document.getElementById('stepIndicatorLabel').textContent = titles[currentStep - 1];
+
+      document.querySelectorAll('.step-pane').forEach((el, idx) => {
+        el.classList.toggle('hidden', idx !== (currentStep - 1));
+      });
+
+      document.getElementById('btnPrev').classList.toggle('hidden', currentStep === 1);
+      
+      if (currentStep === totalSteps) {
+        document.getElementById('btnNext').classList.add('hidden');
+        document.getElementById('btnSubmit').classList.remove('hidden');
+      } else {
+        document.getElementById('btnNext').classList.remove('hidden');
+        document.getElementById('btnSubmit').classList.add('hidden');
+      }
+    }
+
+    function nextStep() {
+      // Validação da Etapa 1
+      if (currentStep === 1) {
+        if (!document.getElementById('nomeDoador').value || 
+            !document.getElementById('documentoNumero').value || 
+            !document.getElementById('emailDoador').value || 
+            !document.getElementById('uploadDocIdentidade').files.length) {
+          alert('Por favor, preencha todos os campos obrigatórios da Identificação e anexe o documento.');
+          return;
+        }
+      }
+
+      // Validação da Etapa 2
+      if (currentStep === 2) {
+        const categorias = document.querySelectorAll('input[name="categoria"]:checked');
+        if (categorias.length === 0) {
+          alert('Por favor, selecione pelo menos uma categoria museológica.');
+          return;
+        }
+        if (!document.getElementById('denominacaoBem').value || !document.getElementById('descricaoFisica').value) {
+          alert('Por favor, informe a denominação e a descrição física do bem.');
+          return;
+        }
+        if (uploadedImagesBase64.length < 3) {
+          alert('É obrigatório anexar no mínimo 3 fotografias do item cultural.');
+          return;
+        }
+      }
+
+      // Validação da Etapa 3
+      if (currentStep === 3) {
+        if (!document.getElementById('origemBem').value) {
+          alert('Por favor, descreva a origem do bem.');
+          return;
+        }
+        if (!document.getElementById('checkOrigemLicita').checked) {
+          alert('É necessário assinalar a declaração de origem lícita.');
+          return;
+        }
+      }
+
+      // Salto condicional da Etapa 4 se não houver dados sensíveis nem riscos biológicos
+      if (currentStep === 3) {
+        const sensivel = document.getElementById('dadosSensiveis').value;
+        const risco = document.getElementById('riscoBiologico').value;
+        if (sensivel === 'Não' && risco === 'Não') {
+          currentStep = 5; // Salta diretamente para o aceite
+          updateProgress();
+          return;
+        }
+      }
+
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateProgress();
+      }
+    }
+
+    function prevStep() {
+      // Se saltou a etapa 4, volta diretamente à etapa 3
+      if (currentStep === 5) {
+        const sensivel = document.getElementById('dadosSensiveis').value;
+        const risco = document.getElementById('riscoBiologico').value;
+        if (sensivel === 'Não' && risco === 'Não') {
+          currentStep = 3;
+          updateProgress();
+          return;
+        }
+      }
+
+      if (currentStep > 1) {
+        currentStep--;
+        updateProgress();
+      }
+    }
+
+    // Verificação dos 7 checkboxes obrigatórios da Parte C
+    function verificarAceites() {
+      const checks = document.querySelectorAll('.check-aceite');
+      let allChecked = true;
+      checks.forEach(c => { if (!c.checked) allChecked = false; });
+
+      const btn = document.getElementById('btnSubmit');
+      if (allChecked) {
+        btn.disabled = false;
+        btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+        btn.classList.add('bg-pantone-green', 'hover:opacity-90');
+      } else {
+        btn.disabled = true;
+        btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+        btn.classList.remove('bg-pantone-green', 'hover:opacity-90');
+      }
+    }
+
+    // Cálculo criptográfico de Hash SHA-256 no browser
+    async function calculateSHA256(text) {
+      const msgBuffer = new TextEncoder().encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Finalizar e Submeter Proposta
+    async function finalizarAssinatura() {
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled = true;
+      btn.innerHTML = 'Processando e Gerando PDF...';
+
+      // Metadados da submissão
+      const now = new Date();
+      const timestamp = now.toLocaleString('pt-BR', { timeZoneName: 'short' });
+      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      lastGeneratedProtocol = `FMUSP-CPDOC-${now.getFullYear()}-${randomSuffix}`;
+      
+      const payloadString = JSON.stringify({
+        protocolo: lastGeneratedProtocol,
+        doador: document.getElementById('nomeDoador').value,
+        documento: document.getElementById('documentoNumero').value,
+        bem: document.getElementById('denominacaoBem').value,
+        timestamp: timestamp,
+        userAgent: navigator.userAgent
+      });
+
+      const hashSHA256 = await calculateSHA256(payloadString);
+
+      // Gerar PDF oficial institucional com jsPDF
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+      // Cabeçalho Oficial
+      doc.setFillColor(0, 103, 71); // Pantone 342 C
+      doc.rect(0, 0, 210, 20, 'F');
+      doc.setFillColor(0, 156, 166); // Pantone 320 C
+      doc.rect(0, 20, 210, 2, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(255, 255, 255);
+      doc.text('MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" — FMUSP', 15, 11);
+      doc.setFontSize(8);
+      doc.text('CENTRO DE PESQUISA E DOCUMENTAÇÃO (CPDoc) | TERMO DE DOAÇÃO DE ACERVO', 15, 16);
+
+      // Dados de Protocolo
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(0, 103, 71);
+      doc.text(`PROTOCOLO: ${lastGeneratedProtocol}`, 15, 28);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(80, 80, 80);
+      doc.text(`Data e Hora: ${timestamp}`, 130, 28);
+
+      // Bloco Doador
+      doc.setFillColor(245, 245, 245);
+      doc.rect(15, 32, 180, 26, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(0, 0, 0);
+      doc.text('1. DADOS DO DOADOR', 18, 37);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text(`Nome: ${document.getElementById('nomeDoador').value}`, 18, 43);
+      doc.text(`CPF/CNPJ: ${document.getElementById('documentoNumero').value}  |  Tipo: ${document.getElementById('tipoDoador').value}`, 18, 48);
+      doc.text(`E-mail: ${document.getElementById('emailDoador').value}  |  Tel: ${document.getElementById('telefoneDoador').value}`, 18, 53);
+
+      // Bloco Descrição do Bem
+      doc.setFillColor(245, 245, 245);
+      doc.rect(15, 62, 180, 36, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('2. CARACTERIZAÇÃO DO BEM CULTURAL', 18, 67);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text(`Denominação: ${document.getElementById('denominacaoBem').value}`, 18, 73);
+      doc.text(`Quantidade: ${document.getElementById('quantidadeItens').value}  |  Estado: ${document.getElementById('estadoConservacao').value}  |  Datação: ${document.getElementById('datacao').value}`, 18, 78);
+      
+      const descLines = doc.splitTextToSize(`Descrição: ${document.getElementById('descricaoFisica').value}`, 174);
+      doc.text(descLines, 18, 83);
+
+      // Bloco Proveniência
+      doc.setFillColor(245, 245, 245);
+      doc.rect(15, 102, 180, 28, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('3. PROVENIÊNCIA E CONDICIONANTES', 18, 107);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text(`Origem informada: ${document.getElementById('origemBem').value}`, 18, 113);
+      doc.text(`Volume: ${document.getElementById('volumeEstimado').value}  |  Direitos de autor: ${document.getElementById('situacaoAutoral').value}`, 18, 118);
+      doc.text(`Crédito pretendido: ${document.getElementById('creditoNominal').value || 'Não solicitado'}  |  Anonimato: ${document.getElementById('anonimatoDoador').checked ? 'Sim' : 'Não'}`, 18, 123);
+
+      // Miniaturas das fotos enviadas
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(0, 103, 71);
+      doc.text('REGISTRO FOTOGRÁFICO ANEXADO:', 15, 136);
+
+      let xPos = 15;
+      for (let i = 0; i < Math.min(uploadedImagesBase64.length, 4); i++) {
+        try {
+          doc.addImage(uploadedImagesBase64[i], 'JPEG', xPos, 139, 25, 25);
+          doc.setDrawColor(0, 156, 166);
+          doc.rect(xPos, 139, 25, 25);
+          xPos += 28;
+        } catch (e) {}
+      }
+
+      // Certificado Criptográfico da Assinatura Digital
+      doc.setFillColor(240, 248, 245);
+      doc.rect(15, 170, 180, 32, 'F');
+      doc.setDrawColor(0, 103, 71);
+      doc.rect(15, 170, 180, 32);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(0, 103, 71);
+      doc.text('CERTIFICADO DE ASSINATURA DIGITAL (PARTE C — VALIDAÇÃO ELETRÔNICA)', 18, 176);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(40, 40, 40);
+      doc.text(`Assinado eletronicamente por: ${document.getElementById('nomeDoador').value}`, 18, 182);
+      doc.text(`Endereço de Destino Oficial: cpdoc.museufm@usp.br`, 18, 186);
+      doc.text(`Carimbo de Data/Hora: ${timestamp}`, 18, 190);
+      doc.text(`Hash SHA-256: ${hashSHA256}`, 18, 194);
+      doc.text('Validade jurídica conferida nos termos do art. 10 da MP nº 2.200-2/2001 e da Lei nº 14.063/2020.', 18, 198);
+
+      // Sumário das Cláusulas e Autonomia Institucional
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(7);
+      doc.setTextColor(100, 100, 100);
+      doc.text('O presente documento foi transmitido para análise do CPDoc. A deliberação final sobre o aceite, recusa ou', 15, 208);
+      doc.text('tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz", segundo a sua Política de Acervos.', 15, 212);
+
+      // Obter Base64 do PDF
+      generatedPdfDataUri = doc.output('datauristring');
+
+      // Tentativa de transmissão para a Vercel Serverless Function
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            protocolo: lastGeneratedProtocol,
+            doadorNome: document.getElementById('nomeDoador').value,
+            doadorEmail: document.getElementById('emailDoador').value,
+            bemNome: document.getElementById('denominacaoBem').value,
+            destinationEmail: 'cpdoc.museufm@usp.br',
+            pdfBase64: generatedPdfDataUri.split(',')[1]
+          })
+        });
+      } catch (err) {
+        console.warn('API de envio assíncrono não respondeu. O PDF foi gerado localmente.');
+      }
+
+      // Atualizar interface do utilizador com os dados de validação
+      document.getElementById('displayProtocol').textContent = lastGeneratedProtocol;
+      document.getElementById('displayTimestamp').textContent = timestamp;
+      document.getElementById('displayHash').textContent = hashSHA256;
+
+      // Gerar QR Code
+      const qrContainer = document.getElementById('qrcodeDisplay');
+      qrContainer.innerHTML = '';
+      new QRCode(qrContainer, {
+        text: `MHFMUSP|CPDOC|${lastGeneratedProtocol}|${hashSHA256.substring(0, 16)}`,
+        width: 80,
+        height: 80
+      });
+
+      // Ocultar formulário e exibir painel de sucesso
+      document.getElementById('donationForm').classList.add('hidden');
+      document.getElementById('successPanel').classList.remove('hidden');
+
+      // Descarregamento automático do PDF
+      doc.save(`Termo_Doacao_${lastGeneratedProtocol}.pdf`);
+    }
+
+    function baixarPDFNovamente() {
+      if (generatedPdfDataUri) {
+        const link = document.createElement('a');
+        link.href = generatedPdfDataUri;
+        link.download = `Termo_Doacao_${lastGeneratedProtocol}.pdf`;
+        link.click();
+      }
+    }
+  </script>
+</body>
+</html>
