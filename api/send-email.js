@@ -1,7 +1,14 @@
-const RESEND_URL = 'https://api.resend.com/emails';
-const FROM = process.env.RESEND_FROM || 'CPDoc MHFMUSP <onboarding@resend.dev>';
+const BREVO_URL = 'https://api.brevo.com/v3/smtp/email';
+const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'clebison.s@fm.usp.br';
+const SENDER_NAME = 'CPDoc MHFMUSP';
+
+// A Brevo exige os destinatários no formato: [{ email: '...' }, { email: '...' }]
 const TO = (process.env.CPDOC_TO || 'cpdoc.museufmusp@usp.br,cpdoc.museufm@usp.br')
-  .split(',').map(s => s.trim()).filter(Boolean);
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean)
+  .map(email => ({ email }));
+
 const ORIGENS = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
 
 const MAX_B64_TOTAL = 4_200_000;
@@ -113,9 +120,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) {
-    console.error('[send-email] RESEND_API_KEY ausente.');
+    console.error('[send-email] BREVO_API_KEY ausente.');
     return res.status(500).json({ error: 'Serviço de envio não configurado.', code: 'CONFIG' });
   }
 
@@ -130,40 +137,62 @@ export default async function handler(req, res) {
   const { d, erro } = validar(body);
   if (erro) return res.status(400).json({ error: erro, code: 'VALIDATION' });
 
+  // A Brevo espera a lista com propriedades { name: '...', content: '...' }
+  const attachmentsBrevo = d.attachments.map(a => ({
+    name: a.filename,
+    content: a.content
+  }));
+
   const sufixo = d.totalPartes > 1 ? ` (parte ${d.parte}/${d.totalPartes})` : '';
+
+  const payload = {
+    sender: {
+      name: SENDER_NAME,
+      email: SENDER_EMAIL
+    },
+    to: TO,
+    replyTo: {
+      name: d.doadorNome,
+      email: d.doadorEmail
+    },
+    subject: `[CPDoc MHFMUSP] Nova Proposta de Doação — Protocolo ${d.protocolo}${sufixo}`,
+    htmlContent: montarHtml(d),
+    ...(attachmentsBrevo.length > 0 ? { attachment: attachmentsBrevo } : {})
+  };
+
   try {
-    const r = await fetch(RESEND_URL, {
+    const r = await fetch(BREVO_URL, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'User-Agent': 'CPDoc-MHFMUSP/1.1',
-        'Idempotency-Key': `cpdoc-${d.protocolo}-p${d.parte}of${d.totalPartes}`
+        'accept': 'application/json',
+        'api-key': apiKey,
+        'content-type': 'application/json'
       },
-      body: JSON.stringify({
-        from: FROM,
-        to: TO,
-        reply_to: d.doadorEmail,
-        subject: `[CPDoc MHFMUSP] Nova Proposta de Doação — Protocolo ${d.protocolo}${sufixo}`,
-        html: montarHtml(d),
-        attachments: d.attachments
-      }),
+      body: JSON.stringify(payload),
       signal: AbortSignal.timeout(25000)
     });
 
     const data = await r.json().catch(() => ({}));
     if (!r.ok) {
-      console.error('[send-email] Resend', r.status, JSON.stringify(data), d.protocolo);
-      const msg = String(data?.message || '');
-      if (r.status === 403 && /testing emails|verify a domain/i.test(msg))
-        return res.status(502).json({ error: 'Serviço de e-mail em modo de teste (domínio não verificado).', code: 'RESEND_TEST_MODE' });
-      if (r.status === 429) return res.status(503).json({ error: 'Limite de envios atingido.', code: 'RATE_LIMIT' });
-      return res.status(502).json({ error: 'Falha ao enviar o e-mail.', code: `RESEND_${r.status}` });
+      console.error('[send-email] Brevo', r.status, JSON.stringify(data), d.protocolo);
+      return res.status(502).json({ 
+        error: data?.message || 'Falha ao enviar o e-mail via Brevo.', 
+        code: `BREVO_${r.status}` 
+      });
     }
-    return res.status(200).json({ success: true, id: data.id, parte: d.parte, totalPartes: d.totalPartes });
+
+    return res.status(200).json({ 
+      success: true, 
+      id: data.messageId, 
+      parte: d.parte, 
+      totalPartes: d.totalPartes 
+    });
   } catch (err) {
     console.error('[send-email] Exceção', err);
     const timeout = err?.name === 'TimeoutError' || err?.name === 'AbortError';
-    return res.status(timeout ? 504 : 500).json({ error: timeout ? 'Tempo esgotado no envio.' : 'Erro interno.', code: timeout ? 'TIMEOUT' : 'INTERNAL' });
+    return res.status(timeout ? 504 : 500).json({ 
+      error: timeout ? 'Tempo esgotado no envio.' : 'Erro interno.', 
+      code: timeout ? 'TIMEOUT' : 'INTERNAL' 
+    });
   }
 }
