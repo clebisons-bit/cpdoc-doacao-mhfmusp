@@ -1,94 +1,169 @@
+const RESEND_URL = 'https://api.resend.com/emails';
+const FROM = process.env.RESEND_FROM || 'CPDoc MHFMUSP <onboarding@resend.dev>';
+const TO = (process.env.CPDOC_TO || 'cpdoc.museufmusp@usp.br,cpdoc.museufm@usp.br')
+  .split(',').map(s => s.trim()).filter(Boolean);
+const ORIGENS = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+
+const MAX_B64_TOTAL = 4_200_000;
+const MAX_ANEXOS = 20;
+const MAX_PARTES = 10;
+const RE_PROTOCOLO = /^FMUSP-CPDOC-\d{4}-[A-Z0-9]{6}$/;
+const RE_EMAIL = /^[^\s@<>",;:()]+@[^\s@<>",;:()]+\.[^\s@<>",;:()]+$/;
+const RE_B64 = /^[A-Za-z0-9+/]+={0,2}$/;
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const txt = (v, max) => typeof v === 'string'
+  ? v.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, max)
+  : '';
+
+function nomeSeguro(nome) {
+  const base = txt(nome, 300).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9._-]+/g, '_').replace(/^[._]+/, '');
+  if (!/\.(pdf|jpe?g|png)$/i.test(base)) return null;
+  return base.length > 100 ? base.slice(-100) : base;
+}
+
+function conteudoConfere(ext, b64) {
+  const ini = Buffer.from(b64.slice(0, 1400), 'base64');
+  if (ext === 'pdf') return ini.toString('latin1').includes('%PDF-');
+  if (ext === 'png') return ini.subarray(0, 4).toString('hex') === '89504e47';
+  return ini[0] === 0xff && ini[1] === 0xd8;
+}
+
+function anexoValido(filename, base64) {
+  const nome = nomeSeguro(filename);
+  if (!nome || typeof base64 !== 'string' || !RE_B64.test(base64)) return null;
+  const ext = nome.split('.').pop().toLowerCase();
+  return conteudoConfere(ext, base64) ? { filename: nome, content: base64 } : null;
+}
+
+function validar(b) {
+  const protocolo = txt(b.protocolo, 40);
+  if (!RE_PROTOCOLO.test(protocolo)) return { erro: 'Protocolo inválido.' };
+
+  const parte = Number(b.parte ?? 1);
+  const totalPartes = Number(b.totalPartes ?? 1);
+  if (![parte, totalPartes].every(Number.isInteger) || parte < 1 || totalPartes > MAX_PARTES || parte > totalPartes)
+    return { erro: 'Numeração de partes inválida.' };
+
+  const doadorNome = txt(b.doadorNome, 200);
+  const doadorEmail = txt(b.doadorEmail, 200);
+  const bemNome = txt(b.bemNome, 300);
+  if (!doadorNome || !bemNome || !RE_EMAIL.test(doadorEmail))
+    return { erro: 'Dados do doador ou do bem incompletos.' };
+
+  const attachments = [];
+  if (parte === 1) {
+    const pdf = anexoValido(`Termo_Doacao_${protocolo}.pdf`, b.pdfBase64);
+    if (!pdf) return { erro: 'PDF do termo ausente ou inválido.' };
+    attachments.push(pdf);
+  }
+  if (!Array.isArray(b.anexos) || b.anexos.length > MAX_ANEXOS) return { erro: 'Lista de anexos inválida.' };
+  for (const a of b.anexos) {
+    const ok = anexoValido(a?.filename, a?.base64);
+    if (!ok) return { erro: `Anexo inválido ou formato não aceito: ${txt(a?.filename, 60)}` };
+    attachments.push(ok);
+  }
+  if (attachments.reduce((s, a) => s + a.content.length, 0) > MAX_B64_TOTAL)
+    return { erro: 'Anexos excedem o tamanho máximo por envio.' };
+
+  const hash = txt(b.hash, 64);
+  const resumo = (Array.isArray(b.resumo) ? b.resumo : []).slice(0, 60)
+    .map(r => ({ rotulo: txt(r?.rotulo, 80), valor: txt(r?.valor, 3000) }));
+
+  return {
+    d: { protocolo, parte, totalPartes, doadorNome, doadorEmail, bemNome,
+         timestamp: txt(b.timestamp, 60), hash: /^[a-f0-9]{64}$/.test(hash) ? hash : '', resumo, attachments }
+  };
+}
+
+function montarHtml(d) {
+  const linha = (r, v, forte) =>
+    `<tr><td style="padding:4px 10px 4px 0;font-weight:bold;vertical-align:top;width:170px">${esc(r)}:</td>` +
+    `<td style="padding:4px 0;white-space:pre-wrap;${forte ? 'color:#006747;font-weight:bold' : ''}">${esc(v)}</td></tr>`;
+  const rows = [
+    linha('Protocolo', d.protocolo, true), linha('Doador', d.doadorNome),
+    linha('E-mail do doador', d.doadorEmail), linha('Bem', d.bemNome),
+    linha('Parte', `${d.parte} de ${d.totalPartes}`),
+    linha('Anexos nesta mensagem', `${d.attachments.length} arquivo(s)`)
+  ];
+  if (d.parte === 1) {
+    rows.push(linha('Data/hora', d.timestamp), linha('Hash SHA-256', d.hash));
+    d.resumo.forEach(i => rows.push(linha(i.rotulo, i.valor)));
+  }
+  const aviso = d.parte === 1
+    ? 'O Termo assinado (PDF) e os documentos/fotos seguem em anexo.'
+    : 'Anexos complementares do protocolo acima. O Termo em PDF segue na parte 1.';
+  return `<div style="font-family:Arial,sans-serif;color:#111;max-width:680px;line-height:1.5">
+    <div style="background:#006747;padding:16px;border-bottom:4px solid #009CA6;color:#fff">
+      <h2 style="margin:0;font-size:16px">MUSEU HISTÓRICO &quot;PROF. CARLOS DA SILVA LACAZ&quot; — FMUSP</h2>
+      <p style="margin:4px 0 0;font-size:12px">Centro de Pesquisa e Documentação (CPDoc)</p></div>
+    <div style="padding:18px;border:1px solid #ddd;border-top:none">
+      <p style="font-size:14px;font-weight:bold;color:#006747">Nova proposta de doação de acervo recebida pela plataforma web.</p>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;margin:12px 0">${rows.join('')}</table>
+      <p style="font-size:12px;color:#555">${aviso}</p></div></div>`;
+}
+
 export default async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.error('[send-email] RESEND_API_KEY ausente.');
+    return res.status(500).json({ error: 'Serviço de envio não configurado.', code: 'CONFIG' });
+  }
+
+  if (ORIGENS.length && !ORIGENS.includes(req.headers.origin || '')) {
+    return res.status(403).json({ error: 'Origem não autorizada.', code: 'ORIGIN' });
+  }
+
+  let body;
+  try { body = req.body; } catch { return res.status(400).json({ error: 'JSON inválido.' }); }
+  if (!body || typeof body !== 'object') return res.status(400).json({ error: 'Corpo da requisição vazio.' });
+
+  const { d, erro } = validar(body);
+  if (erro) return res.status(400).json({ error: erro, code: 'VALIDATION' });
+
+  const sufixo = d.totalPartes > 1 ? ` (parte ${d.parte}/${d.totalPartes})` : '';
   try {
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: 'A variável RESEND_API_KEY não foi configurada na Vercel.' });
-    }
-
-    const {
-      protocolo,
-      doadorNome,
-      doadorEmail,
-      bemNome,
-      pdfBase64,
-      anexosExtras
-    } = req.body || {};
-
-    const attachments = [];
-
-    // 1. Termo em PDF
-    if (pdfBase64) {
-      attachments.push({
-        filename: `Termo_Doacao_${protocolo || 'CPDoc'}.pdf`,
-        content: pdfBase64
-      });
-    }
-
-    // 2. Anexos extras (documentos, fotos)
-    if (Array.isArray(anexosExtras)) {
-      for (const item of anexosExtras) {
-        if (item && item.filename && item.base64) {
-          attachments.push({
-            filename: item.filename,
-            content: item.base64
-          });
-        }
-      }
-    }
-
-    const htmlContent = `
-      <div style="font-family: Arial, sans-serif; color: #111; max-width: 600px; line-height: 1.5;">
-        <div style="background-color: #006747; padding: 16px; border-bottom: 4px solid #009CA6; color: #fff;">
-          <h2 style="margin: 0; font-size: 16px;">MUSEU HISTÓRICO &quot;PROF. CARLOS DA SILVA LACAZ&quot; — FMUSP</h2>
-          <p style="margin: 4px 0 0; font-size: 12px;">Centro de Pesquisa e Documentação (CPDoc)</p>
-        </div>
-        <div style="padding: 18px; border: 1px solid #ddd; border-top: none;">
-          <p style="font-size: 14px; font-weight: bold; color: #006747;">Nova proposta de doação de acervo recebida pela plataforma web.</p>
-          <table style="width: 100%; font-size: 13px; border-collapse: collapse; margin: 12px 0;">
-            <tr><td style="padding: 4px 0; font-weight: bold; width: 140px;">Protocolo:</td><td style="color: #006747; font-weight: bold;">${protocolo || 'SEM-PROTOCOLO'}</td></tr>
-            <tr><td style="padding: 4px 0; font-weight: bold;">Doador:</td><td>${doadorNome || 'Não informado'}</td></tr>
-            <tr><td style="padding: 4px 0; font-weight: bold;">E-mail do Doador:</td><td>${doadorEmail || 'Não informado'}</td></tr>
-            <tr><td style="padding: 4px 0; font-weight: bold;">Denominação do Bem:</td><td>${bemNome || 'Não informado'}</td></tr>
-            <tr><td style="padding: 4px 0; font-weight: bold;">Total de Anexos:</td><td>${attachments.length} arquivo(s)</td></tr>
-          </table>
-          <p style="font-size: 12px; color: #555; margin-top: 14px;">O Termo assinado em PDF e todos os documentos/fotos seguem em anexo nesta mensagem.</p>
-        </div>
-      </div>
-    `;
-
-    const resendPayload = {
-      from: 'CPDoc MHFMUSP <onboarding@resend.dev>',
-      to: ['cpdoc.museufmusp@usp.br', 'cpdoc.museufm@usp.br'],
-      reply_to: doadorEmail || 'cpdoc.museufmusp@usp.br',
-      subject: `[CPDoc MHFMUSP] Nova Proposta de Doação — Protocolo ${protocolo || ''}`,
-      html: htmlContent,
-      attachments: attachments
-    };
-
-    // Chamada direta para a API REST da Resend via fetch nativo do Node.js
-    const response = await fetch('https://api.resend.com/emails', {
+    const r = await fetch(RESEND_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'User-Agent': 'CPDoc-MHFMUSP/1.0'
+        'User-Agent': 'CPDoc-MHFMUSP/1.1',
+        'Idempotency-Key': `cpdoc-${d.protocolo}-p${d.parte}of${d.totalPartes}`
       },
-      body: JSON.stringify(resendPayload)
+      body: JSON.stringify({
+        from: FROM,
+        to: TO,
+        reply_to: d.doadorEmail,
+        subject: `[CPDoc MHFMUSP] Nova Proposta de Doação — Protocolo ${d.protocolo}${sufixo}`,
+        html: montarHtml(d),
+        attachments: d.attachments
+      }),
+      signal: AbortSignal.timeout(25000)
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(response.status).json({ error: data });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      console.error('[send-email] Resend', r.status, JSON.stringify(data), d.protocolo);
+      const msg = String(data?.message || '');
+      if (r.status === 403 && /testing emails|verify a domain/i.test(msg))
+        return res.status(502).json({ error: 'Serviço de e-mail em modo de teste (domínio não verificado).', code: 'RESEND_TEST_MODE' });
+      if (r.status === 429) return res.status(503).json({ error: 'Limite de envios atingido.', code: 'RATE_LIMIT' });
+      return res.status(502).json({ error: 'Falha ao enviar o e-mail.', code: `RESEND_${r.status}` });
     }
-
-    return res.status(200).json({ success: true, data });
-
+    return res.status(200).json({ success: true, id: data.id, parte: d.parte, totalPartes: d.totalPartes });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    console.error('[send-email] Exceção', err);
+    const timeout = err?.name === 'TimeoutError' || err?.name === 'AbortError';
+    return res.status(timeout ? 504 : 500).json({ error: timeout ? 'Tempo esgotado no envio.' : 'Erro interno.', code: timeout ? 'TIMEOUT' : 'INTERNAL' });
   }
 }
