@@ -66,13 +66,13 @@
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans antialiased selection:bg-[#009CA6] selection:text-white">
 
-  <!-- CABEÇALHO INSTITUCIONAL -->
+  <!-- CABEÇALHO INSTITUCIONAL ALINHADO COM O FORMULÁRIO (max-w-4xl) -->
   <header class="bg-[#006747] text-white border-b-4 border-[#009CA6] sticky top-0 z-40 shadow-md">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center gap-4 sm:gap-5">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4 sm:gap-5">
       <!-- Imagem do Logo Avatar -->
       <img src="Logo_avatar_CPDoc.png" alt="Logo CPDoc MHFMUSP" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-white object-cover shadow bg-white flex-shrink-0">
       
-      <!-- Textos em Branco e com Tamanho Aumentado -->
+      <!-- Textos em Branco e Ampliados -->
       <div class="space-y-1">
         <h1 class="text-base sm:text-xl font-heading font-bold tracking-wide text-white uppercase leading-tight">
           MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ"
@@ -87,10 +87,10 @@
     </div>
   </header>
 
-  <!-- CONTEÚDO PRINCIPAL -->
+  <!-- CONTEÚDO PRINCIPAL (max-w-4xl) -->
   <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
     
-    <!-- TÍTULO DO INSTRUMENTO -->
+    <!-- TÍTULO DO INSTRUMENTO E APRESENTAÇÃO ATUALIZADA -->
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 mb-6">
       <h2 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] tracking-tight uppercase">
         Termo de Doação de Acervo
@@ -608,9 +608,9 @@
 
   </main>
 
-  <!-- RODAPÉ INSTITUCIONAL -->
+  <!-- RODAPÉ INSTITUCIONAL (max-w-4xl) -->
   <footer class="bg-black text-gray-400 text-xs py-6 border-t-2 border-[#009CA6] mt-auto">
-    <div class="max-w-5xl mx-auto px-4 text-center space-y-1">
+    <div class="max-w-4xl mx-auto px-4 text-center space-y-1">
       <p class="text-white font-heading font-semibold">Museu Histórico "Prof. Carlos da Silva Lacaz" — FMUSP</p>
       <p>Centro de Pesquisa e Documentação (CPDoc) | Av. Dr. Arnaldo, 455 — Cerqueira César, São Paulo - SP</p>
       <p class="text-[11px] text-[#009CA6]">Contato Oficial: cpdoc.museufm@usp.br</p>
@@ -873,7 +873,7 @@
 
       const hashSHA256 = await calculateSHA256(payloadString);
 
-      // Geração do PDF Institucional (jsPDF)
+      // Geração do PDF Institucional com jsPDF
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
@@ -1019,7 +1019,7 @@
         console.warn('Falha na comunicação com a API:', err);
       }
 
-      // Atualizar interface
+      // Atualização dos dados no painel final
       document.getElementById('displayProtocol').textContent = lastGeneratedProtocol;
       document.getElementById('displayTimestamp').textContent = timestamp;
       document.getElementById('displayHash').textContent = hashSHA256;
