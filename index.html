@@ -53,41 +53,63 @@
       border-color: #009CA6;
       box-shadow: 0 0 0 2px rgba(0, 156, 166, 0.25);
     }
+
+    /* Padronagem líquida procedural FMUSP (Pantone 342 C, 320 C e 3265 C) */
+    .fmusp-water-bg {
+      background: 
+        radial-gradient(circle at 75% 25%, rgba(0, 199, 177, 0.45) 0%, transparent 45%),
+        radial-gradient(circle at 20% 80%, rgba(0, 156, 166, 0.50) 0%, transparent 50%),
+        radial-gradient(circle at 45% 45%, rgba(0, 103, 71, 0.85) 0%, rgba(2, 43, 30, 0.98) 100%),
+        #006747;
+    }
+    .fmusp-water-caustic {
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: overlay;
+      opacity: 0.65;
+      filter: url('#water-caustic-filter');
+      pointer-events: none;
+    }
+    .fmusp-water-ripples {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(0, 199, 177, 0.3) 0%, transparent 60%);
+      mix-blend-mode: color-dodge;
+      opacity: 0.75;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans antialiased selection:bg-[#009CA6] selection:text-white">
 
-  <!-- CABEÇALHO INSTITUCIONAL COM FORMA LÍQUIDA -->
-  <header class="relative bg-[#006747] text-white sticky top-0 z-40 shadow-lg overflow-hidden">
-    
-    <!-- FORMAS LÍQUIDAS E FLUIDAS DE FUNDO -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
-      <!-- Brilhos fluidos difusos (profundidade líquida) -->
-      <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-[#009CA6]/25 blur-3xl"></div>
-      <div class="absolute left-1/3 -top-10 w-72 h-72 rounded-full bg-[#00C7B1]/20 blur-2xl"></div>
-      
-      <!-- Ondas líquidas sobrepostas no rodapé da barra -->
-      <svg class="absolute bottom-0 left-0 w-full h-8 sm:h-12 pointer-events-none" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Camada 1: Turquesa (Pantone 3265 C) com transparência fluida -->
-        <path d="M0,45 C280,105 440,15 740,65 C1020,115 1220,25 1440,70 L1440,120 L0,120 Z" fill="#00C7B1" fill-opacity="0.55"></path>
-        <!-- Camada 2: Verde-Água (Pantone 320 C) em curva orgânica frontal -->
-        <path d="M0,75 C260,25 520,100 800,55 C1080,15 1260,90 1440,65 L1440,120 L0,120 Z" fill="#009CA6"></path>
-      </svg>
-    </div>
+  <!-- FILTRO VETORIAL DE REFRAÇÃO E ONDULAÇÕES LÍQUIDAS -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="water-caustic-filter" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="4" result="noise" />
+      <feDiffuseLighting in="noise" lighting-color="#00C7B1" surfaceScale="2.8" diffuseConstant="1.2" result="light">
+        <feDistantLight azimuth="55" elevation="45" />
+      </feDiffuseLighting>
+      <feBlend mode="multiply" in="SourceGraphic" in2="light" />
+    </filter>
+  </svg>
 
-    <!-- CONTEÚDO DO CABEÇALHO -->
-    <div class="relative z-10 max-w-4xl mx-auto px-4 pt-3.5 pb-6 sm:pb-8 flex items-center gap-4 sm:gap-5">
-      <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-md bg-white flex-shrink-0 flex items-center justify-center border-2 border-[#009CA6]/60">
+  <!-- CABEÇALHO INSTITUCIONAL -->
+  <header class="relative fmusp-water-bg text-white sticky top-0 z-40 shadow-lg border-b-2 border-[#00C7B1]/40 overflow-hidden">
+    <div class="fmusp-water-caustic"></div>
+    <div class="fmusp-water-ripples"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-3.5 flex items-center gap-4 sm:gap-5">
+      <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-md bg-white flex-shrink-0 flex items-center justify-center border-2 border-white/80">
         <img src="Logo_avatar_CPDoc.png" alt="Logo CPDoc MHFMUSP" class="w-full h-full object-cover scale-[1.07] transform">
       </div>
       <div class="space-y-1">
-        <p class="text-sm sm:text-base text-white font-medium leading-tight drop-shadow-sm">
+        <p class="text-sm sm:text-base text-white font-medium leading-tight drop-shadow-md">
           Faculdade de Medicina da Universidade de São Paulo
         </p>
-        <h1 class="text-base sm:text-xl font-heading font-bold tracking-wide text-white uppercase leading-tight drop-shadow-sm">
+        <h1 class="text-base sm:text-xl font-heading font-bold tracking-wide text-white uppercase leading-tight drop-shadow-md">
           MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ"
         </h1>
-        <p class="text-xs sm:text-sm text-white/95 font-semibold leading-tight drop-shadow-sm">
+        <p class="text-xs sm:text-sm text-white font-semibold leading-tight drop-shadow-md">
           Centro de Pesquisa e Documentação - CPDoc | Doação de Acervo
         </p>
       </div>
@@ -600,12 +622,15 @@
 
   </main>
 
-  <!-- RODAPÉ -->
-  <footer class="bg-black text-gray-400 text-xs py-6 border-t-2 border-[#009CA6] mt-auto">
-    <div class="max-w-4xl mx-auto px-4 text-center space-y-1">
+  <!-- RODAPÉ INSTITUCIONAL COM PADRONAGEM LÍQUIDA -->
+  <footer class="relative fmusp-water-bg text-white text-xs py-6 border-t-2 border-[#00C7B1]/40 mt-auto overflow-hidden">
+    <div class="fmusp-water-caustic"></div>
+    <div class="fmusp-water-ripples"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-1 drop-shadow-md">
       <p class="text-white font-heading font-semibold">Museu Histórico "Prof. Carlos da Silva Lacaz" — FMUSP</p>
-      <p>Centro de Pesquisa e Documentação (CPDoc) | Av. Dr. Arnaldo, 455 — Cerqueira César, São Paulo - SP</p>
-      <p class="text-[11px] text-[#009CA6]">Contato Oficial: cpdoc.museufmusp@usp.br</p>
+      <p class="text-white font-normal">Centro de Pesquisa e Documentação (CPDoc) | Av. Dr. Arnaldo, 455 — Cerqueira César, São Paulo - SP</p>
+      <p class="text-[11px] text-white font-medium">Contato Oficial: cpdoc.museufmusp@usp.br</p>
     </div>
   </footer>
 
