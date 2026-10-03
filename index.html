@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Termo de Doação de Acervo — CPDoc | MHFMUSP</title>
-  
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
@@ -43,20 +43,10 @@
   </script>
 
   <style>
-    .legal-scroll::-webkit-scrollbar {
-      width: 6px;
-    }
-    .legal-scroll::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 4px;
-    }
-    .legal-scroll::-webkit-scrollbar-thumb {
-      background: #009CA6;
-      border-radius: 4px;
-    }
-    .legal-scroll::-webkit-scrollbar-thumb:hover {
-      background: #006747;
-    }
+    .legal-scroll::-webkit-scrollbar { width: 6px; }
+    .legal-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .legal-scroll::-webkit-scrollbar-thumb { background: #009CA6; border-radius: 4px; }
+    .legal-scroll::-webkit-scrollbar-thumb:hover { background: #006747; }
     .focus-fmusp:focus {
       outline: none;
       border-color: #009CA6;
@@ -88,7 +78,7 @@
 
   <!-- CONTEÚDO PRINCIPAL -->
   <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
-    
+
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 mb-6">
       <h2 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] tracking-tight uppercase">
         Termo de Doação de Acervo
@@ -108,7 +98,7 @@
     </div>
 
     <!-- FORMULÁRIO -->
-    <form id="donationForm" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+    <form id="donationForm" novalidate class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
 
       <!-- ETAPA 1: IDENTIFICAÇÃO DO DOADOR -->
       <div id="step1" class="step-pane space-y-5">
@@ -202,7 +192,7 @@
             Documento de Identificação (RG, CIN, CNH ou outro com foto) *
           </label>
           <input type="file" id="uploadDocIdentidade" accept=".pdf,image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90 cursor-pointer" required>
-          <p class="text-[10px] text-gray-500 mt-1">Formatos aceitos: PDF, JPG, PNG.</p>
+          <p class="text-[10px] text-gray-500 mt-1">Formatos aceitos: PDF (até 2,5 MB), JPG, PNG.</p>
         </div>
 
         <div id="boxProcuracao" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-xl">
@@ -289,11 +279,11 @@
         <!-- FOTOGRAFIAS OBRIGATÓRIAS -->
         <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl">
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
-            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (Mínimo de 3 fotos) *
+            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (3 a 10 fotos) *
           </label>
           <p class="text-[11px] text-gray-500 mb-2">Envie fotografias nítidas em diferentes ângulos: frente, verso e marcas/detalhes.</p>
           <input type="file" id="uploadFotos" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90 cursor-pointer" onchange="previewImages(event)">
-          
+
           <div id="photosPreviewContainer" class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-3"></div>
           <p id="photosCountWarning" class="text-xs text-red-600 font-semibold mt-2 hidden">É obrigatório selecionar pelo menos 3 fotografias do item.</p>
         </div>
@@ -384,7 +374,7 @@
           </h3>
         </div>
 
-        <p class="text-xs text-gray-600">Este bloco foi ativado porque assinalou a existência de material biológico, peças anatômicas ou dados de pacientes.</p>
+        <p class="text-xs text-gray-600">Este bloco foi ativado porque assinalou a existência de material biológico, peças anatômicas, dados de pacientes ou riscos químicos/biossegurança.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -430,7 +420,7 @@
 
         <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
           <h4 class="text-xs font-bold text-[#006747] uppercase tracking-wider">Condições e Restrições Declaradas</h4>
-          
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Exposição (se houver)</label>
@@ -464,7 +454,7 @@
             <span class="text-[11px] text-gray-400">Role para ler na íntegra</span>
           </div>
 
-          <div class="legal-scroll h-48 overflow-y-auto p-4 bg-gray-50 border border-gray-300 rounded-xl text-xs text-gray-700 font-serif space-y-3 leading-relaxed">
+          <div id="textoLegal" class="legal-scroll h-48 overflow-y-auto p-4 bg-gray-50 border border-gray-300 rounded-xl text-xs text-gray-700 font-serif space-y-3 leading-relaxed">
             <p class="font-bold font-sans text-center text-gray-900 border-b pb-2">TERMO DE DOAÇÃO DE ACERVO AO MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" DA FACULDADE DE MEDICINA DA UNIVERSIDADE DE SÃO PAULO</p>
             <p><strong>CLÁUSULA 1 – DO OBJETO:</strong> O presente Termo tem por objeto a doação pura, simples e irrevogável do(s) bem(ns) descrito(s) neste formulário, transferindo a propriedade e custódia física plena ao Museu.</p>
             <p><strong>CLÁUSULA 2 – DA NATUREZA JURÍDICA:</strong> Doação civil nos termos dos artigos 538 e seguintes do Código Civil Brasileiro, aperfeiçoada eletronicamente nos termos da Medida Provisória nº 2.200-2/2001 e da Lei nº 14.063/2020.</p>
@@ -483,7 +473,7 @@
 
         <div class="space-y-3 bg-white p-4 border-2 border-[#009CA6] rounded-xl">
           <p class="text-xs font-bold text-[#006747] uppercase">Declarações Finais de Aceite (Assinale todas para habilitar o envio):</p>
-          
+
           <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
             <input type="checkbox" class="check-aceite mt-0.5 rounded text-[#006747]" onchange="verificarAceites()">
             <span>Declaro ser legítimo proprietário do(s) bem(ns) descrito(s) ou deter poderes legais de representação, estando o bem livre de ônus ou litígios.</span>
@@ -520,6 +510,9 @@
           </label>
         </div>
       </div>
+
+      <!-- BANNER DE ERRO DE ENVIO -->
+      <div id="submitError" role="alert" class="hidden p-3.5 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 font-semibold leading-relaxed"></div>
 
       <!-- BOTÕES DE NAVEGAÇÃO -->
       <div class="flex justify-between items-center pt-4 border-t border-gray-200">
@@ -600,461 +593,406 @@
 
   <!-- SCRIPT -->
   <script>
-    let currentStep = 1;
-    const totalSteps = 5;
-    let uploadedImagesBase64 = [];
-    let generatedPdfDataUri = null;
-    let lastGeneratedProtocol = '';
+    const TOTAL_STEPS = 5;
+    const MAX_FOTOS = 10;
+    const MAX_LOTE_B64 = 3500000;   // Base64 por requisição (teto da Vercel: 4,5 MB no corpo inteiro)
+    const MAX_PDF_BYTES = 2500000;  // PDFs avulsos (~3,3 MB em Base64)
+    const ALVO_IMG_B64 = 600000;    // alvo por imagem (~450 KB)
 
+    let currentStep = 1, fotos = [], enviando = false, envio = null, pdfDoc = null, previewToken = 0;
+    const $ = id => document.getElementById(id);
+    const val = id => ($(id)?.value || '').trim();
+    const precisaEtapa4 = () => val('dadosSensiveis') === 'Sim' || val('riscoBiologico') === 'Sim';
+    const SPIN = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>';
+
+    $('donationForm').addEventListener('submit', e => e.preventDefault());
+
+    /* ---------- Máscaras e auxiliares ---------- */
     function maskCpfCnpj(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 14);
       if (v.length <= 11) {
-        v = v.replace(/(\d{3})(\d)/, '$1.$2');
-        v = v.replace(/(\d{3})(\d)/, '$1.$2');
-        v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        v = v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
       } else {
-        v = v.replace(/^(\d{2})(\d)/, '$1.$2');
-        v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-        v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
-        v = v.replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+        v = v.replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+             .replace(/\.(\d{3})(\d)/, '.$1/$2').replace(/(\d{4})(\d{1,2})$/, '$1-$2');
       }
       input.value = v;
     }
-
     function maskTelefone(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 11);
-      if (v.length > 10) {
-        v = v.replace(/^(\d{2})(\d)/, '($1) $2');
-        v = v.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
-      } else if (v.length > 2) {
-        v = v.replace(/^(\d{2})(\d)/, '($1) $2');
-        v = v.replace(/(\d{4})(\d{1,4})$/, '$1-$2');
-      }
+      if (v.length > 10) v = v.replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+      else if (v.length > 2) v = v.replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d{1,4})$/, '$1-$2');
       input.value = v;
     }
-
     function maskCep(input) {
-      let v = input.value.replace(/\D/g, '').slice(0, 8);
-      v = v.replace(/^(\d{5})(\d)/, '$1-$2');
-      input.value = v;
+      input.value = input.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2');
     }
-
     function toggleProcuracaoUpload() {
-      const grau = document.getElementById('grauRelacao').value;
-      const box = document.getElementById('boxProcuracao');
-      if (grau === 'Proprietário original') {
-        box.classList.add('hidden');
-      } else {
-        box.classList.remove('hidden');
-      }
+      $('boxProcuracao').classList.toggle('hidden', val('grauRelacao') === 'Proprietário original');
     }
-
     function checkVolumeWarning() {
-      const vol = document.getElementById('volumeEstimado').value;
-      const box = document.getElementById('boxEncargoVolume');
-      if (vol.includes('grande volume')) {
-        box.classList.remove('hidden');
-      } else {
-        box.classList.add('hidden');
-      }
+      $('boxEncargoVolume').classList.toggle('hidden', !val('volumeEstimado').includes('grande volume'));
     }
-
     function buscarCEP() {
-      const cep = document.getElementById('cep').value.replace(/\D/g, '');
-      if (cep.length === 8) {
-        fetch(`https://viacep.com.br/ws/${cep}/json/`)
-          .then(res => res.json())
-          .then(data => {
-            if (!data.erro) {
-              document.getElementById('logradouro').value = data.logradouro || '';
-              document.getElementById('bairro').value = data.bairro || '';
-              document.getElementById('cidadeUf').value = `${data.localidade} / ${data.uf}`;
-            }
-          })
-          .catch(() => {});
-      }
+      const cep = val('cep').replace(/\D/g, '');
+      if (cep.length !== 8) return;
+      fetch(`https://viacep.com.br/ws/${cep}/json/`).then(r => r.json()).then(d => {
+        if (d.erro) return;
+        $('logradouro').value = d.logradouro || '';
+        $('bairro').value = d.bairro || '';
+        $('cidadeUf').value = `${d.localidade} / ${d.uf}`;
+      }).catch(() => {});
     }
 
-    function readFileAsOptimizedBase64(file) {
-      return new Promise((resolve) => {
-        if (!file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve({ filename: file.name, base64: e.target.result.split(',')[1] });
-          reader.readAsDataURL(file);
-          return;
+    /* ---------- Arquivos e imagens ---------- */
+    function lerBase64(file) {
+      return new Promise((ok, erro) => {
+        const r = new FileReader();
+        r.onload = () => ok(r.result.split(',')[1]);
+        r.onerror = () => erro(new Error(`Não foi possível ler o arquivo "${file.name}".`));
+        r.readAsDataURL(file);
+      });
+    }
+    function carregarImagem(file) {
+      return new Promise((ok, erro) => {
+        const url = URL.createObjectURL(file), img = new Image();
+        img.onload = () => { URL.revokeObjectURL(url); ok(img); };
+        img.onerror = () => { URL.revokeObjectURL(url); erro(new Error(`Não foi possível ler a imagem "${file.name}". Use JPG ou PNG.`)); };
+        img.src = url;
+      });
+    }
+    function desenhar(img, max, q) {
+      const r = Math.min(1, max / Math.max(img.width, img.height));
+      const w = Math.round(img.width * r), h = Math.round(img.height * r);
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);   // PNG transparente não vira fundo preto
+      x.drawImage(img, 0, 0, w, h);
+      return { dataUrl: c.toDataURL('image/jpeg', q), w, h };
+    }
+    async function processarImagem(file, comMiniatura) {
+      const img = await carregarImagem(file);
+      let r;
+      for (const [max, q] of [[1200, .8], [1200, .65], [1000, .6], [800, .55]]) {
+        r = desenhar(img, max, q);
+        if (r.dataUrl.length <= ALVO_IMG_B64) break;
+      }
+      const out = { filename: file.name.replace(/\.[^.]+$/, '') + '.jpg', base64: r.dataUrl.split(',')[1] };
+      if (comMiniatura) out.mini = desenhar(img, 360, .7);
+      return out;
+    }
+    async function processarAnexo(file) {
+      if (file.type.startsWith('image/')) return processarImagem(file, false);
+      if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
+        if (file.size > MAX_PDF_BYTES)
+          throw new Error(`O PDF "${file.name}" tem ${(file.size / 1048576).toFixed(1)} MB; o limite é 2,5 MB. Comprima o arquivo ou envie uma foto do documento.`);
+        return { filename: file.name, base64: await lerBase64(file) };
+      }
+      throw new Error(`Formato não aceito: "${file.name}". Use PDF, JPG ou PNG.`);
+    }
+
+    async function previewImages(e) {
+      const token = ++previewToken, files = Array.from(e.target.files);
+      const box = $('photosPreviewContainer'), warn = $('photosCountWarning');
+      box.innerHTML = ''; fotos = [];
+      if (files.length > MAX_FOTOS) {
+        alert(`Selecione no máximo ${MAX_FOTOS} fotografias.`);
+        e.target.value = ''; warn.classList.remove('hidden'); return;
+      }
+      warn.classList.toggle('hidden', files.length >= 3);
+      try {
+        for (const f of files) {
+          const it = await processarImagem(f, true);
+          if (token !== previewToken) return;
+          fotos.push(it);
+          const im = new Image();
+          im.src = it.mini.dataUrl;
+          im.className = 'w-full h-16 object-cover rounded-lg border border-[#009CA6] shadow-sm';
+          box.appendChild(im);
         }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 1200;
-            const MAX_HEIGHT = 1200;
-            let width = img.width;
-            let height = img.height;
-
-            if (width > height) {
-              if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width;
-                width = MAX_WIDTH;
-              }
-            } else {
-              if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height;
-                height = MAX_HEIGHT;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-            resolve({ filename: file.name.replace(/\.[^/.]+$/, ".jpg"), base64: dataUrl.split(',')[1], dataUrl });
-          };
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function previewImages(event) {
-      const files = Array.from(event.target.files);
-      const container = document.getElementById('photosPreviewContainer');
-      const warning = document.getElementById('photosCountWarning');
-      container.innerHTML = '';
-      uploadedImagesBase64 = [];
-
-      if (files.length < 3) {
-        warning.classList.remove('hidden');
-      } else {
-        warning.classList.add('hidden');
-      }
-
-      for (const file of files) {
-        const item = await readFileAsOptimizedBase64(file);
-        uploadedImagesBase64.push(item.dataUrl);
-        const img = document.createElement('img');
-        img.src = item.dataUrl;
-        img.className = 'w-full h-16 object-cover rounded-lg border border-[#009CA6] shadow-sm';
-        container.appendChild(img);
+      } catch (err) {
+        alert(err.message);
+        e.target.value = ''; fotos = []; box.innerHTML = ''; warn.classList.remove('hidden');
       }
     }
 
+    /* ---------- Navegação e validação ---------- */
+    function validarEtapa(n) {
+      if (n === 1) {
+        const obrig = { nomeDoador: 'nome', documentoNumero: 'CPF/CNPJ', emailDoador: 'e-mail', telefoneDoador: 'telefone',
+                        logradouro: 'logradouro', numero: 'número', bairro: 'bairro', cidadeUf: 'cidade/UF' };
+        for (const [id, r] of Object.entries(obrig)) if (!val(id)) return [id, `Preencha o campo ${r}.`];
+        const doc = val('documentoNumero').replace(/\D/g, '');
+        if (doc.length !== 11 && doc.length !== 14) return ['documentoNumero', 'CPF ou CNPJ incompleto.'];
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('emailDoador'))) return ['emailDoador', 'E-mail inválido.'];
+        if (val('telefoneDoador').replace(/\D/g, '').length < 10) return ['telefoneDoador', 'Informe o telefone com DDD.'];
+        if (!$('uploadDocIdentidade').files.length) return ['uploadDocIdentidade', 'Anexe o documento de identificação.'];
+        if (val('grauRelacao') !== 'Proprietário original' && !$('uploadProcuracao').files.length)
+          return ['uploadProcuracao', 'Anexe a procuração ou termo de representação legal.'];
+      }
+      if (n === 2) {
+        if (!document.querySelector('input[name="categoria"]:checked')) return ['denominacaoBem', 'Selecione ao menos uma categoria museológica.'];
+        if (!val('denominacaoBem')) return ['denominacaoBem', 'Informe a denominação do bem.'];
+        if (!(Number(val('quantidadeItens')) >= 1)) return ['quantidadeItens', 'Informe a quantidade de itens.'];
+        if (!val('descricaoFisica')) return ['descricaoFisica', 'Informe a descrição física e técnica.'];
+        if (!val('datacao')) return ['datacao', 'Informe a datação estimada.'];
+        if (fotos.length < 3) return ['uploadFotos', 'Anexe no mínimo 3 fotografias (aguarde o término do carregamento, se for o caso).'];
+      }
+      if (n === 3) {
+        if (!val('origemBem')) return ['origemBem', 'Descreva a origem do bem.'];
+        if (!$('checkOrigemLicita').checked) return ['checkOrigemLicita', 'Assinale a declaração de origem lícita.'];
+      }
+      return null;
+    }
     function updateProgress() {
-      const progressPct = (currentStep / totalSteps) * 100;
-      document.getElementById('stepProgressBar').style.width = `${progressPct}%`;
-      document.getElementById('stepIndicatorLabel').textContent = `Etapa ${currentStep} de 5`;
-
-      document.querySelectorAll('.step-pane').forEach((el, idx) => {
-        el.classList.toggle('hidden', idx !== (currentStep - 1));
-      });
-
-      document.getElementById('btnPrev').classList.toggle('hidden', currentStep === 1);
-      
-      if (currentStep === totalSteps) {
-        document.getElementById('btnNext').classList.add('hidden');
-        document.getElementById('btnSubmit').classList.remove('hidden');
-      } else {
-        document.getElementById('btnNext').classList.remove('hidden');
-        document.getElementById('btnSubmit').classList.add('hidden');
-      }
+      $('stepProgressBar').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
+      $('stepIndicatorLabel').textContent = `Etapa ${currentStep} de ${TOTAL_STEPS}`;
+      document.querySelectorAll('.step-pane').forEach((el, i) => el.classList.toggle('hidden', i !== currentStep - 1));
+      $('btnPrev').classList.toggle('hidden', currentStep === 1);
+      $('btnNext').classList.toggle('hidden', currentStep === TOTAL_STEPS);
+      $('btnSubmit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
       window.scrollTo({ top: 120, behavior: 'smooth' });
     }
-
     function nextStep() {
-      if (currentStep === 1) {
-        if (!document.getElementById('nomeDoador').value || 
-            !document.getElementById('documentoNumero').value || 
-            !document.getElementById('emailDoador').value || 
-            !document.getElementById('uploadDocIdentidade').files.length) {
-          alert('Por favor, preencha todos os campos obrigatórios da Identificação e anexe o documento.');
-          return;
-        }
-      }
-
-      if (currentStep === 2) {
-        const categorias = document.querySelectorAll('input[name="categoria"]:checked');
-        if (categorias.length === 0) {
-          alert('Por favor, selecione pelo menos uma categoria museológica.');
-          return;
-        }
-        if (!document.getElementById('denominacaoBem').value || !document.getElementById('descricaoFisica').value) {
-          alert('Por favor, informe a denominação e a descrição física do bem.');
-          return;
-        }
-        if (uploadedImagesBase64.length < 3) {
-          alert('É obrigatório anexar no mínimo 3 fotografias do item cultural.');
-          return;
-        }
-      }
-
-      if (currentStep === 3) {
-        if (!document.getElementById('origemBem').value) {
-          alert('Por favor, descreva a origem do bem.');
-          return;
-        }
-        if (!document.getElementById('checkOrigemLicita').checked) {
-          alert('É necessário assinalar a declaração de origem lícita.');
-          return;
-        }
-        
-        const sensivel = document.getElementById('dadosSensiveis').value;
-        const risco = document.getElementById('riscoBiologico').value;
-        if (sensivel === 'Não' && risco === 'Não') {
-          currentStep = 5;
-          updateProgress();
-          return;
-        }
-      }
-
-      if (currentStep < totalSteps) {
-        currentStep++;
-        updateProgress();
-      }
+      const e = validarEtapa(currentStep);
+      if (e) { alert(e[1]); $(e[0])?.focus(); return; }
+      currentStep = (currentStep === 3 && !precisaEtapa4()) ? 5 : currentStep + 1;
+      updateProgress();
     }
-
     function prevStep() {
-      if (currentStep === 5) {
-        const sensivel = document.getElementById('dadosSensiveis').value;
-        const risco = document.getElementById('riscoBiologico').value;
-        if (sensivel === 'Não' && risco === 'Não') {
-          currentStep = 3;
-          updateProgress();
-          return;
-        }
-      }
-
-      if (currentStep > 1) {
-        currentStep--;
-        updateProgress();
-      }
+      envio = null; $('submitError').classList.add('hidden');   // dados podem mudar: descarta o pacote preparado
+      currentStep = (currentStep === 5 && !precisaEtapa4()) ? 3 : currentStep - 1;
+      updateProgress();
     }
-
     function verificarAceites() {
-      const checks = document.querySelectorAll('.check-aceite');
-      let allChecked = true;
-      checks.forEach(c => { if (!c.checked) allChecked = false; });
-
-      const btn = document.getElementById('btnSubmit');
-      if (allChecked) {
-        btn.disabled = false;
-        btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-        btn.classList.add('bg-[#006747]', 'hover:bg-[#005037]', 'cursor-pointer');
-      } else {
-        btn.disabled = true;
-        btn.classList.add('bg-gray-400', 'cursor-not-allowed');
-        btn.classList.remove('bg-[#006747]', 'hover:bg-[#005037]', 'cursor-pointer');
-      }
+      const ok = Array.from(document.querySelectorAll('.check-aceite')).every(c => c.checked);
+      const btn = $('btnSubmit');
+      btn.disabled = !ok;
+      btn.classList.toggle('bg-gray-400', !ok);
+      btn.classList.toggle('cursor-not-allowed', !ok);
+      btn.classList.toggle('bg-[#006747]', ok);
+      btn.classList.toggle('hover:bg-[#005037]', ok);
     }
 
-    async function calculateSHA256(text) {
-      const msgBuffer = new TextEncoder().encode(text);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    /* ---------- Dados, hash, protocolo ---------- */
+    async function sha256(texto) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    function gerarProtocolo() {
+      const alfabeto = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const r = crypto.getRandomValues(new Uint8Array(6));
+      return `FMUSP-CPDOC-${new Date().getFullYear()}-${Array.from(r).map(b => alfabeto[b % alfabeto.length]).join('')}`;
+    }
+    function coletarResumo() {
+      const cats = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(c => c.value).join('; ');
+      const end = [val('logradouro'), val('numero'), val('complemento'), val('bairro'), val('cidadeUf'), val('cep')].filter(Boolean).join(', ');
+      const r = [
+        ['Tipo de doador', val('tipoDoador')], ['Grau de relação com o bem', val('grauRelacao')],
+        ['CPF/CNPJ', val('documentoNumero')], ['Telefone', val('telefoneDoador')], ['Endereço', end],
+        ['Denominação do bem', val('denominacaoBem')], ['Categorias', cats], ['Quantidade de itens', val('quantidadeItens')],
+        ['Descrição física e técnica', val('descricaoFisica')], ['Datação', val('datacao')],
+        ['Estado de conservação', val('estadoConservacao')], ['Risco químico/biossegurança', val('riscoBiologico')],
+        ['Material biológico/dados de pacientes', val('dadosSensiveis')], ['Origem do bem', val('origemBem')],
+        ['Cadeia de custódia', val('cadeiaCustodia')], ['Situação autoral', val('situacaoAutoral')],
+        ['Volume estimado', val('volumeEstimado')], ['Vínculo histórico-médico', val('vinculoNotorio')]
+      ];
+      if (precisaEtapa4()) r.push(['Consentimento original', val('consentimentoBio')],
+        ['Anonimização prévia', val('anonimizacaoPrevia')], ['Base legal (LGPD)', val('baseLegalLGPD')]);
+      r.push(['Restrições de exposição', val('restricoesExposicao')], ['Restrições de publicação', val('restricoesPublicacao')],
+        ['Crédito nominal', val('creditoNominal')], ['Anonimato do doador', $('anonimatoDoador').checked ? 'Sim' : 'Não']);
+      return r.map(([rotulo, valor]) => ({ rotulo, valor: valor || 'Não informado' }));
+    }
+
+    /* ---------- PDF (layout em fluxo, com quebra de página) ---------- */
+    const L = s => String(s ?? '').replace(/[–—]/g, '-').replace(/[“”]/g, '"').replace(/[‘’]/g, "'")
+                     .replace(/[^\n\x20-\x7E\u00A0-\u00FF]/g, '?');
+
+    function gerarPDF({ protocolo, timestamp, hash, resumo, manifesto }) {
+      const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+      const M = 15, CW = 180, FIM = 280;
+      let y = 36;
+
+      const cabecalho = () => {
+        doc.setFillColor(0, 103, 71); doc.rect(0, 0, 210, 20, 'F');
+        doc.setFillColor(0, 156, 166); doc.rect(0, 20, 210, 2, 'F');
+        doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5);
+        doc.text('MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" - FMUSP', M, 11);
+        doc.setFontSize(8);
+        doc.text('CENTRO DE PESQUISA E DOCUMENTAÇÃO (CPDoc) | TERMO DE DOAÇÃO DE ACERVO', M, 16);
+      };
+      const garantir = h => {
+        if (y + h <= FIM) return;
+        const tam = doc.getFontSize();
+        doc.addPage(); cabecalho(); y = 32;
+        doc.setFontSize(tam); doc.setTextColor(0, 0, 0); doc.setFont('helvetica', 'normal');
+      };
+      const titulo = t => {
+        garantir(12);
+        doc.setFillColor(240, 248, 245); doc.rect(M, y - 4, CW, 6, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 103, 71);
+        doc.text(L(t), M + 2, y); y += 7;
+      };
+      const campo = (r, v) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+        const ls = doc.splitTextToSize(L(v), CW - 50);
+        garantir(5);
+        doc.setFont('helvetica', 'bold'); doc.setTextColor(60, 60, 60); doc.text(L(r), M, y);
+        doc.setFont('helvetica', 'normal'); doc.setTextColor(0, 0, 0);
+        ls.forEach((l, i) => { if (i) garantir(4); doc.text(l, M + 50, y); y += 4; });
+        y += 1.2;
+      };
+      const texto = (t, tam = 7.5) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(tam); doc.setTextColor(40, 40, 40);
+        doc.splitTextToSize(L(t), CW).forEach(l => { garantir(3.5); doc.text(l, M, y); y += 3.4; });
+        y += 1.5;
+      };
+
+      cabecalho();
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 103, 71);
+      doc.text(`PROTOCOLO: ${protocolo}`, M, 28);
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(80, 80, 80);
+      doc.text(L(`Data e Hora: ${timestamp}`), 120, 28);
+
+      titulo('1. DADOS DO DOADOR E DO BEM CULTURAL');
+      campo('Nome / Razão social', val('nomeDoador'));
+      campo('E-mail', val('emailDoador'));
+      resumo.forEach(i => campo(i.rotulo, i.valor));
+
+      titulo('2. REGISTRO FOTOGRÁFICO');
+      fotos.forEach((f, i) => {
+        if (i % 5 === 0) { if (i) y += 36; garantir(36); }
+        const k = Math.min(32 / f.mini.w, 32 / f.mini.h);
+        doc.addImage(f.mini.dataUrl, 'JPEG', M + (i % 5) * 37, y, f.mini.w * k, f.mini.h * k);
+      });
+      y += 36;
+
+      titulo('3. ARQUIVOS ANEXADOS (SHA-256)');
+      manifesto.forEach(m => texto(`${m.filename}\n${m.hash}`, 6.5));
+
+      titulo('4. DECLARAÇÕES DE ACEITE');
+      document.querySelectorAll('.check-aceite').forEach(c => texto('[X] ' + c.nextElementSibling.textContent.trim()));
+
+      titulo('5. PARTE B - TEXTO LEGAL DO INSTRUMENTO');
+      document.querySelectorAll('#textoLegal p').forEach(p => texto(p.textContent.trim()));
+
+      titulo('6. CERTIFICADO DE ASSINATURA ELETRÔNICA');
+      campo('Assinado por', val('nomeDoador'));
+      campo('Data/hora', timestamp);
+      campo('Destino oficial', 'cpdoc.museufmusp@usp.br');
+      campo('Hash SHA-256 do dossiê', hash);
+      texto('Aceite eletrônico registrado como assinatura eletrônica simples (Lei nº 14.063/2020 e art. 10, §2º, da MP nº 2.200-2/2001). O hash identifica o conteúdo declarado e os arquivos anexados no momento do envio. A deliberação final sobre aceite, recusa ou tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz".');
+
+      const n = doc.getNumberOfPages();
+      for (let p = 1; p <= n; p++) {
+        doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(120, 120, 120);
+        doc.text(`${protocolo} - Página ${p} de ${n}`, 105, 290, { align: 'center' });
+      }
+      return doc;
+    }
+
+    /* ---------- Preparação e envio ---------- */
+    async function prepararEnvio() {
+      const protocolo = gerarProtocolo();
+      const timestamp = new Date().toLocaleString('pt-BR', { timeZoneName: 'short' });
+
+      const anexos = [];
+      const ident = await processarAnexo($('uploadDocIdentidade').files[0]);
+      anexos.push({ ...ident, filename: 'Identificacao_' + ident.filename });
+      fotos.forEach((f, i) => anexos.push({ filename: `Foto_${i + 1}.jpg`, base64: f.base64 }));
+      for (const [id, prefixo] of [['uploadProcuracao', 'Procuracao_'], ['uploadCEP', 'Parecer_CEP_']]) {
+        const f = $(id).files[0];
+        if (f) { const a = await processarAnexo(f); anexos.push({ ...a, filename: prefixo + a.filename }); }
+      }
+
+      const manifesto = [];
+      for (const a of anexos) manifesto.push({ filename: a.filename, hash: await sha256(a.base64) });
+      const resumo = coletarResumo();
+      const hash = await sha256(JSON.stringify({ protocolo, timestamp, resumo, manifesto }));
+
+      pdfDoc = gerarPDF({ protocolo, timestamp, hash, resumo, manifesto });
+      const pdfBase64 = pdfDoc.output('datauristring').split(',')[1];
+
+      // Divide os anexos em lotes que respeitam o limite de payload da Vercel
+      const lotes = [{ pdfBase64, anexos: [] }];
+      let tam = pdfBase64.length;
+      for (const a of anexos) {
+        if (tam + a.base64.length > MAX_LOTE_B64) { lotes.push({ anexos: [] }); tam = 0; }
+        lotes[lotes.length - 1].anexos.push(a);
+        tam += a.base64.length;
+      }
+      return { protocolo, timestamp, hash, resumo, lotes, enviados: new Set() };
+    }
+
+    async function enviarLote(pacote, i) {
+      const lote = pacote.lotes[i], ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 60000);
+      try {
+        const r = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: ctrl.signal,
+          body: JSON.stringify({
+            protocolo: pacote.protocolo, parte: i + 1, totalPartes: pacote.lotes.length,
+            doadorNome: val('nomeDoador'), doadorEmail: val('emailDoador'), bemNome: val('denominacaoBem'),
+            timestamp: pacote.timestamp, hash: pacote.hash,
+            resumo: i === 0 ? pacote.resumo : undefined,
+            pdfBase64: lote.pdfBase64, anexos: lote.anexos
+          })
+        });
+        if (r.ok) return;
+        const d = await r.json().catch(() => ({}));
+        let msg = 'O serviço de e-mail não confirmou o recebimento.';
+        if (r.status === 413) msg = 'Os arquivos excedem o tamanho máximo aceito pelo servidor.';
+        else if (r.status === 400 && d.error) msg = d.error;
+        else if (r.status === 429 || r.status === 503) msg = 'Servidor ocupado. Aguarde um minuto e tente novamente.';
+        throw new Error(`${msg} (código ${r.status}${d.code ? '/' + d.code : ''})`);
+      } catch (e) {
+        if (e.name === 'AbortError') throw new Error('Tempo esgotado ao enviar os arquivos. Verifique sua conexão e tente novamente.');
+        if (e instanceof TypeError) throw new Error('Sem conexão com o servidor. Verifique sua internet e tente novamente.');
+        throw e;
+      } finally { clearTimeout(timer); }
     }
 
     async function finalizarAssinatura() {
-      const btn = document.getElementById('btnSubmit');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transmitindo dados...';
-
-      const now = new Date();
-      const timestamp = now.toLocaleString('pt-BR', { timeZoneName: 'short' });
-      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-      lastGeneratedProtocol = `FMUSP-CPDOC-${now.getFullYear()}-${randomSuffix}`;
-      
-      const payloadString = JSON.stringify({
-        protocolo: lastGeneratedProtocol,
-        doador: document.getElementById('nomeDoador').value,
-        documento: document.getElementById('documentoNumero').value,
-        bem: document.getElementById('denominacaoBem').value,
-        timestamp: timestamp,
-        userAgent: navigator.userAgent
-      });
-
-      const hashSHA256 = await calculateSHA256(payloadString);
-
-      // Geração do PDF
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-
-      doc.setFillColor(0, 103, 71);
-      doc.rect(0, 0, 210, 20, 'F');
-      doc.setFillColor(0, 156, 166);
-      doc.rect(0, 20, 210, 2, 'F');
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10.5);
-      doc.setTextColor(255, 255, 255);
-      doc.text('MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" — FMUSP', 15, 11);
-      doc.setFontSize(8);
-      doc.text('CENTRO DE PESQUISA E DOCUMENTAÇÃO (CPDoc) | TERMO DE DOAÇÃO DE ACERVO', 15, 16);
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.setTextColor(0, 103, 71);
-      doc.text(`PROTOCOLO: ${lastGeneratedProtocol}`, 15, 28);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(80, 80, 80);
-      doc.text(`Data e Hora: ${timestamp}`, 130, 28);
-
-      doc.setFillColor(245, 245, 245);
-      doc.rect(15, 32, 180, 26, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.setTextColor(0, 0, 0);
-      doc.text('1. DADOS DO DOADOR', 18, 37);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text(`Nome: ${document.getElementById('nomeDoador').value}`, 18, 43);
-      doc.text(`CPF/CNPJ: ${document.getElementById('documentoNumero').value}  |  Tipo: ${document.getElementById('tipoDoador').value}`, 18, 48);
-      doc.text(`E-mail: ${document.getElementById('emailDoador').value}  |  Tel: ${document.getElementById('telefoneDoador').value}`, 18, 53);
-
-      doc.setFillColor(245, 245, 245);
-      doc.rect(15, 62, 180, 36, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('2. CARACTERIZAÇÃO DO BEM CULTURAL', 18, 67);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text(`Denominação: ${document.getElementById('denominacaoBem').value}`, 18, 73);
-      doc.text(`Quantidade: ${document.getElementById('quantidadeItens').value}  |  Estado: ${document.getElementById('estadoConservacao').value}  |  Datação: ${document.getElementById('datacao').value}`, 18, 78);
-      
-      const descLines = doc.splitTextToSize(`Descrição: ${document.getElementById('descricaoFisica').value}`, 174);
-      doc.text(descLines, 18, 83);
-
-      doc.setFillColor(245, 245, 245);
-      doc.rect(15, 102, 180, 28, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('3. PROVENIÊNCIA E CONDICIONANTES', 18, 107);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text(`Origem informada: ${document.getElementById('origemBem').value}`, 18, 113);
-      doc.text(`Volume: ${document.getElementById('volumeEstimado').value}  |  Direitos de autor: ${document.getElementById('situacaoAutoral').value}`, 18, 118);
-      doc.text(`Crédito pretendido: ${document.getElementById('creditoNominal').value || 'Não solicitado'}  |  Anonimato: ${document.getElementById('anonimatoDoador').checked ? 'Sim' : 'Não'}`, 18, 123);
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(0, 103, 71);
-      doc.text('REGISTRO FOTOGRÁFICO ANEXADO:', 15, 136);
-
-      let xPos = 15;
-      for (let i = 0; i < Math.min(uploadedImagesBase64.length, 4); i++) {
-        try {
-          doc.addImage(uploadedImagesBase64[i], 'JPEG', xPos, 139, 25, 25);
-          doc.setDrawColor(0, 156, 166);
-          doc.rect(xPos, 139, 25, 25);
-          xPos += 28;
-        } catch (e) {}
-      }
-
-      doc.setFillColor(240, 248, 245);
-      doc.rect(15, 170, 180, 32, 'F');
-      doc.setDrawColor(0, 103, 71);
-      doc.rect(15, 170, 180, 32);
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(0, 103, 71);
-      doc.text('CERTIFICADO DE ASSINATURA DIGITAL (PARTE C — VALIDAÇÃO ELETRÔNICA)', 18, 176);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7);
-      doc.setTextColor(40, 40, 40);
-      doc.text(`Assinado eletronicamente por: ${document.getElementById('nomeDoador').value}`, 18, 182);
-      doc.text(`Endereço de Destino Oficial: cpdoc.museufmusp@usp.br`, 18, 186);
-      doc.text(`Carimbo de Data/Hora: ${timestamp}`, 18, 190);
-      doc.text(`Hash SHA-256: ${hashSHA256}`, 18, 194);
-      doc.text('Validade jurídica conferida nos termos do art. 10 da MP nº 2.200-2/2001 e da Lei nº 14.063/2020.', 18, 198);
-
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(7);
-      doc.setTextColor(100, 100, 100);
-      doc.text('O presente documento foi transmitido para análise do CPDoc. A deliberação final sobre o aceite, recusa ou', 15, 208);
-      doc.text('tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz", segundo a sua Política de Acervos.', 15, 212);
-
-      generatedPdfDataUri = doc.output('datauristring');
-
-      // Leitura dos anexos extras
-      const anexosExtras = [];
-
-      const fileIdentidade = document.getElementById('uploadDocIdentidade').files[0];
-      if (fileIdentidade) {
-        const item = await readFileAsOptimizedBase64(fileIdentidade);
-        anexosExtras.push({ filename: `Identificacao_${item.filename}`, base64: item.base64 });
-      }
-
-      const filesFotos = Array.from(document.getElementById('uploadFotos').files);
-      for (let i = 0; i < filesFotos.length; i++) {
-        const item = await readFileAsOptimizedBase64(filesFotos[i]);
-        anexosExtras.push({ filename: `Foto_${i + 1}_${item.filename}`, base64: item.base64 });
-      }
-
-      const fileProc = document.getElementById('uploadProcuracao').files[0];
-      if (fileProc) {
-        const item = await readFileAsOptimizedBase64(fileProc);
-        anexosExtras.push({ filename: `Procuracao_${item.filename}`, base64: item.base64 });
-      }
-
-      const fileCEP = document.getElementById('uploadCEP').files[0];
-      if (fileCEP) {
-        const item = await readFileAsOptimizedBase64(fileCEP);
-        anexosExtras.push({ filename: `Parecer_CEP_${item.filename}`, base64: item.base64 });
-      }
-
-      // TRANSMISSÃO DIRETA PARA A ROTA SERVERLESS NA VERCEL
+      if (enviando) return;
+      enviando = true;
+      const btn = $('btnSubmit'), box = $('submitError'), rotuloOriginal = btn.innerHTML;
+      box.classList.add('hidden'); btn.disabled = true;
       try {
-        const response = await fetch('/api/send-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            protocolo: lastGeneratedProtocol,
-            doadorNome: document.getElementById('nomeDoador').value,
-            doadorEmail: document.getElementById('emailDoador').value,
-            bemNome: document.getElementById('denominacaoBem').value,
-            pdfBase64: generatedPdfDataUri.split(',')[1],
-            anexosExtras: anexosExtras
-          })
-        });
-
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}));
-          console.error('Falha na resposta do endpoint /api/send-email:', errData);
+        btn.innerHTML = SPIN + ' Preparando arquivos...';
+        envio = envio || await prepararEnvio();
+        for (let i = 0; i < envio.lotes.length; i++) {
+          if (envio.enviados.has(i)) continue;
+          btn.innerHTML = `${SPIN} Enviando ${i + 1} de ${envio.lotes.length}...`;
+          await enviarLote(envio, i);
+          envio.enviados.add(i);
         }
+        mostrarSucesso();
       } catch (err) {
-        console.warn('Falha na comunicação com a API:', err);
+        const parcial = envio && envio.enviados.size
+          ? ` ${envio.enviados.size} de ${envio.lotes.length} parte(s) já chegou(aram); ao tentar de novo, só as pendentes serão reenviadas.` : '';
+        box.textContent = `Sua proposta NÃO foi concluída. ${err.message}${parcial} Tente novamente; se persistir, escreva para cpdoc.museufmusp@usp.br informando o horário do problema.`;
+        box.classList.remove('hidden');
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } finally {
+        enviando = false; btn.innerHTML = rotuloOriginal; btn.disabled = false;
       }
-
-      // Atualização dos dados do painel final
-      document.getElementById('displayProtocol').textContent = lastGeneratedProtocol;
-      document.getElementById('displayTimestamp').textContent = timestamp;
-      document.getElementById('displayHash').textContent = hashSHA256;
-
-      const qrContainer = document.getElementById('qrcodeDisplay');
-      qrContainer.innerHTML = '';
-      new QRCode(qrContainer, {
-        text: `MHFMUSP|CPDOC|${lastGeneratedProtocol}|${hashSHA256.substring(0, 16)}`,
-        width: 80,
-        height: 80
-      });
-
-      document.getElementById('donationForm').classList.add('hidden');
-      document.getElementById('successPanel').classList.remove('hidden');
-
-      doc.save(`Termo_Doacao_${lastGeneratedProtocol}.pdf`);
     }
 
+    function mostrarSucesso() {
+      $('displayProtocol').textContent = envio.protocolo;
+      $('displayTimestamp').textContent = envio.timestamp;
+      $('displayHash').textContent = envio.hash;
+      const qr = $('qrcodeDisplay'); qr.innerHTML = '';
+      new QRCode(qr, { text: `MHFMUSP|CPDOC|${envio.protocolo}|${envio.hash.slice(0, 16)}`, width: 80, height: 80 });
+      $('donationForm').classList.add('hidden');
+      $('successPanel').classList.remove('hidden');
+      window.scrollTo({ top: 0 });
+      baixarPDFNovamente();
+    }
     function baixarPDFNovamente() {
-      if (generatedPdfDataUri) {
-        const link = document.createElement('a');
-        link.href = generatedPdfDataUri;
-        link.download = `Termo_Doacao_${lastGeneratedProtocol}.pdf`;
-        link.click();
-      }
+      if (pdfDoc && envio) pdfDoc.save(`Termo_Doacao_${envio.protocolo}.pdf`);
     }
   </script>
 </body>
