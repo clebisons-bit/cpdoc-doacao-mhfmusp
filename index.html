@@ -74,7 +74,7 @@
         <img src="Logo_avatar_CPDoc.png" alt="Logo CPDoc MHFMUSP" class="w-full h-full object-cover scale-[1.07] transform">
       </div>
       
-      <!-- Textos Institucionais -->
+      <!-- Textos Institucionais na Ordem Oficial -->
       <div class="space-y-1">
         <p class="text-sm sm:text-base text-white font-medium leading-tight">
           Faculdade de Medicina da Universidade de São Paulo
@@ -1025,25 +1025,47 @@
         anexosExtras.push({ filename: `Parecer_CEP_${item.filename}`, base64: item.base64 });
       }
 
-      // Transmissão direta para o Google Apps Script
+      // =========================================================================
+      // TRANSMISSÃO SEGURA VIA FORMULÁRIO OCULTO (SUPERA RESTRIÇÕES DE CORS E 302)
+      // =========================================================================
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxE1TVOtCTy9NQ2BOmAm3ncd4Bu8e9zMqyUKZvnISbGKRAbyy0kAAjvYJaWuxBKAEc4/exec';
 
+      const payloadData = {
+        protocolo: lastGeneratedProtocol,
+        doadorNome: document.getElementById('nomeDoador').value,
+        doadorEmail: document.getElementById('emailDoador').value,
+        bemNome: document.getElementById('denominacaoBem').value,
+        pdfBase64: generatedPdfDataUri.split(',')[1],
+        anexosExtras: anexosExtras
+      };
+
       try {
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            protocolo: lastGeneratedProtocol,
-            doadorNome: document.getElementById('nomeDoador').value,
-            doadorEmail: document.getElementById('emailDoador').value,
-            bemNome: document.getElementById('denominacaoBem').value,
-            pdfBase64: generatedPdfDataUri.split(',')[1],
-            anexosExtras: anexosExtras
-          })
-        });
+        let hiddenIframe = document.getElementById('gas_hidden_iframe');
+        if (!hiddenIframe) {
+          hiddenIframe = document.createElement('iframe');
+          hiddenIframe.setAttribute('name', 'gas_hidden_iframe');
+          hiddenIframe.setAttribute('id', 'gas_hidden_iframe');
+          hiddenIframe.style.display = 'none';
+          document.body.appendChild(hiddenIframe);
+        }
+
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = GOOGLE_SCRIPT_URL;
+        hiddenForm.target = 'gas_hidden_iframe';
+
+        const payloadInput = document.createElement('input');
+        payloadInput.type = 'hidden';
+        payloadInput.name = 'payload';
+        payloadInput.value = JSON.stringify(payloadData);
+        hiddenForm.appendChild(payloadInput);
+
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit();
+
+        setTimeout(() => { hiddenForm.remove(); }, 3000);
       } catch (err) {
-        console.warn('Falha na comunicação com o Google Script:', err);
+        console.warn('Falha na submissão ao Google Script:', err);
       }
 
       // Atualização dos dados no painel final
