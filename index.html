@@ -24,8 +24,8 @@
         extend: {
           colors: {
             fmusp: {
-              pantone342: '#006747', // Pantone 342 C (Verde FMUSP)
-              pantone320: '#009CA6', // Pantone 320 C (Turquesa / Ciano)
+              pantone342: '#006747',
+              pantone320: '#009CA6',
               black: '#000000',
               white: '#FFFFFF',
               dark: '#081712',
@@ -66,15 +66,12 @@
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans antialiased selection:bg-[#009CA6] selection:text-white">
 
-  <!-- CABEÇALHO INSTITUCIONAL ALINHADO (max-w-4xl) -->
+  <!-- CABEÇALHO INSTITUCIONAL -->
   <header class="bg-[#006747] text-white border-b-4 border-[#009CA6] sticky top-0 z-40 shadow-md">
     <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center gap-4 sm:gap-5">
-      <!-- Círculo do Logo com Aro Dourado Visível -->
       <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-md bg-white flex-shrink-0 flex items-center justify-center">
         <img src="Logo_avatar_CPDoc.png" alt="Logo CPDoc MHFMUSP" class="w-full h-full object-cover scale-[1.07] transform">
       </div>
-      
-      <!-- Textos Institucionais na Ordem Oficial -->
       <div class="space-y-1">
         <p class="text-sm sm:text-base text-white font-medium leading-tight">
           Faculdade de Medicina da Universidade de São Paulo
@@ -89,10 +86,9 @@
     </div>
   </header>
 
-  <!-- CONTEÚDO PRINCIPAL (max-w-4xl) -->
+  <!-- CONTEÚDO PRINCIPAL -->
   <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
     
-    <!-- TÍTULO DO INSTRUMENTO -->
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 mb-6">
       <h2 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] tracking-tight uppercase">
         Termo de Doação de Acervo
@@ -101,7 +97,6 @@
         Este é o formulário oficial para propor doações de acervo ao Museu Histórico "Prof. Carlos da Silva Lacaz" da FMUSP. Após o preenchimento, você receberá um número de protocolo e o PDF com a sua proposta. A avaliação e a decisão final sobre o recebimento dos itens são de responsabilidade exclusiva do Museu, orientadas por nossa Política de Gestão de Acervos. O prazo para entrarmos em contato é de até 10 (dez) dias úteis após o envio.
       </p>
 
-      <!-- BARRA DE PROGRESSO SIMPLIFICADA (PANTONE 320 C) -->
       <div class="mt-6">
         <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
           <span id="stepIndicatorLabel">Etapa 1 de 5</span>
@@ -168,7 +163,6 @@
           </div>
         </div>
 
-        <!-- Endereço Completo -->
         <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
           <p class="text-xs font-bold text-[#006747] uppercase flex items-center gap-1.5">
             <i class="fa-solid fa-map-location-dot"></i> Endereço Completo
@@ -203,16 +197,14 @@
           </div>
         </div>
 
-        <!-- Documento de Identificação com Foto -->
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
             Documento de Identificação (RG, CIN, CNH ou outro com foto) *
           </label>
           <input type="file" id="uploadDocIdentidade" accept=".pdf,image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90 cursor-pointer" required>
-          <p class="text-[10px] text-gray-500 mt-1">Formatos aceitos: PDF, JPG, PNG (máx. 10MB).</p>
+          <p class="text-[10px] text-gray-500 mt-1">Formatos aceitos: PDF, JPG, PNG.</p>
         </div>
 
-        <!-- Upload Condicional Procuração -->
         <div id="boxProcuracao" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-xl">
           <label class="block text-xs font-bold text-amber-900 uppercase mb-1">Procuração ou Termo de Representação Legal *</label>
           <input type="file" id="uploadProcuracao" accept=".pdf,image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-800 file:text-white cursor-pointer">
@@ -266,7 +258,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2">
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Denominação do Bem (Nome técnico ou popular) *</label>
-            <input type="text" id="denominacaoBem" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Microscópio óptico monocular Carl Zeiss" required>
+            <input type="text" id="denominacaoBem" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Microscópio óptico Carl Zeiss" required>
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Quantidade de Itens *</label>
@@ -294,19 +286,18 @@
           </div>
         </div>
 
-        <!-- REGISTRO FOTOGRÁFICO OBRIGATÓRIO (MÍNIMO 3) -->
+        <!-- FOTOGRAFIAS OBRIGATÓRIAS -->
         <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl">
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
-            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (Mínimo de 3 imagens) *
+            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (Mínimo de 3 fotos) *
           </label>
-          <p class="text-[11px] text-gray-500 mb-2">Envie fotografias nítidas em diferentes ângulos: frente, verso e pormenores/marcas de fabricante.</p>
+          <p class="text-[11px] text-gray-500 mb-2">Envie fotografias nítidas em diferentes ângulos: frente, verso e marcas/detalhes.</p>
           <input type="file" id="uploadFotos" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90 cursor-pointer" onchange="previewImages(event)">
           
           <div id="photosPreviewContainer" class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-3"></div>
           <p id="photosCountWarning" class="text-xs text-red-600 font-semibold mt-2 hidden">É obrigatório selecionar pelo menos 3 fotografias do item.</p>
         </div>
 
-        <!-- CONDICIONAIS DE RISCO E DADOS SENSÍVEIS -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-amber-50/60 border border-amber-200 rounded-xl">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Riscos Químicos ou Biossegurança? *</label>
@@ -336,12 +327,12 @@
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Origem do Bem (Como e quando foi adquirido) *</label>
-          <textarea id="origemBem" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Compra, herança, exercício profissional, fabricação própria, premiação..." required></textarea>
+          <textarea id="origemBem" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Compra, herança, exercício profissional, doação de terceiro..." required></textarea>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Cadeia de Custódia Anterior (Detentores conhecidos)</label>
-          <textarea id="cadeiaCustodia" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Liste proprietários ou instituições anteriores conhecidas por ordem cronológica..."></textarea>
+          <textarea id="cadeiaCustodia" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Liste detentores ou instituições anteriores conhecidas por ordem cronológica..."></textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -364,10 +355,9 @@
           </div>
         </div>
 
-        <!-- Alerta Encargo Cláusula 6 -->
         <div id="boxEncargoVolume" class="hidden p-3.5 bg-blue-50 border border-[#009CA6] rounded-xl text-xs text-gray-700">
           <p class="font-bold text-[#006747] uppercase">Aviso — Cláusula 6 (Encargo Acessório de Acondicionamento):</p>
-          <p class="mt-1">Para fundos ou coleções de grande volume, a Coordenação do Museu poderá solicitar como encargo acessório o fornecimento das caixas de guarda técnica definitiva, de forma a garantir a salvaguarda imediata do acervo.</p>
+          <p class="mt-1">Para fundos ou coleções de grande volume, a Coordenação do Museu poderá solicitar como encargo acessório o fornecimento de caixas técnicas de arquivo permanente.</p>
         </div>
 
         <div>
@@ -375,7 +365,6 @@
           <input type="text" id="vinculoNotorio" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Pertenceu ao Prof. Dr. Carlos da Silva Lacaz ou a antigo catedrático da FMUSP">
         </div>
 
-        <!-- Declaração de Origem Lícita -->
         <div class="p-3.5 bg-gray-50 border border-gray-300 rounded-xl">
           <label class="flex items-start gap-2.5 cursor-pointer">
             <input type="checkbox" id="checkOrigemLicita" class="mt-1 rounded text-[#006747]" required>
@@ -430,7 +419,7 @@
         </div>
       </div>
 
-      <!-- ETAPA 5: CONDIÇÕES, CLÁUSULAS (PARTE B) E DECLARAÇÕES (A.6) -->
+      <!-- ETAPA 5: CONDIÇÕES E ASSINATURA -->
       <div id="step5" class="step-pane hidden space-y-6">
         <div class="border-b border-gray-200 pb-3">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
@@ -439,7 +428,6 @@
           </h3>
         </div>
 
-        <!-- Condições do Doador -->
         <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
           <h4 class="text-xs font-bold text-[#006747] uppercase tracking-wider">Condições e Restrições Declaradas</h4>
           
@@ -468,7 +456,6 @@
           </div>
         </div>
 
-        <!-- PARTE B: TEXTO LEGAL COM FONT-SERIF MERRIWEATHER -->
         <div>
           <div class="flex items-center justify-between mb-2">
             <label class="block text-xs font-bold text-[#006747] uppercase">
@@ -494,7 +481,6 @@
           </div>
         </div>
 
-        <!-- DECLARAÇÕES FINAIS DE ACEITE -->
         <div class="space-y-3 bg-white p-4 border-2 border-[#009CA6] rounded-xl">
           <p class="text-xs font-bold text-[#006747] uppercase">Declarações Finais de Aceite (Assinale todas para habilitar o envio):</p>
           
@@ -554,7 +540,7 @@
 
     </form>
 
-    <!-- PAINEL DE SUCESSO E PROTOCOLO -->
+    <!-- PAINEL DE SUCESSO -->
     <div id="successPanel" class="hidden bg-white rounded-2xl border-2 border-[#009CA6] shadow-xl p-6 sm:p-10 space-y-6 text-center">
       <div class="w-16 h-16 bg-[#e6f4f2] text-[#006747] rounded-full flex items-center justify-center mx-auto text-3xl font-bold shadow-sm border-2 border-[#009CA6]">
         <i class="fa-solid fa-check-double"></i>
@@ -565,11 +551,10 @@
         </span>
         <h3 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] mt-3">Termo Assinado e Enviado ao CPDoc!</h3>
         <p class="text-xs sm:text-sm text-gray-600 max-w-lg mx-auto mt-1">
-          A sua proposta foi transmitida para o endereço oficial do Centro de Pesquisa e Documentação: <span class="font-bold text-[#006747]">cpdoc.museufm@usp.br</span> com todos os arquivos anexados.
+          A sua proposta foi transmitida para o endereço oficial do Centro de Pesquisa e Documentação: <span class="font-bold text-[#006747]">cpdoc.museufmusp@usp.br</span> com todos os arquivos anexados.
         </p>
       </div>
 
-      <!-- Recibo Digital Criptográfico -->
       <div class="max-w-lg mx-auto p-5 bg-gray-50 rounded-xl border border-gray-300 space-y-2.5 text-xs text-left">
         <div class="flex justify-between border-b pb-1.5">
           <span class="text-gray-500">Número de Protocolo CPDoc:</span>
@@ -581,7 +566,7 @@
         </div>
         <div class="flex justify-between border-b pb-1.5">
           <span class="text-gray-500">Destinatário Oficial:</span>
-          <span class="font-mono text-gray-800">cpdoc.museufm@usp.br</span>
+          <span class="font-mono text-gray-800">cpdoc.museufmusp@usp.br</span>
         </div>
         <div class="border-b pb-1.5">
           <span class="text-gray-500 block mb-0.5">Hash Criptográfico de Integridade (SHA-256):</span>
@@ -604,26 +589,22 @@
 
   </main>
 
-  <!-- RODAPÉ INSTITUCIONAL (max-w-4xl) -->
+  <!-- RODAPÉ -->
   <footer class="bg-black text-gray-400 text-xs py-6 border-t-2 border-[#009CA6] mt-auto">
     <div class="max-w-4xl mx-auto px-4 text-center space-y-1">
       <p class="text-white font-heading font-semibold">Museu Histórico "Prof. Carlos da Silva Lacaz" — FMUSP</p>
       <p>Centro de Pesquisa e Documentação (CPDoc) | Av. Dr. Arnaldo, 455 — Cerqueira César, São Paulo - SP</p>
-      <p class="text-[11px] text-[#009CA6]">Contato Oficial: cpdoc.museufm@usp.br</p>
+      <p class="text-[11px] text-[#009CA6]">Contato Oficial: cpdoc.museufmusp@usp.br</p>
     </div>
   </footer>
 
-  <!-- SCRIPT DE PROCESSAMENTO, MÁSCARAS E TRANSMISSÃO -->
+  <!-- SCRIPT -->
   <script>
     let currentStep = 1;
     const totalSteps = 5;
     let uploadedImagesBase64 = [];
     let generatedPdfDataUri = null;
     let lastGeneratedProtocol = '';
-
-    // ==========================================
-    // MÁSCARAS DE ENTRADA DINÂMICAS
-    // ==========================================
 
     function maskCpfCnpj(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 14);
@@ -879,7 +860,7 @@
     async function finalizarAssinatura() {
       const btn = document.getElementById('btnSubmit');
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Processando envio e PDF...';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transmitindo dados...';
 
       const now = new Date();
       const timestamp = now.toLocaleString('pt-BR', { timeZoneName: 'short' });
@@ -897,13 +878,13 @@
 
       const hashSHA256 = await calculateSHA256(payloadString);
 
-      // Geração do PDF Institucional (jsPDF)
+      // Geração do PDF
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
-      doc.setFillColor(0, 103, 71); // Pantone 342 C
+      doc.setFillColor(0, 103, 71);
       doc.rect(0, 0, 210, 20, 'F');
-      doc.setFillColor(0, 156, 166); // Pantone 320 C
+      doc.setFillColor(0, 156, 166);
       doc.rect(0, 20, 210, 2, 'F');
 
       doc.setFont('helvetica', 'bold');
@@ -985,7 +966,7 @@
       doc.setFontSize(7);
       doc.setTextColor(40, 40, 40);
       doc.text(`Assinado eletronicamente por: ${document.getElementById('nomeDoador').value}`, 18, 182);
-      doc.text(`Endereço de Destino Oficial: cpdoc.museufm@usp.br`, 18, 186);
+      doc.text(`Endereço de Destino Oficial: cpdoc.museufmusp@usp.br`, 18, 186);
       doc.text(`Carimbo de Data/Hora: ${timestamp}`, 18, 190);
       doc.text(`Hash SHA-256: ${hashSHA256}`, 18, 194);
       doc.text('Validade jurídica conferida nos termos do art. 10 da MP nº 2.200-2/2001 e da Lei nº 14.063/2020.', 18, 198);
@@ -998,7 +979,7 @@
 
       generatedPdfDataUri = doc.output('datauristring');
 
-      // Preparação dos ficheiros anexos
+      // Leitura dos anexos
       const anexosExtras = [];
 
       const fileIdentidade = document.getElementById('uploadDocIdentidade').files[0];
@@ -1025,50 +1006,28 @@
         anexosExtras.push({ filename: `Parecer_CEP_${item.filename}`, base64: item.base64 });
       }
 
-      // =========================================================================
-      // TRANSMISSÃO SEGURA VIA FORMULÁRIO OCULTO (SUPERA RESTRIÇÕES DE CORS E 302)
-      // =========================================================================
+      // TRANSMISSÃO DIRETA VIA FETCH PARA A URL DA CONTA PESSOAL
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbezMBbLc54wHar_NCgoqUPhWM_3yTLTahGkh5SMM3AS2fohb0DaZ3JC-6UQmKYfeB8JgyQ/exec';
 
-      const payloadData = {
-        protocolo: lastGeneratedProtocol,
-        doadorNome: document.getElementById('nomeDoador').value,
-        doadorEmail: document.getElementById('emailDoador').value,
-        bemNome: document.getElementById('denominacaoBem').value,
-        pdfBase64: generatedPdfDataUri.split(',')[1],
-        anexosExtras: anexosExtras
-      };
-
       try {
-        let hiddenIframe = document.getElementById('gas_hidden_iframe');
-        if (!hiddenIframe) {
-          hiddenIframe = document.createElement('iframe');
-          hiddenIframe.setAttribute('name', 'gas_hidden_iframe');
-          hiddenIframe.setAttribute('id', 'gas_hidden_iframe');
-          hiddenIframe.style.display = 'none';
-          document.body.appendChild(hiddenIframe);
-        }
-
-        const hiddenForm = document.createElement('form');
-        hiddenForm.method = 'POST';
-        hiddenForm.action = GOOGLE_SCRIPT_URL;
-        hiddenForm.target = 'gas_hidden_iframe';
-
-        const payloadInput = document.createElement('input');
-        payloadInput.type = 'hidden';
-        payloadInput.name = 'payload';
-        payloadInput.value = JSON.stringify(payloadData);
-        hiddenForm.appendChild(payloadInput);
-
-        document.body.appendChild(hiddenForm);
-        hiddenForm.submit();
-
-        setTimeout(() => { hiddenForm.remove(); }, 3000);
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            protocolo: lastGeneratedProtocol,
+            doadorNome: document.getElementById('nomeDoador').value,
+            doadorEmail: document.getElementById('emailDoador').value,
+            bemNome: document.getElementById('denominacaoBem').value,
+            pdfBase64: generatedPdfDataUri.split(',')[1],
+            anexosExtras: anexosExtras
+          })
+        });
       } catch (err) {
-        console.warn('Falha na submissão ao Google Script:', err);
+        console.warn('Falha na comunicação:', err);
       }
 
-      // Atualização dos dados no painel final
+      // Atualização dos dados do painel final
       document.getElementById('displayProtocol').textContent = lastGeneratedProtocol;
       document.getElementById('displayTimestamp').textContent = timestamp;
       document.getElementById('displayHash').textContent = hashSHA256;
