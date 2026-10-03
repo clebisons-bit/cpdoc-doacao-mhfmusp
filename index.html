@@ -979,7 +979,7 @@
 
       generatedPdfDataUri = doc.output('datauristring');
 
-      // Leitura dos anexos
+      // Leitura dos anexos extras
       const anexosExtras = [];
 
       const fileIdentidade = document.getElementById('uploadDocIdentidade').files[0];
@@ -1006,14 +1006,11 @@
         anexosExtras.push({ filename: `Parecer_CEP_${item.filename}`, base64: item.base64 });
       }
 
-      // TRANSMISSÃO DIRETA VIA FETCH PARA A URL DA CONTA PESSOAL
-      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbezMBbLc54wHar_NCgoqUPhWM_3yTLTahGkh5SMM3AS2fohb0DaZ3JC-6UQmKYfeB8JgyQ/exec';
-
+      // TRANSMISSÃO DIRETA PARA A ROTA SERVERLESS NA VERCEL
       try {
-        await fetch(GOOGLE_SCRIPT_URL, {
+        const response = await fetch('/api/send-email', {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             protocolo: lastGeneratedProtocol,
             doadorNome: document.getElementById('nomeDoador').value,
@@ -1023,8 +1020,13 @@
             anexosExtras: anexosExtras
           })
         });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          console.error('Falha na resposta do endpoint /api/send-email:', errData);
+        }
       } catch (err) {
-        console.warn('Falha na comunicação:', err);
+        console.warn('Falha na comunicação com a API:', err);
       }
 
       // Atualização dos dados do painel final
