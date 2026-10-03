@@ -625,16 +625,13 @@
     // MÁSCARAS DE ENTRADA DINÂMICAS
     // ==========================================
 
-    // Máscara dinâmica CPF / CNPJ com detecção automática pelo comprimento
     function maskCpfCnpj(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 14);
       if (v.length <= 11) {
-        // Formato CPF: 000.000.000-00
         v = v.replace(/(\d{3})(\d)/, '$1.$2');
         v = v.replace(/(\d{3})(\d)/, '$1.$2');
         v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
       } else {
-        // Formato CNPJ: 00.000.000/0001-00
         v = v.replace(/^(\d{2})(\d)/, '$1.$2');
         v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
         v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
@@ -643,22 +640,18 @@
       input.value = v;
     }
 
-    // Máscara dinâmica Telefone fixo (10 dígitos) ou móvel/WhatsApp (11 dígitos)
     function maskTelefone(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 11);
       if (v.length > 10) {
-        // Celular: (00) 00000-0000
         v = v.replace(/^(\d{2})(\d)/, '($1) $2');
         v = v.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
       } else if (v.length > 2) {
-        // Fixo ou em digitação: (00) 0000-0000
         v = v.replace(/^(\d{2})(\d)/, '($1) $2');
         v = v.replace(/(\d{4})(\d{1,4})$/, '$1-$2');
       }
       input.value = v;
     }
 
-    // Máscara CEP: 00000-000
     function maskCep(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 8);
       v = v.replace(/^(\d{5})(\d)/, '$1-$2');
@@ -1005,7 +998,7 @@
 
       generatedPdfDataUri = doc.output('datauristring');
 
-      // Preparação dos anexos adicionais
+      // Preparação dos ficheiros anexos
       const anexosExtras = [];
 
       const fileIdentidade = document.getElementById('uploadDocIdentidade').files[0];
@@ -1032,11 +1025,14 @@
         anexosExtras.push({ filename: `Parecer_CEP_${item.filename}`, base64: item.base64 });
       }
 
-      // Transmissão para a API
+      // Transmissão direta para o Google Apps Script
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxE1TVOtCTy9NQ2BOmAm3ncd4Bu8e9zMqyUKZvnISbGKRAbyy0kAAjvYJaWuxBKAEc4/exec';
+
       try {
-        await fetch('/api/send-email', {
+        await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             protocolo: lastGeneratedProtocol,
             doadorNome: document.getElementById('nomeDoador').value,
@@ -1047,9 +1043,10 @@
           })
         });
       } catch (err) {
-        console.warn('Falha na comunicação com a API:', err);
+        console.warn('Falha na comunicação com o Google Script:', err);
       }
 
+      // Atualização dos dados no painel final
       document.getElementById('displayProtocol').textContent = lastGeneratedProtocol;
       document.getElementById('displayTimestamp').textContent = timestamp;
       document.getElementById('displayHash').textContent = hashSHA256;
