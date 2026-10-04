@@ -448,12 +448,12 @@
         </div>
       </div>
 
-      <!-- ETAPA 3: PROVENIÊNCIA E CUSTÓDIA -->
+      <!-- ETAPA 3: HISTÓRICO E ORIGEM DO BEM (PROVENIÊNCIA) -->
       <div id="step3" class="step-pane hidden space-y-5">
-        <div class="border-b border-gray-200 pb-3">
+        <div class="border-b border-gray-200 pb-2.5 -mt-1">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">3</span>
-            Proveniência e Cadeia de Custódia
+            Histórico e Origem do Bem (Proveniência)
           </h3>
         </div>
 
@@ -463,22 +463,25 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Cadeia de Custódia Anterior (Detentores conhecidos)</label>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">A quem pertenceu? (Cadeia de custódia anterior)</label>
           <textarea id="cadeiaCustodia" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Liste detentores ou instituições anteriores conhecidas por ordem cronológica..."></textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Situação Autoral Estimada *</label>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+              Situação dos Direitos Autorais <span class="normal-case font-normal text-gray-500">(Selecione a opção que melhor descreve os direitos de reprodução)</span> *
+            </label>
             <select id="situacaoAutoral" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
-              <option value="Domínio público">Domínio público</option>
-              <option value="Obra órfã (autor desconhecido)">Obra órfã (autor desconhecido)</option>
-              <option value="Direitos ativos de terceiros">Direitos ativos de terceiros</option>
-              <option value="Situação incerta">Situação incerta</option>
+              <option value="Domínio público (O autor faleceu há mais de 70 anos ou o bem é livre de direitos)">Domínio público (O autor faleceu há mais de 70 anos ou o bem é livre de direitos)</option>
+              <option value="Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)">Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)</option>
+              <option value="Direitos pertencem a terceiros (Livros publicados, obras de arte de terceiros, fotografias com fotógrafo identificado)">Direitos pertencem a terceiros (Livros publicados, obras de arte de terceiros, fotografias com fotógrafo identificado)</option>
+              <option value="Direitos com restrições / Protegidos por direitos autorais">Direitos com restrições / Protegidos por direitos autorais</option>
+              <option value="Não sei informar / Situação autoral desconhecida">Não sei informar / Situação autoral desconhecida</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Volume Estimado da Doação *</label>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Quantidade Estimada da Doação *</label>
             <select id="volumeEstimado" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" onchange="checkVolumeWarning()">
               <option value="Item(ns) individual(is)">Item(ns) individual(is)</option>
               <option value="Pequeno conjunto (até 20 itens)">Pequeno conjunto (até 20 itens)</option>
@@ -493,7 +496,7 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Vínculo com Notabilidade Histórico-Médica (se aplicável)</label>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Histórico ou Vínculo com a História da Medicina (se aplicável)</label>
           <input type="text" id="vinculoNotorio" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Pertenceu ao Prof. Dr. Carlos da Silva Lacaz ou a antigo catedrático da FMUSP">
         </div>
 
@@ -501,7 +504,7 @@
           <label class="flex items-start gap-2.5 cursor-pointer">
             <input type="checkbox" id="checkOrigemLicita" class="mt-1 rounded text-[#006747]" required>
             <span class="text-xs text-gray-800 font-semibold leading-relaxed">
-              Declaro sob compromisso de honra que o bem não é objeto de furto, extravio, apropriação irregular nem litígio judicial de qualquer espécie (autodeclaração obrigatória de boa-fé).
+              Declaro que o objeto me pertence legalmente, não é fruto de roubo ou perda, e não está envolvido em nenhuma disputa judicial ou processo de herança (autodeclaração obrigatória de boa-fé).
             </span>
           </label>
         </div>
