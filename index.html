@@ -588,7 +588,7 @@
         <div>
           <div class="flex items-center justify-between mb-2">
             <label class="block text-xs font-bold text-[#006747] uppercase">
-              <i class="fa-solid fa-scale-balanced text-[#009CA6] mr-1"></i> Parte B — Texto Legal do Instrumento (Leitura Obrigatória)
+              <i class="fa-solid fa-scale-balanced text-[#009CA6] mr-1"></i> Texto Legal do Instrumento (Leitura Obrigatória)
             </label>
             <span class="text-[11px] text-gray-400">Role para ler na íntegra</span>
           </div>
@@ -625,7 +625,7 @@
 
           <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
             <input type="checkbox" class="check-aceite mt-0.5 rounded text-[#006747]" onchange="verificarAceites()">
-            <span>Li e concordo integralmente com todas as cláusulas jurídicas apresentadas na Parte B deste instrumento.</span>
+            <span>Li e concordo integralmente com todas as cláusulas jurídicas apresentadas neste instrumento.</span>
           </label>
 
           <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
@@ -1042,7 +1042,7 @@
       titulo('4. DECLARAÇÕES DE ACEITE');
       document.querySelectorAll('.check-aceite').forEach(c => texto('[X] ' + c.nextElementSibling.textContent.trim()));
 
-      titulo('5. PARTE B - TEXTO LEGAL DO INSTRUMENTO');
+      titulo('5. TEXTO LEGAL DO INSTRUMENTO');
       document.querySelectorAll('#textoLegal p').forEach(p => texto(p.textContent.trim()));
 
       titulo('6. CERTIFICADO DE ASSINATURA ELETRÔNICA');
