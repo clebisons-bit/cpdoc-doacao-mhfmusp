@@ -473,11 +473,11 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+          <div class="flex flex-col justify-between">
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
               Situação dos Direitos Autorais <span class="normal-case font-normal text-gray-500">(Selecione a opção que melhor descreve os direitos de reprodução)</span> *
             </label>
-            <select id="situacaoAutoral" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
+            <select id="situacaoAutoral" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white mt-auto">
               <option value="Domínio público (O autor faleceu há mais de 70 anos ou o bem é livre de direitos)">Domínio público (O autor faleceu há mais de 70 anos ou o bem é livre de direitos)</option>
               <option value="Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)">Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)</option>
               <option value="Direitos pertencem a terceiros (Livros publicados, obras de arte de terceiros, fotografias com fotógrafo identificado)">Direitos pertencem a terceiros (Livros publicados, obras de arte de terceiros, fotografias com fotógrafo identificado)</option>
@@ -485,9 +485,9 @@
               <option value="Não sei informar / Situação autoral desconhecida">Não sei informar / Situação autoral desconhecida</option>
             </select>
           </div>
-          <div>
+          <div class="flex flex-col justify-between">
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Quantidade Estimada da Doação *</label>
-            <select id="volumeEstimado" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" onchange="checkVolumeWarning()">
+            <select id="volumeEstimado" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white mt-auto" onchange="checkVolumeWarning()">
               <option value="Item(ns) individual(is)">Item(ns) individual(is)</option>
               <option value="Pequeno conjunto (até 20 itens)">Pequeno conjunto (até 20 itens)</option>
               <option value="Fundo ou coleção de grande volume (acima de 20 itens)">Fundo ou coleção de grande volume (acima de 20 itens)</option>
@@ -502,7 +502,7 @@
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Histórico ou Vínculo com a História da Medicina (se aplicável)</label>
-          <input type="text" id="vinculoNotorio" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Pertenceu ao Prof. Dr. Carlos da Silva Lacaz ou a antigo catedrático da FMUSP">
+          <textarea id="vinculoNotorio" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Pertenceu ao Prof. Dr. Carlos da Silva Lacaz ou a antigo catedrático da FMUSP..."></textarea>
         </div>
 
         <div class="p-3.5 bg-gray-50 border border-gray-300 rounded-xl">
@@ -683,27 +683,21 @@
         <i class="fa-solid fa-check-double"></i>
       </div>
       <div>
-        <span class="text-xs font-mono font-bold tracking-widest text-[#009CA6] bg-black px-3.5 py-1 rounded-full uppercase border border-[#009CA6]/40">
-          Termo Homologado com Sucesso
-        </span>
-        <h3 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] mt-3">Termo Assinado e Enviado ao CPDoc!</h3>
-        <p class="text-xs sm:text-sm text-gray-600 max-w-lg mx-auto mt-1">
-          A sua proposta foi transmitida para o endereço oficial do Centro de Pesquisa e Documentação: <span class="font-bold text-[#006747]">cpdoc.museufmusp@usp.br</span> com todos os arquivos anexados.
+        <h3 class="text-xl sm:text-2xl font-heading font-bold text-[#006747]">Termo de Doação Enviado com Sucesso!</h3>
+        <p class="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto mt-2 leading-relaxed">
+          A sua proposta foi transmitida para o Centro de Pesquisa e Documentação (CPDoc) do Museu Histórico da FMUSP: <span class="font-bold text-[#006747]">cpdoc.museufm@usp.br</span>.<br class="hidden sm:inline">
+          Todos os arquivos anexados e as declarações assinadas foram encaminhados à nossa equipe técnica para análise. O preenchimento deste formulário digital substitui a necessidade de documentação em papel, contribuindo com a sustentabilidade. Entraremos em contato em até 10 (dez) dias úteis.
         </p>
       </div>
 
       <div class="max-w-lg mx-auto p-5 bg-gray-50 rounded-xl border border-gray-300 space-y-2.5 text-xs text-left">
         <div class="flex justify-between border-b pb-1.5">
-          <span class="text-gray-500">Número de Protocolo CPDoc:</span>
+          <span class="text-gray-500">Protocolo:</span>
           <span id="displayProtocol" class="font-mono font-bold text-[#006747] text-sm"></span>
         </div>
         <div class="flex justify-between border-b pb-1.5">
           <span class="text-gray-500">Data e Hora da Assinatura:</span>
           <span id="displayTimestamp" class="font-mono text-gray-800"></span>
-        </div>
-        <div class="flex justify-between border-b pb-1.5">
-          <span class="text-gray-500">Destinatário Oficial:</span>
-          <span class="font-mono text-gray-800">cpdoc.museufmusp@usp.br</span>
         </div>
         <div class="border-b pb-1.5">
           <span class="text-gray-500 block mb-0.5">Hash Criptográfico de Integridade (SHA-256):</span>
@@ -953,11 +947,20 @@
       const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
-    function gerarProtocolo() {
+
+    function gerarProtocolo(data = new Date()) {
+      const ano = data.getFullYear();
+      const mes = String(data.getMonth() + 1).padStart(2, '0');
+      const dia = String(data.getDate()).padStart(2, '0');
+      const hora = String(data.getHours()).padStart(2, '0') +
+                   String(data.getMinutes()).padStart(2, '0') +
+                   String(data.getSeconds()).padStart(2, '0');
       const alfabeto = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       const r = crypto.getRandomValues(new Uint8Array(6));
-      return `FMUSP-CPDOC-${new Date().getFullYear()}-${Array.from(r).map(b => alfabeto[b % alfabeto.length]).join('')}`;
+      const aleatorio = Array.from(r).map(b => alfabeto[b % alfabeto.length]).join('');
+      return `MHFMUSP-${ano}-${mes}-CPDoc-${dia}-${hora}-${aleatorio}`;
     }
+
     function coletarResumo() {
       const cats = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(c => c.value).join('; ');
       const end = [val('logradouro'), val('numero'), val('complemento'), val('bairro'), val('cidadeUf'), val('cep')].filter(Boolean).join(', ');
@@ -1053,7 +1056,7 @@
       titulo('6. CERTIFICADO DE ASSINATURA ELETRÔNICA');
       campo('Assinado por', val('nomeDoador'));
       campo('Data/hora', timestamp);
-      campo('Destino oficial', 'cpdoc.museufmusp@usp.br');
+      campo('Destino oficial', 'cpdoc.museufm@usp.br');
       campo('Hash SHA-256 do dossiê', hash);
       texto('Aceite eletrônico registrado como assinatura eletrônica simples (Lei nº 14.063/2020 e art. 10, §2º, da MP nº 2.200-2/2001). O hash identifica o conteúdo declarado e os arquivos anexados no momento do envio. A deliberação final sobre aceite, recusa ou tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz".');
 
@@ -1067,8 +1070,9 @@
 
     /* ---------- Preparação e envio ---------- */
     async function prepararEnvio() {
-      const protocolo = gerarProtocolo();
-      const timestamp = new Date().toLocaleString('pt-BR', { timeZoneName: 'short' });
+      const dataEnvio = new Date();
+      const protocolo = gerarProtocolo(dataEnvio);
+      const timestamp = dataEnvio.toLocaleString('pt-BR', { timeZoneName: 'short' });
 
       const anexos = [];
       const ident = await processarAnexo($('uploadDocIdentidade').files[0]);
@@ -1145,7 +1149,7 @@
       } catch (err) {
         const parcial = envio && envio.enviados.size
           ? ` ${envio.enviados.size} de ${envio.lotes.length} parte(s) já chegou(aram); ao tentar de novo, só as pendentes serão reenviadas.` : '';
-        box.textContent = `Sua proposta NÃO foi concluída. ${err.message}${parcial} Tente novamente; se persistir, escreva para cpdoc.museufmusp@usp.br informando o horário do problema.`;
+        box.textContent = `Sua proposta NÃO foi concluída. ${err.message}${parcial} Tente novamente; se persistir, escreva para cpdoc.museufm@usp.br informando o horário do problema.`;
         box.classList.remove('hidden');
         box.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } finally {
@@ -1163,6 +1167,7 @@
       window.scrollTo({ top: 0 });
       baixarPDFNovamente();
     }
+
     function baixarPDFNovamente() {
       if (pdfDoc && envio) pdfDoc.save(`Termo_Doacao_${envio.protocolo}.pdf`);
     }
@@ -1324,3 +1329,4 @@
   })();
   </script>
 </body>
+</html>
