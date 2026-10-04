@@ -14,7 +14,9 @@ const ORIGENS = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()
 const MAX_B64_TOTAL = 4_200_000;
 const MAX_ANEXOS = 20;
 const MAX_PARTES = 10;
-const RE_PROTOCOLO = /^FMUSP-CPDOC-\d{4}-[A-Z0-9]{6}$/;
+// Formato: MHFMUSP-AAAA-MM-CPDoc-DD-HHMMSS-XXXXXX
+// ex.: MHFMUSP-2026-10-CPDoc-04-153012-K7M2QX
+const RE_PROTOCOLO = /^MHFMUSP-\d{4}-(0[1-9]|1[0-2])-CPDoc-(0[1-9]|[12]\d|3[01])-([01]\d|2[0-3])[0-5]\d[0-5]\d-[A-Z0-9]{6}$/;
 const RE_EMAIL = /^[^\s@<>",;:()]+@[^\s@<>",;:()]+\.[^\s@<>",;:()]+$/;
 const RE_B64 = /^[A-Za-z0-9+/]+={0,2}$/;
 
