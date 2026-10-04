@@ -183,20 +183,20 @@
 
       <div class="mt-5 sm:mt-6">
         <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
-          <span id="stepIndicatorLabel">Etapa 1 de 5</span>
+          <span id="stepIndicatorLabel">Etapa 1 de 4</span>
         </div>
         <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-          <div id="stepProgressBar" class="bg-[#009CA6] h-full transition-all duration-300 w-1/5"></div>
+          <div id="stepProgressBar" class="bg-[#009CA6] h-full transition-all duration-300 w-1/4"></div>
         </div>
       </div>
     </div>
 
-    <!-- BLOCO DO FORMULÁRIO COM TOPO EQUALIZADO -->
+    <!-- BLOCO DO FORMULÁRIO -->
     <form id="donationForm" novalidate class="bg-white rounded-2xl border border-gray-200 shadow-sm px-5 pt-3.5 pb-5 sm:px-6 sm:pt-4 sm:pb-6 space-y-6">
 
       <!-- ETAPA 1: IDENTIFICAÇÃO DO DOADOR -->
       <div id="step1" class="step-pane space-y-5">
-        <div class="border-b border-gray-200 pb-3">
+        <div class="border-b border-gray-200 pb-2.5 -mt-1">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">1</span>
             Identificação do Doador
@@ -298,7 +298,7 @@
 
       <!-- ETAPA 2: DESCRIÇÃO DO BEM HISTÓRICO-CULTURAL PARA DOAÇÃO -->
       <div id="step2" class="step-pane hidden space-y-5">
-        <div class="border-b border-gray-200 pb-3">
+        <div class="border-b border-gray-200 pb-2.5 -mt-1">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">2</span>
             Descrição do Bem Histórico-Cultural para Doação
@@ -512,7 +512,7 @@
 
       <!-- ETAPA 4: BIOÉTICA & LGPD (CONDICIONAL) -->
       <div id="step4" class="step-pane hidden space-y-5">
-        <div class="border-b border-gray-200 pb-3">
+        <div class="border-b border-gray-200 pb-2.5 -mt-1">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">4</span>
             Conformidade Bioética e Dados Pessoais (LGPD)
@@ -555,10 +555,10 @@
       </div>
 
       <!-- ETAPA 5: CONDIÇÕES E ASSINATURA -->
-      <div id="step5" class="step-pane hidden space-y-6">
-        <div class="border-b border-gray-200 pb-3">
+      <div id="step5" class="step-pane hidden space-y-5">
+        <div class="border-b border-gray-200 pb-2.5 -mt-1">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">5</span>
+            <span id="step5Badge" class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">4</span>
             Condições, Cláusulas Legais e Assinatura Digital
           </h3>
         </div>
@@ -566,23 +566,17 @@
         <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
           <h4 class="text-xs font-bold text-[#006747] uppercase tracking-wider">Condições e Restrições Declaradas</h4>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Exposição (se houver)</label>
-              <input type="text" id="restricoesExposicao" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Ex: vedação a exposição desprotegida">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Publicação / Reprodução</label>
-              <input type="text" id="restricoesPublicacao" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Ex: apenas para fins acadêmicos">
-            </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Publicação / Reprodução</label>
+            <input type="text" id="restricoesPublicacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" placeholder="Ex: apenas para fins acadêmicos, restrição de acesso a dados sensíveis/pessoais, etc.">
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Solicita Crédito Nominal em Exposições?</label>
-              <input type="text" id="creditoNominal" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Ex: Doação da Família Dr. Roberto Santos">
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Solicita Crédito em Exposições?</label>
+              <input type="text" id="creditoNominal" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" placeholder="Ex: Doação da Família Dr. Roberto Santos">
             </div>
-            <div class="flex items-center pt-5">
+            <div class="flex items-center pt-1 md:pt-6">
               <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
                 <input type="checkbox" id="anonimatoDoador" class="rounded text-[#006747]">
                 <span>Desejo permanecer anônimo na divulgação pública</span>
@@ -744,7 +738,6 @@
 
   <!-- SCRIPT -->
   <script>
-    const TOTAL_STEPS = 5;
     const MAX_FOTOS = 10;
     const MAX_LOTE_B64 = 3500000;   // Base64 por requisição (teto da Vercel: 4,5 MB no corpo inteiro)
     const MAX_PDF_BYTES = 2500000;  // PDFs avulsos (~3,3 MB em Base64)
@@ -754,6 +747,7 @@
     const $ = id => document.getElementById(id);
     const val = id => ($(id)?.value || '').trim();
     const precisaEtapa4 = () => val('dadosSensiveis') === 'Sim' || val('riscoBiologico') === 'Sim';
+    const getEtapasAtivas = () => precisaEtapa4() ? [1, 2, 3, 4, 5] : [1, 2, 3, 5];
     const SPIN = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>';
 
     $('donationForm').addEventListener('submit', e => e.preventDefault());
@@ -817,7 +811,7 @@
       const w = Math.round(img.width * r), h = Math.round(img.height * r);
       const c = document.createElement('canvas'); c.width = w; c.height = h;
       const x = c.getContext('2d');
-      x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);   // PNG transparente não vira fundo preto
+      x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);
       x.drawImage(img, 0, 0, w, h);
       return { dataUrl: c.toDataURL('image/jpeg', q), w, h };
     }
@@ -895,26 +889,50 @@
       }
       return null;
     }
+
     function updateProgress() {
-      $('stepProgressBar').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
-      $('stepIndicatorLabel').textContent = `Etapa ${currentStep} de ${TOTAL_STEPS}`;
-      document.querySelectorAll('.step-pane').forEach((el, i) => el.classList.toggle('hidden', i !== currentStep - 1));
-      $('btnPrev').classList.toggle('hidden', currentStep === 1);
-      $('btnNext').classList.toggle('hidden', currentStep === TOTAL_STEPS);
-      $('btnSubmit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
+      const etapas = getEtapasAtivas();
+      const total = etapas.length;
+      const indiceAtual = etapas.indexOf(currentStep) + 1;
+
+      $('stepProgressBar').style.width = `${(indiceAtual / total) * 100}%`;
+      $('stepIndicatorLabel').textContent = `Etapa ${indiceAtual} de ${total}`;
+
+      const badge5 = $('step5Badge');
+      if (badge5) badge5.textContent = total;
+
+      document.querySelectorAll('.step-pane').forEach((el) => {
+        const stepNum = parseInt(el.id.replace('step', ''), 10);
+        el.classList.toggle('hidden', stepNum !== currentStep);
+      });
+
+      $('btnPrev').classList.toggle('hidden', indiceAtual === 1);
+      $('btnNext').classList.toggle('hidden', indiceAtual === total);
+      $('btnSubmit').classList.toggle('hidden', indiceAtual !== total);
       window.scrollTo({ top: 120, behavior: 'smooth' });
     }
+
     function nextStep() {
       const e = validarEtapa(currentStep);
       if (e) { alert(e[1]); $(e[0])?.focus(); return; }
-      currentStep = (currentStep === 3 && !precisaEtapa4()) ? 5 : currentStep + 1;
-      updateProgress();
+      const etapas = getEtapasAtivas();
+      const idx = etapas.indexOf(currentStep);
+      if (idx < etapas.length - 1) {
+        currentStep = etapas[idx + 1];
+        updateProgress();
+      }
     }
+
     function prevStep() {
       envio = null; $('submitError').classList.add('hidden');
-      currentStep = (currentStep === 5 && !precisaEtapa4()) ? 3 : currentStep - 1;
-      updateProgress();
+      const etapas = getEtapasAtivas();
+      const idx = etapas.indexOf(currentStep);
+      if (idx > 0) {
+        currentStep = etapas[idx - 1];
+        updateProgress();
+      }
     }
+
     function verificarAceites() {
       const ok = Array.from(document.querySelectorAll('.check-aceite')).every(c => c.checked);
       const btn = $('btnSubmit');
@@ -945,13 +963,13 @@
         ['Descrição física e técnica', val('descricaoFisica')], ['Datação', val('datacao')],
         ['Estado de conservação', val('estadoConservacao')], ['Risco químico/biossegurança', val('riscoBiologico')],
         ['Material biológico/dados de pacientes', val('dadosSensiveis')], ['Origem do bem', val('origemBem')],
-        ['Cadeia de custódia', val('cadeiaCustodia')], ['Situação autoral', val('situacaoAutoral')],
-        ['Volume estimado', val('volumeEstimado')], ['Vínculo histórico-médico', val('vinculoNotorio')]
+        ['A quem pertenceu', val('cadeiaCustodia')], ['Situação dos direitos autorais', val('situacaoAutoral')],
+        ['Quantidade estimada', val('volumeEstimado')], ['Vínculo histórico-médico', val('vinculoNotorio')]
       ];
       if (precisaEtapa4()) r.push(['Consentimento original', val('consentimentoBio')],
         ['Anonimização prévia', val('anonimizacaoPrevia')], ['Base legal (LGPD)', val('baseLegalLGPD')]);
-      r.push(['Restrições de exposição', val('restricoesExposicao')], ['Restrições de publicação', val('restricoesPublicacao')],
-        ['Crédito nominal', val('creditoNominal')], ['Anonimato do doador', $('anonimatoDoador').checked ? 'Sim' : 'Não']);
+      r.push(['Restrições de publicação', val('restricoesPublicacao')],
+        ['Crédito em exposições', val('creditoNominal')], ['Anonimato do doador', $('anonimatoDoador').checked ? 'Sim' : 'Não']);
       return r.map(([rotulo, valor]) => ({ rotulo, valor: valor || 'Não informado' }));
     }
 
@@ -1064,7 +1082,6 @@
       pdfDoc = gerarPDF({ protocolo, timestamp, hash, resumo, manifesto });
       const pdfBase64 = pdfDoc.output('datauristring').split(',')[1];
 
-      // Divide os anexos em lotes que respeitam o limite de payload da Vercel
       const lotes = [{ pdfBase64, anexos: [] }];
       let tam = pdfBase64.length;
       for (const a of anexos) {
