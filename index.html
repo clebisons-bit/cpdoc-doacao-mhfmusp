@@ -78,6 +78,59 @@
       opacity: 0.75;
       pointer-events: none;
     }
+
+    /* ---------- Explicação das categorias museológicas ---------- */
+    .cat-info-btn {
+      margin-left: auto;
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      border: 1px solid #009CA6;
+      color: #006747;
+      background: #f0f8f6;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: Georgia, serif;
+      font-style: italic;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: help;
+    }
+    .cat-info-btn:hover, .cat-info-btn:focus-visible { background: #009CA6; color: #fff; outline: none; }
+    #catTip {
+      position: fixed;
+      z-index: 60;
+      width: min(340px, calc(100vw - 16px));
+      max-height: 70vh;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid #009CA6;
+      border-top: 4px solid #006747;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 40, 30, 0.22);
+      padding: 12px 14px 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #374151;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .12s ease;
+    }
+    #catTip.show { opacity: 1; visibility: visible; }
+    #catTip .cat-tip-nome { font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; color: #006747; margin: 0 0 2px; }
+    #catTip .cat-tip-tipo { font-size: 11px; color: #6b7280; margin: 0 0 6px; }
+    #catTip .cat-tip-tipo b { color: #009CA6; }
+    #catTip .cat-tip-ex-t { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #006747; margin: 8px 0 2px; }
+    #catTip ul { margin: 0; padding-left: 16px; list-style: disc; }
+    #catTip li { margin: 1px 0; }
+    #catTip .cat-tip-fechar { display: none; width: 100%; margin-top: 10px; padding: 7px; border-radius: 8px; background: #006747; color: #fff; font-weight: 700; font-size: 12px; }
+    @media (max-width: 639px) {
+      #catTip { left: 8px !important; right: 8px; bottom: 8px; top: auto !important; width: auto; max-height: 60vh; }
+      #catTip .cat-tip-fechar { display: block; }
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans antialiased selection:bg-[#009CA6] selection:text-white">
@@ -116,10 +169,11 @@
     </div>
   </header>
 
-  <!-- CONTEÚDO PRINCIPAL -->
-  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
+  <!-- CONTEÚDO PRINCIPAL (MARGENS EQUALIZADAS NO TOPO, LATERAIS E INFERIOR) -->
+  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-4 sm:px-6 sm:py-6">
 
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 mb-6">
+    <!-- BLOCO TEXTUAL INFORMATIVO -->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-6 mb-4 sm:mb-6">
       <h2 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] tracking-tight">
         Termo de Doação de Acervo
       </h2>
@@ -127,7 +181,7 @@
         Este é o formulário oficial para propor doações de acervo ao Museu Histórico "Prof. Carlos da Silva Lacaz" da FMUSP. Após o preenchimento, você receberá um número de protocolo e o PDF com a sua proposta. A avaliação e a decisão final sobre o recebimento dos itens são de responsabilidade exclusiva do Museu, orientadas por nossa Política de Gestão de Acervos. O prazo para entrarmos em contato é de até 10 (dez) dias úteis após o envio.
       </p>
 
-      <div class="mt-6">
+      <div class="mt-5 sm:mt-6">
         <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
           <span id="stepIndicatorLabel">Etapa 1 de 5</span>
         </div>
@@ -137,8 +191,8 @@
       </div>
     </div>
 
-    <!-- FORMULÁRIO -->
-    <form id="donationForm" novalidate class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+    <!-- BLOCO DO FORMULÁRIO -->
+    <form id="donationForm" novalidate class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-6 space-y-6">
 
       <!-- ETAPA 1: IDENTIFICAÇÃO DO DOADOR -->
       <div id="step1" class="step-pane space-y-5">
@@ -253,6 +307,10 @@
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-2">Categoria Museológica (selecione uma ou mais) *</label>
+          <p class="text-[11px] text-gray-500 mb-2 -mt-1">
+            <i class="fa-regular fa-circle-question text-[#009CA6] mr-1"></i>
+            Em dúvida? Passe o mouse sobre o ícone <span class="font-serif italic font-bold text-[#006747]">i</span> ao lado de cada categoria (ou toque nele, no celular) para ver o que ela significa e alguns exemplos.
+          </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" name="categoria" value="Instrumentos manuais" class="rounded text-[#006747]">
@@ -310,9 +368,13 @@
               <input type="checkbox" name="categoria" value="Material audiovisual e objeto digital" class="rounded text-[#006747]">
               <span>Material audiovisual e objeto digital</span>
             </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer sm:col-span-2">
+            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" name="categoria" value="Equipamentos de laboratório e instrumentação científica" class="rounded text-[#006747]">
               <span>Equipamentos de laboratório e instrumentação científica</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
+              <input type="checkbox" name="categoria" value="Outra não listada" class="rounded text-[#006747]">
+              <span>Outra não listada</span>
             </label>
           </div>
         </div>
@@ -666,6 +728,9 @@
     </div>
   </footer>
 
+  <!-- CAIXA DE EXPLICAÇÃO DAS CATEGORIAS (preenchida por script) -->
+  <div id="catTip" role="tooltip" aria-hidden="true"></div>
+
   <!-- SCRIPT -->
   <script>
     const TOTAL_STEPS = 5;
@@ -768,7 +833,7 @@
 
     async function previewImages(e) {
       const token = ++previewToken, files = Array.from(e.target.files);
-      const box = $('photosPreviewContainer'), warn =$('photosCountWarning');
+      const box = $('photosPreviewContainer'), warn = $('photosCountWarning');
       box.innerHTML = ''; fotos = [];
       if (files.length > MAX_FOTOS) {
         alert(`Selecione no máximo ${MAX_FOTOS} fotografias.`);
@@ -824,7 +889,8 @@
       $('stepIndicatorLabel').textContent = `Etapa ${currentStep} de ${TOTAL_STEPS}`;
       document.querySelectorAll('.step-pane').forEach((el, i) => el.classList.toggle('hidden', i !== currentStep - 1));
       $('btnPrev').classList.toggle('hidden', currentStep === 1);
-      $('btnNext').classList.toggle('hidden', currentStep === TOTAL_STEPS);$('btnSubmit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
+      $('btnNext').classList.toggle('hidden', currentStep === TOTAL_STEPS);
+      $('btnSubmit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
       window.scrollTo({ top: 120, behavior: 'smooth' });
     }
     function nextStep() {
@@ -834,7 +900,7 @@
       updateProgress();
     }
     function prevStep() {
-      envio = null; $('submitError').classList.add('hidden');   // dados podem mudar: descarta o pacote preparado
+      envio = null; $('submitError').classList.add('hidden');
       currentStep = (currentStep === 5 && !precisaEtapa4()) ? 3 : currentStep - 1;
       updateProgress();
     }
@@ -960,7 +1026,7 @@
       const n = doc.getNumberOfPages();
       for (let p = 1; p <= n; p++) {
         doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(120, 120, 120);
-        doc.text(`${protocolo} - Página ${p} de ${n}`, 105, 290, { align: 'center' });
+        doc.text(`${protocolo} — Página ${p} de ${n}`, 105, 290, { align: 'center' });
       }
       return doc;
     }
@@ -1067,6 +1133,162 @@
     function baixarPDFNovamente() {
       if (pdfDoc && envio) pdfDoc.save(`Termo_Doacao_${envio.protocolo}.pdf`);
     }
+  </script>
+
+  <!-- EXPLICAÇÃO DIDÁTICA DAS CATEGORIAS MUSEOLÓGICAS -->
+  <script>
+  (function () {
+    const INFO = {
+      "Instrumentos manuais": {
+        t: "Instrumento médico-cirúrgico",
+        d: "Ferramentas pequenas e portáteis, quase sempre de metal, que o profissional segura com a mão para examinar, tratar ou operar o paciente.",
+        e: ["Bisturi cirúrgico", "Pinça hemostática e tesoura cirúrgica", "Estetoscópio", "Otoscópio e oftalmoscópio", "Martelo de reflexos", "Espéculo", "Fórceps obstétrico", "Sonda metálica", "Lanceta de vacinação", "Agulhas de acupuntura", "Flebótomo de sangria"]
+      },
+      "Aparelhos e equipamentos": {
+        t: "Equipamento médico-hospitalar",
+        d: "Máquinas e aparelhos de maior porte, que funcionam com energia externa (elétrica, mecânica, hidráulica ou pneumática) ou têm mecanismos mais complexos.",
+        e: ["Pulmão de ferro (respirador artificial)", "Eletrocardiógrafo", "Aparelho de raios-X", "Tomógrafo", "Desfibrilador", "Marcapasso externo", "Bomba de infusão", "Aparelho de anestesia", "Ventilador mecânico", "Bisturi elétrico", "Ecógrafo (ultrassom)", "Monitor de UTI"]
+      },
+      "Recipientes e vidraria": {
+        t: "Recipiente / Vidraria",
+        d: "Qualquer objeto cuja função principal é guardar, armazenar ou transportar substâncias: remédios, amostras, reagentes ou fluidos.",
+        e: ["Frasco de botica de vidro", "Pote de farmácia de cerâmica pintada", "Almofariz com pistilo", "Proveta graduada", "Pipeta", "Tubo de ensaio", "Balão de destilação", "Ampola de vidro", "Frasco de penicilina", "Bisnaga de pomada", "Vidro âmbar"]
+      },
+      "Modelos anatômicos e didáticos": {
+        t: "Modelo anatômico / Maquete",
+        d: "Representações em 3D do corpo humano ou de partes dele, feitas para ensinar, demonstrar ou, em alguns casos, para uso ritual.",
+        e: ["Ceroplastia científica", "Esqueleto humano articulado", "Modelo de cabeça com cérebro desmontável", "Modelo de coração", "Modelo de olho ou de ouvido", "Modelo de coluna vertebral", "Modelo de dentição", "Modelos de cera ou gesso", "Manequim obstétrico", "Estátua anatômica (écorché)", "Quadro mural anatômico"]
+      },
+      "Próteses, órteses e implantes": {
+        t: "Prótese / Órtese",
+        d: "Dispositivos que substituem, completam ou corrigem uma função do corpo. Podem ficar dentro do corpo (implantes) ou ser usados por fora.",
+        e: ["Perna artificial", "Dentadura", "Muletas", "Aparelho auditivo", "Marcapasso implantável", "Stent coronariano", "Válvula cardíaca mecânica", "Prótese mamária", "Placa e parafusos ortopédicos", "Lente intraocular", "Bota ou órtese ortopédica"]
+      },
+      "Materiais farmacêuticos e medicamentos": {
+        t: "Medicamento / Substância farmacêutica",
+        d: "Substâncias preparadas para tratar doenças: remédios industrializados, fórmulas feitas em farmácia, matérias-primas, ervas, vacinas e soros.",
+        e: ["Comprimidos em embalagem original", "Ampola de penicilina", "Frasco de insulina", "Vacina em ampola ou tubo", "Soro antiofídico", "Xarope com rótulo antigo", "Tintura de iodo", "Pomada em bisnaga", "Frasco de láudano", "Glóbulos homeopáticos", "Supositórios"]
+      },
+      "Mobiliário e equipamento hospitalar": {
+        t: "Mobiliário hospitalar",
+        d: "Móveis e estruturas de grande porte usados em hospitais, consultórios, ambulatórios e laboratórios.",
+        e: ["Mesa cirúrgica", "Foco cirúrgico", "Cadeira odontológica", "Poltrona ginecológica", "Maca de transporte", "Cama hospitalar", "Incubadora neonatal", "Armário de instrumental", "Carrinho de parada", "Biombo de exame", "Mesa de exame", "Lavatório cirúrgico"]
+      },
+      "Equipamentos de proteção e vestuário médico": {
+        t: "Vestuário profissional / Equipamento de proteção",
+        d: "Roupas e equipamentos de proteção usados por profissionais de saúde ou por pacientes.",
+        e: ["Jaleco branco", "Uniforme de enfermeira e touca", "Máscara cirúrgica", "Luvas cirúrgicas", "Avental de chumbo (radiologia)", "Óculos de proteção", "Gorro cirúrgico", "Capote cirúrgico", "Botas e propés", "Viseira de proteção", "EPI completo"]
+      },
+      "Obras visuais e iconografia": {
+        t: "Obra visual / Fotografia / Cartaz",
+        d: "Imagens em duas dimensões (pinturas, gravuras, desenhos, fotografias e cartazes) que registram práticas médicas, hospitais, profissionais, doenças e epidemias.",
+        e: ["Cartaz de campanha de vacinação", "Cartaz de saúde pública (tuberculose, dengue, aleitamento)", "Fotografia de hospital", "Fotografia clínica de paciente", "Álbum de fotografias", "Gravura e litografia médica", "Prancha anatômica", "Pintura de sala de cirurgia", "Desenho científico a nanquim"]
+      },
+      "Documentos e arquivos médicos": {
+        t: "Documento arquivístico",
+        d: "Papéis e registros escritos produzidos no meio médico: prontuários, livros de registro, relatórios, cartas, receitas, teses e publicações.",
+        e: ["Prontuário médico", "Ficha de paciente", "Receituário", "Livro de registro de admissões", "Livro de atas", "Correspondência científica", "Caderno de laboratório", "Tese acadêmica", "Periódico médico antigo", "Livro raro", "Relatório de saúde pública"]
+      },
+      "Material didático e objetos de ensino": {
+        t: "Material didático",
+        d: "Objetos feitos especificamente para ensinar medicina e ciências da saúde. Vai além dos modelos anatômicos e inclui outros recursos de ensino.",
+        e: ["Quadro mural anatômico", "Lâmina histológica", "Diapositivo (slide) de vidro", "Atlas anatômico", "Manequim de reanimação", "Simulador de parto", "Moldes de gesso", "Maquete de hospital", "Frascos didáticos com amostras", "Vídeo-cassete ou CD-ROM didático"]
+      },
+      "Numismática, medalhas e condecorações": {
+        t: "Medalha / Condecoração / Numismática",
+        d: "Moedas, medalhas, insígnias e troféus criados para celebrar eventos médicos, pessoas ilustres ou conquistas científicas.",
+        e: ["Medalha comemorativa de congresso", "Medalha de mérito científico", "Condecoração", "Insígnia de sociedade médica", "Plaqueta comemorativa", "Moeda comemorativa", "Medalhão com efigie de médico", "Pin de campanha", "Troféu", "Caduceu em prata ou metal"]
+      },
+      "Arqueologia médica e objetos rituais de cura": {
+        t: "Objeto ritual / Etnográfico",
+        d: "Objetos de épocas muito antigas ou de culturas tradicionais ligados a práticas de cura, crenças e rituais.",
+        e: ["Patuá", "Breve (relicário de pano)", "Figa contra mau-olhado", "Máscara ritual", "Maracá de cabaça", "Estatueta de divindade de cura", "Ferramentas de curandeiro ou raizeiro", "Bolsa de ervas medicinais", "Boneca usada em benzimento", "Navalha de barbeiro-sangrador"]
+      },
+      "Material audiovisual e objeto digital": {
+        t: "Material audiovisual / Objeto digital",
+        d: "Filmes, vídeos, gravações de áudio, programas de computador, bancos de dados e outros registros eletrônicos.",
+        e: ["Fita VHS", "Fita cassete", "Filme de 16 mm", "DVD", "CD-ROM", "Disquete", "Pen-drive", "Disco rígido (HD)", "Arquivo de exame de imagem (DICOM)", "Depoimento oral gravado", "Software ou banco de dados antigo"]
+      },
+      "Equipamentos de laboratório e instrumentação científica": {
+        t: "Equipamento laboratorial / Instrumento científico",
+        d: "Instrumentos e equipamentos usados em laboratórios de análises clínicas, patologia, bioquímica, microbiologia ou pesquisa médica.",
+        e: ["Microscópio óptico", "Autoclave", "Centrífuga", "Estufa bacteriológica", "Balança analítica", "Espectrofotômetro", "pHmetro", "Agitador magnético", "Micrótomo", "Destilador de água", "Câmara de Neubauer", "Termômetro de laboratório"]
+      },
+      "Outra não listada": {
+        t: "Outras tipologias",
+        d: "Use esta opção se o seu objeto não se encaixa em nenhuma das categorias acima. Sem problema: descreva-o com suas palavras nos campos seguintes (denominação e descrição física) e a equipe do Museu fará a classificação.",
+        e: ["Maleta ou bolsa de médico", "Objetos pessoais de profissionais de saúde", "Brinquedos e objetos de hospital infantil", "Souvenirs e peças comemorativas", "Coleções ou conjuntos mistos"]
+      }
+    };
+
+    const tip = document.getElementById('catTip');
+    let alvoAtual = null, timerOcultar = null;
+
+    function conteudo(nome) {
+      const d = INFO[nome];
+      return '<p class="cat-tip-nome">' + nome + '</p>' +
+             '<p class="cat-tip-tipo"><b>' + d.t + '</b></p>' +
+             '<p>' + d.d + '</p>' +
+             '<p class="cat-tip-ex-t">Exemplos</p><ul>' + d.e.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
+             '<button type="button" class="cat-tip-fechar">Entendi, fechar</button>';
+    }
+    function posicionar(el) {
+      if (window.innerWidth < 640) { tip.style.left = ''; tip.style.top = ''; return; }
+      const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+      let top = r.bottom + 8;
+      if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 8);
+      const left = Math.min(Math.max(8, r.left), window.innerWidth - w - 8);
+      tip.style.top = top + 'px'; tip.style.left = left + 'px';
+    }
+    function mostrar(el, nome) {
+      clearTimeout(timerOcultar);
+      alvoAtual = el;
+      tip.innerHTML = conteudo(nome);
+      tip.setAttribute('aria-hidden', 'false');
+      tip.classList.add('show');
+      posicionar(el);
+      const f = tip.querySelector('.cat-tip-fechar');
+      if (f) f.addEventListener('click', ocultar);
+    }
+    function ocultar() {
+      clearTimeout(timerOcultar);
+      tip.classList.remove('show');
+      tip.setAttribute('aria-hidden', 'true');
+      alvoAtual = null;
+    }
+    function ocultarComAtraso() { clearTimeout(timerOcultar); timerOcultar = setTimeout(ocultar, 120); }
+
+    document.querySelectorAll('input[name="categoria"]').forEach(function (chk) {
+      const nome = chk.value, label = chk.closest('label');
+      if (!INFO[nome] || !label) return;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cat-info-btn';
+      btn.textContent = 'i';
+      btn.setAttribute('aria-label', 'O que é: ' + nome);
+      label.appendChild(btn);
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        mostrar(btn, nome);
+      });
+      btn.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') mostrar(btn, nome); });
+      btn.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') ocultarComAtraso(); });
+      btn.addEventListener('focus', function () { mostrar(btn, nome); });
+      btn.addEventListener('blur', ocultarComAtraso);
+    });
+
+    tip.addEventListener('pointerenter', function () { clearTimeout(timerOcultar); });
+    tip.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') ocultarComAtraso(); });
+
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') ocultar(); });
+    document.addEventListener('click', function (e) {
+      if (!tip.contains(e.target) && !e.target.closest('.cat-info-btn')) { if (window.innerWidth < 640) ocultar(); }
+    });
+    window.addEventListener('scroll', function () { if (window.innerWidth >= 640) ocultar(); }, { passive: true });
+    window.addEventListener('resize', ocultar);
+  })();
   </script>
 </body>
 </html>
