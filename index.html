@@ -413,13 +413,21 @@
         <!-- FOTOGRAFIAS OBRIGATÓRIAS -->
         <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl">
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
-            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (3 a 10 fotos) *
+            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (1 a 10 fotos) *
           </label>
-          <p class="text-[11px] text-gray-500 mb-2">Envie fotografias nítidas em diferentes ângulos: frente, verso e marcas/detalhes.</p>
+          <div class="text-[11px] text-gray-600 mb-2 space-y-1 leading-relaxed">
+            <p>Envie fotos nítidas (claras) dos seus objetos.</p>
+            <p>Para objetos tridimensionais (como esculturas ou móveis), envie fotos de diferentes ângulos:</p>
+            <ul class="list-disc pl-4 space-y-0.5 text-gray-500">
+              <li>Frente e verso</li>
+              <li>Marcas, assinaturas ou detalhes importantes</li>
+            </ul>
+            <p>Essas imagens ajudam nossa equipe a identificar o objeto e avaliar se podemos aceitar a doação.</p>
+          </div>
           <input type="file" id="uploadFotos" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90 cursor-pointer" onchange="previewImages(event)">
 
           <div id="photosPreviewContainer" class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-3"></div>
-          <p id="photosCountWarning" class="text-xs text-red-600 font-semibold mt-2 hidden">É obrigatório selecionar pelo menos 3 fotografias do item.</p>
+          <p id="photosCountWarning" class="text-xs text-red-600 font-semibold mt-2 hidden">É obrigatório selecionar pelo menos 1 fotografia do item.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-amber-50/60 border border-amber-200 rounded-xl">
@@ -839,7 +847,7 @@
         alert(`Selecione no máximo ${MAX_FOTOS} fotografias.`);
         e.target.value = ''; warn.classList.remove('hidden'); return;
       }
-      warn.classList.toggle('hidden', files.length >= 3);
+      warn.classList.toggle('hidden', files.length >= 1);
       try {
         for (const f of files) {
           const it = await processarImagem(f, true);
@@ -876,7 +884,7 @@
         if (!(Number(val('quantidadeItens')) >= 1)) return ['quantidadeItens', 'Informe a quantidade de itens.'];
         if (!val('descricaoFisica')) return ['descricaoFisica', 'Informe a descrição física e técnica.'];
         if (!val('datacao')) return ['datacao', 'Informe a datação estimada.'];
-        if (fotos.length < 3) return ['uploadFotos', 'Anexe no mínimo 3 fotografias (aguarde o término do carregamento, se for o caso).'];
+        if (fotos.length < 1) return ['uploadFotos', 'Anexe no mínimo 1 fotografia (aguarde o término do carregamento, se for o caso).'];
       }
       if (n === 3) {
         if (!val('origemBem')) return ['origemBem', 'Descreva a origem do bem.'];
