@@ -967,10 +967,10 @@
       const r = [
         ['Tipo de doador', val('tipoDoador')], ['Grau de relação com o bem', val('grauRelacao')],
         ['CPF/CNPJ', val('documentoNumero')], ['Telefone', val('telefoneDoador')], ['Endereço', end],
-        ['Denominação do bem', val('denominacaoBem')], ['Categorias', cats], ['Quantidade de itens', val('quantidadeItens')],
-        ['Descrição física e técnica', val('descricaoFisica')], ['Datação', val('datacao')],
-        ['Estado de conservação', val('estadoConservacao')], ['Risco químico/biossegurança', val('riscoBiologico')],
-        ['Material biológico/dados de pacientes', val('dadosSensiveis')], ['Origem do bem', val('origemBem')],
+        ['Denominação do bem', val('denominacaoBem')], ['Categorias museológicas', cats], ['Quantidade de itens', val('quantidadeItens')],
+        ['Descrição física e técnica', val('descricaoFisica')], ['Datação estimada', val('datacao')],
+        ['Estado de conservação', val('estadoConservacao')], ['Risco químico / biossegurança', val('riscoBiologico')],
+        ['Material biológico / dados de pacientes', val('dadosSensiveis')], ['Origem do bem', val('origemBem')],
         ['A quem pertenceu', val('cadeiaCustodia')], ['Situação dos direitos autorais', val('situacaoAutoral')],
         ['Quantidade estimada', val('volumeEstimado')], ['Vínculo histórico-médico', val('vinculoNotorio')]
       ];
@@ -981,60 +981,214 @@
       return r.map(([rotulo, valor]) => ({ rotulo, valor: valor || 'Não informado' }));
     }
 
-    /* ---------- PDF (layout em fluxo, com quebra de página) ---------- */
+    /* ---------- Procedural Canvas do Cabeçalho e Degradês para o PDF ---------- */
+    function gerarCabecalhoPDFCanvas(logoEl) {
+      const w = 1260; // 210mm a 6 px/mm (150 DPI)
+      const h = 168;  // 28mm a 6 px/mm
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+
+      // Fundo Base Pantone 342 C (#006747)
+      ctx.fillStyle = '#006747';
+      ctx.fillRect(0, 0, w, h);
+
+      // Radiais combinados reproduzindo .fmusp-water-bg
+      const g3 = ctx.createRadialGradient(w * 0.45, h * 0.45, 10, w * 0.45, h * 0.45, w * 0.8);
+      g3.addColorStop(0, 'rgba(0, 103, 71, 0.90)');
+      g3.addColorStop(1, 'rgba(2, 43, 30, 0.98)');
+      ctx.fillStyle = g3;
+      ctx.fillRect(0, 0, w, h);
+
+      const g2 = ctx.createRadialGradient(w * 0.20, h * 0.80, 5, w * 0.20, h * 0.80, w * 0.50);
+      g2.addColorStop(0, 'rgba(0, 156, 166, 0.55)');
+      g2.addColorStop(1, 'rgba(0, 156, 166, 0)');
+      ctx.fillStyle = g2;
+      ctx.fillRect(0, 0, w, h);
+
+      const g1 = ctx.createRadialGradient(w * 0.75, h * 0.25, 5, w * 0.75, h * 0.25, w * 0.45);
+      g1.addColorStop(0, 'rgba(0, 199, 177, 0.50)');
+      g1.addColorStop(1, 'rgba(0, 199, 177, 0)');
+      ctx.fillStyle = g1;
+      ctx.fillRect(0, 0, w, h);
+
+      // Linhas cáusticas fluidas
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.strokeStyle = '#00C7B1';
+      ctx.lineWidth = 3.5;
+      for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, h * 0.25 + i * 32);
+        ctx.bezierCurveTo(w * 0.25, h * 0.15 + i * 25, w * 0.65, h * 0.75 + i * 20, w, h * 0.35 + i * 25);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Friso inferior turquesa Pantone 3265 C (#00C7B1)
+      ctx.fillStyle = '#00C7B1';
+      ctx.fillRect(0, h - 8, w, 8);
+
+      // Logo avatar circular com aro dourado
+      if (logoEl && logoEl.complete && logoEl.naturalWidth > 0) {
+        const logoSize = 134;
+        const logoX = 48;
+        const logoY = Math.round((h - 8 - logoSize) / 2);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(logoEl, logoX, logoY, logoSize, logoSize);
+        ctx.restore();
+
+        // Aro dourado
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2 - 1.5, 0, Math.PI * 2);
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      return c.toDataURL('image/jpeg', 0.95);
+    }
+
+    function gerarLinhaDegradeCanvas(w = 600, h = 30) {
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, w, 0);
+      grad.addColorStop(0, 'rgba(0, 156, 166, 0.12)'); // Pantone 320 suave
+      grad.addColorStop(0.4, 'rgba(0, 199, 177, 0.05)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+      return c.toDataURL('image/png');
+    }
+
+    /* ---------- PDF (layout em fluxo, cabeçalho texturizado e tabela calibrada) ---------- */
     const L = s => String(s ?? '').replace(/[–—]/g, '-').replace(/[“”]/g, '"').replace(/[‘’]/g, "'")
                      .replace(/[^\n\x20-\x7E\u00A0-\u00FF]/g, '?');
 
     function gerarPDF({ protocolo, timestamp, hash, resumo, manifesto }) {
       const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-      const M = 15, CW = 180, FIM = 280;
-      let y = 36;
+      const M = 14, CW = 182, FIM = 275;
+      const LW = 62;             // Largura da coluna de pergunta (rótulo)
+      const VX = M + LW + 4;     // Início da coluna de resposta (80mm) -> Sem sobreposição
+      const VW = CW - LW - 4;    // Largura da coluna de resposta (116mm)
+      let y = 38;
+
+      const logoImg = document.querySelector('header img');
+      const headerTextureUrl = gerarCabecalhoPDFCanvas(logoImg);
+      const linhaDegradeUrl = gerarLinhaDegradeCanvas();
 
       const cabecalho = () => {
-        doc.setFillColor(0, 103, 71); doc.rect(0, 0, 210, 20, 'F');
-        doc.setFillColor(0, 156, 166); doc.rect(0, 20, 210, 2, 'F');
-        doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5);
-        doc.text('MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" - FMUSP', M, 11);
-        doc.setFontSize(8);
-        doc.text('CENTRO DE PESQUISA E DOCUMENTAÇÃO (CPDoc) | TERMO DE DOAÇÃO DE ACERVO', M, 16);
+        // Faixa com padronagem líquida e logo integrada
+        doc.addImage(headerTextureUrl, 'JPEG', 0, 0, 210, 27);
+
+        // Tipografia institucional no cabeçalho
+        doc.setTextColor(255, 255, 255);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.text('Faculdade de Medicina da Universidade de São Paulo', 40, 8.5);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9.5);
+        doc.text('MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ"', 40, 13.5);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.text('Centro de Pesquisa e Documentação - CPDoc', 40, 18);
+
+        // Termo de Doação de Acervo DESTACADO na lateral direita
+        doc.setFillColor(0, 199, 177); // Pantone 3265 C brilhante
+        doc.roundedRect(138, 6.5, 62, 13.5, 2, 2, 'F');
+        doc.setTextColor(2, 43, 30);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.text('TERMO DE DOAÇÃO', 169, 11.5, { align: 'center' });
+        doc.text('DE ACERVO', 169, 16.5, { align: 'center' });
       };
+
       const garantir = h => {
         if (y + h <= FIM) return;
         const tam = doc.getFontSize();
-        doc.addPage(); cabecalho(); y = 32;
+        doc.addPage(); cabecalho(); y = 35;
         doc.setFontSize(tam); doc.setTextColor(0, 0, 0); doc.setFont('helvetica', 'normal');
       };
+
       const titulo = t => {
         garantir(12);
-        doc.setFillColor(240, 248, 245); doc.rect(M, y - 4, CW, 6, 'F');
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 103, 71);
-        doc.text(L(t), M + 2, y); y += 7;
+        doc.setFillColor(0, 103, 71); // Pantone 342 C
+        doc.rect(M, y - 4, CW, 6.5, 'F');
+        doc.setFillColor(0, 199, 177); // Filete turquesa
+        doc.rect(M, y + 2.5, CW, 0.8, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(255, 255, 255);
+        doc.text(L(t), M + 3, y + 0.6);
+        y += 8;
       };
-      const campo = (r, v) => {
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
-        const ls = doc.splitTextToSize(L(v), CW - 50);
-        garantir(5);
-        doc.setFont('helvetica', 'bold'); doc.setTextColor(60, 60, 60); doc.text(L(r), M, y);
-        doc.setFont('helvetica', 'normal'); doc.setTextColor(0, 0, 0);
-        ls.forEach((l, i) => { if (i) garantir(4); doc.text(l, M + 50, y); y += 4; });
-        y += 1.2;
+
+      const campo = (r, v, index = 0) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+        const rLines = doc.splitTextToSize(L(r), LW - 2);
+        const vLines = doc.splitTextToSize(L(v), VW - 4);
+        const numLines = Math.max(rLines.length, vLines.length);
+        const rowH = Math.max(6, numLines * 3.7 + 2.5);
+
+        garantir(rowH);
+
+        // Lista horizontal zebrada em degradê institucional FMUSP
+        if (index % 2 === 0) {
+          doc.addImage(linhaDegradeUrl, 'PNG', M, y - 1, CW, rowH);
+          doc.setFillColor(0, 156, 166);
+          doc.rect(M, y - 1, 1, rowH, 'F'); // Marcador vertical Pantone 320 C
+        }
+
+        // Coluna Pergunta / Rótulo (lado esquerdo)
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 80, 55);
+        rLines.forEach((l, i) => {
+          doc.text(l, M + 3, y + 2.5 + i * 3.7);
+        });
+
+        // Coluna Resposta / Valor (lado direito)
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(20, 20, 20);
+        vLines.forEach((l, i) => {
+          doc.text(l, VX, y + 2.5 + i * 3.7);
+        });
+
+        y += rowH;
       };
+
       const texto = (t, tam = 7.5) => {
         doc.setFont('helvetica', 'normal'); doc.setFontSize(tam); doc.setTextColor(40, 40, 40);
         doc.splitTextToSize(L(t), CW).forEach(l => { garantir(3.5); doc.text(l, M, y); y += 3.4; });
         y += 1.5;
       };
 
+      // Inicia Página 1
       cabecalho();
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 103, 71);
-      doc.text(`PROTOCOLO: ${protocolo}`, M, 28);
-      doc.setFont('helvetica', 'normal'); doc.setTextColor(80, 80, 80);
-      doc.text(L(`Data e Hora: ${timestamp}`), 120, 28);
 
-      titulo('1. DADOS DO DOADOR E DO BEM CULTURAL');
-      campo('Nome / Razão social', val('nomeDoador'));
-      campo('E-mail', val('emailDoador'));
-      resumo.forEach(i => campo(i.rotulo, i.valor));
+      // Barra de Protocolo e Timestamp
+      doc.setFillColor(242, 248, 246);
+      doc.roundedRect(M, 30, CW, 7, 1, 1, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(0, 103, 71);
+      doc.text(`PROTOCOLO: ${protocolo}`, M + 2.5, 34.6);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(80, 80, 80);
+      doc.text(L(`Data e Hora: ${timestamp}`), M + CW - 2.5, 34.6, { align: 'right' });
+
+      y = 43;
+
+      titulo('1. DADOS DO DOADOR E DO BEM HISTÓRICO-CULTURAL');
+      campo('Nome / Razão social', val('nomeDoador'), 0);
+      campo('E-mail de contato', val('emailDoador'), 1);
+      resumo.forEach((item, idx) => campo(item.rotulo, item.valor, idx + 2));
 
       titulo('2. REGISTRO FOTOGRÁFICO');
       fotos.forEach((f, i) => {
@@ -1042,7 +1196,7 @@
         const k = Math.min(32 / f.mini.w, 32 / f.mini.h);
         doc.addImage(f.mini.dataUrl, 'JPEG', M + (i % 5) * 37, y, f.mini.w * k, f.mini.h * k);
       });
-      y += 36;
+      if (fotos.length) y += 36;
 
       titulo('3. ARQUIVOS ANEXADOS (SHA-256)');
       manifesto.forEach(m => texto(`${m.filename}\n${m.hash}`, 6.5));
@@ -1054,10 +1208,11 @@
       document.querySelectorAll('#textoLegal p').forEach(p => texto(p.textContent.trim()));
 
       titulo('6. CERTIFICADO DE ASSINATURA ELETRÔNICA');
-      campo('Assinado por', val('nomeDoador'));
-      campo('Data/hora', timestamp);
-      campo('Destino oficial', 'cpdoc.museufm@usp.br');
-      campo('Hash SHA-256 do dossiê', hash);
+      campo('Assinado eletronicamente por', val('nomeDoador'), 0);
+      campo('Data e hora da emissão', timestamp, 1);
+      campo('Destino oficial', 'cpdoc.museufm@usp.br', 2);
+      campo('Hash SHA-256 do dossiê', hash, 3);
+      y += 2;
       texto('Aceite eletrônico registrado como assinatura eletrônica simples (Lei nº 14.063/2020 e art. 10, §2º, da MP nº 2.200-2/2001). O hash identifica o conteúdo declarado e os arquivos anexados no momento do envio. A deliberação final sobre aceite, recusa ou tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz".');
 
       const n = doc.getNumberOfPages();
