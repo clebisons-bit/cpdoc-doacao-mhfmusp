@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Termo de Doação de Acervo — CPDoc | MHFMUSP</title>
 
-  <!-- Favicon / Ícone da Aba com caminho absoluto e quebra de cache -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/Logo_avatar_CPDoc_II.png?v=2">
-  <link rel="shortcut icon" type="image/png" href="/Logo_avatar_CPDoc_II.png?v=2">
-  <link rel="apple-touch-icon" href="/Logo_avatar_CPDoc_II.png?v=2">
-
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
@@ -83,59 +78,6 @@
       opacity: 0.75;
       pointer-events: none;
     }
-
-    /* ---------- Explicação das categorias museológicas ---------- */
-    .cat-info-btn {
-      margin-left: auto;
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 9999px;
-      border: 1px solid #009CA6;
-      color: #006747;
-      background: #f0f8f6;
-      font-size: 11px;
-      font-weight: 700;
-      font-family: Georgia, serif;
-      font-style: italic;
-      line-height: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: help;
-    }
-    .cat-info-btn:hover, .cat-info-btn:focus-visible { background: #009CA6; color: #fff; outline: none; }
-    #catTip {
-      position: fixed;
-      z-index: 60;
-      width: min(340px, calc(100vw - 16px));
-      max-height: 70vh;
-      overflow-y: auto;
-      background: #fff;
-      border: 1px solid #009CA6;
-      border-top: 4px solid #006747;
-      border-radius: 12px;
-      box-shadow: 0 12px 32px rgba(0, 40, 30, 0.22);
-      padding: 12px 14px 12px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #374151;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity .12s ease;
-    }
-    #catTip.show { opacity: 1; visibility: visible; }
-    #catTip .cat-tip-nome { font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; color: #006747; margin: 0 0 2px; }
-    #catTip .cat-tip-tipo { font-size: 11px; color: #6b7280; margin: 0 0 6px; }
-    #catTip .cat-tip-tipo b { color: #009CA6; }
-    #catTip .cat-tip-ex-t { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #006747; margin: 8px 0 2px; }
-    #catTip ul { margin: 0; padding-left: 16px; list-style: disc; }
-    #catTip li { margin: 1px 0; }
-    #catTip .cat-tip-fechar { display: none; width: 100%; margin-top: 10px; padding: 7px; border-radius: 8px; background: #006747; color: #fff; font-weight: 700; font-size: 12px; }
-    @media (max-width: 639px) {
-      #catTip { left: 8px !important; right: 8px; bottom: 8px; top: auto !important; width: auto; max-height: 60vh; }
-      #catTip .cat-tip-fechar { display: block; }
-    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans antialiased selection:bg-[#009CA6] selection:text-white">
@@ -175,10 +117,9 @@
   </header>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-4 sm:px-6 sm:py-6">
+  <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
 
-    <!-- BLOCO TEXTUAL INFORMATIVO -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-6 mb-4 sm:mb-6">
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 mb-6">
       <h2 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] tracking-tight">
         Termo de Doação de Acervo
       </h2>
@@ -186,27 +127,22 @@
         Este é o formulário oficial para propor doações de acervo ao Museu Histórico "Prof. Carlos da Silva Lacaz" da FMUSP. Após o preenchimento, você receberá um número de protocolo e o PDF com a sua proposta. A avaliação e a decisão final sobre o recebimento dos itens são de responsabilidade exclusiva do Museu, orientadas por nossa Política de Gestão de Acervos. O prazo para entrarmos em contato é de até 10 (dez) dias úteis após o envio.
       </p>
 
-      <div class="mt-5 sm:mt-6">
+      <div class="mt-6">
         <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
-          <span id="stepIndicatorLabel">Etapa 1 de 4</span>
+          <span id="stepIndicatorLabel">Etapa 1 de 5</span>
         </div>
         <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-          <div id="stepProgressBar" class="bg-[#009CA6] h-full transition-all duration-300 w-1/4"></div>
+          <div id="stepProgressBar" class="bg-[#009CA6] h-full transition-all duration-300 w-1/5"></div>
         </div>
       </div>
-
-      <!-- BOTÃO DE DESCARTAR RASCUNHO -->
-      <button type="button" onclick="descartarRascunho()" class="mt-3 text-[11px] text-gray-500 underline hover:text-[#006747]">
-        <i class="fa-solid fa-eraser mr-1"></i>Limpar os dados preenchidos neste navegador
-      </button>
     </div>
 
-    <!-- BLOCO DO FORMULÁRIO COM AUTOPREENCHIMENTO ATIVADO -->
-    <form id="donationForm" autocomplete="on" novalidate class="bg-white rounded-2xl border border-gray-200 shadow-sm px-5 pt-3.5 pb-5 sm:px-6 sm:pt-4 sm:pb-6 space-y-6">
+    <!-- FORMULÁRIO -->
+    <form id="donationForm" novalidate class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
 
       <!-- ETAPA 1: IDENTIFICAÇÃO DO DOADOR -->
       <div id="step1" class="step-pane space-y-5">
-        <div class="border-b border-gray-200 pb-2.5 -mt-1">
+        <div class="border-b border-gray-200 pb-3">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">1</span>
             Identificação do Doador
@@ -216,7 +152,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tipo de Doador *</label>
-            <select id="tipoDoador" name="tipoDoador" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required>
+            <select id="tipoDoador" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required>
               <option value="Pessoa Física">Pessoa Física</option>
               <option value="Pessoa Jurídica">Pessoa Jurídica</option>
               <option value="Espólio (Herdeiros e Sucessores)">Espólio (Herdeiros e Sucessores)</option>
@@ -226,7 +162,7 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Grau de Relação com o Bem *</label>
-            <select id="grauRelacao" name="grauRelacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required onchange="aoMudarGrauRelacao()">
+            <select id="grauRelacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required onchange="toggleProcuracaoUpload()">
               <option value="Proprietário original">Proprietário original</option>
               <option value="Herdeiro-sucessor">Herdeiro-sucessor</option>
               <option value="Adquirente de terceiro">Adquirente de terceiro</option>
@@ -238,22 +174,22 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nome Completo ou Razão Social *</label>
-            <input type="text" id="nomeDoador" name="name" autocomplete="name" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Nome completo" required oninput="aoDigitarNomeDoador(this.value)">
+            <input type="text" id="nomeDoador" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Nome completo" required>
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">CPF ou CNPJ *</label>
-            <input type="text" id="documentoNumero" name="cpf" autocomplete="off" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="000.000.000-00 ou 00.000.000/0001-00" maxlength="18" oninput="maskCpfCnpj(this)" required>
+            <input type="text" id="documentoNumero" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="000.000.000-00 ou 00.000.000/0001-00" maxlength="18" oninput="maskCpfCnpj(this)" required>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">E-mail de Contato *</label>
-            <input type="email" id="emailDoador" name="email" autocomplete="email" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="exemplo@dominio.com" required>
+            <input type="email" id="emailDoador" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="exemplo@dominio.com" required>
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Telefone / WhatsApp *</label>
-            <input type="text" id="telefoneDoador" name="tel" autocomplete="tel" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="(11) 90000-0000" maxlength="15" oninput="maskTelefone(this)" required>
+            <input type="text" id="telefoneDoador" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="(11) 90000-0000" maxlength="15" oninput="maskTelefone(this)" required>
           </div>
         </div>
 
@@ -264,29 +200,29 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
               <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">CEP</label>
-              <input type="text" id="cep" name="postal-code" autocomplete="postal-code" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="00000-000" maxlength="9" oninput="maskCep(this)">
+              <input type="text" id="cep" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="00000-000" maxlength="9" oninput="maskCep(this)" onblur="buscarCEP()">
             </div>
             <div class="md:col-span-2">
               <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Logradouro / Rua</label>
-              <input type="text" id="logradouro" name="address-line1" autocomplete="address-line1" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Av. Dr. Arnaldo" required>
+              <input type="text" id="logradouro" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Av. Dr. Arnaldo" required>
             </div>
           </div>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div>
               <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Número</label>
-              <input type="text" id="numero" name="address-line2" autocomplete="address-line2" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="455" required>
+              <input type="text" id="numero" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="455" required>
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Complemento</label>
-              <input type="text" id="complemento" name="address-line3" autocomplete="address-line3" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Sala / Apto">
+              <input type="text" id="complemento" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Sala / Apto">
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Bairro</label>
-              <input type="text" id="bairro" name="address-level3" autocomplete="address-level3" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Cerqueira César" required>
+              <input type="text" id="bairro" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Cerqueira César" required>
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-gray-600 mb-0.5">Cidade / UF</label>
-              <input type="text" id="cidadeUf" name="address-level2" autocomplete="address-level2" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="São Paulo / SP" required>
+              <input type="text" id="cidadeUf" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="São Paulo / SP" required>
             </div>
           </div>
         </div>
@@ -306,85 +242,45 @@
         </div>
       </div>
 
-      <!-- ETAPA 2: DESCRIÇÃO DO BEM HISTÓRICO-CULTURAL PARA DOAÇÃO -->
+      <!-- ETAPA 2: DESCRIÇÃO DO BEM CULTURAL -->
       <div id="step2" class="step-pane hidden space-y-5">
-        <div class="border-b border-gray-200 pb-2.5 -mt-1">
+        <div class="border-b border-gray-200 pb-3">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">2</span>
-            Descrição do Bem Histórico-Cultural para Doação
+            Descrição do Bem Cultural Doado
           </h3>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-2">Categoria Museológica (selecione uma ou mais) *</label>
-          <p class="text-[11px] text-gray-500 mb-2 -mt-1">
-            <i class="fa-regular fa-circle-question text-[#009CA6] mr-1"></i>
-            Em dúvida? Passe o mouse sobre o ícone <span class="font-serif italic font-bold text-[#006747]">i</span> ao lado de cada categoria (ou toque nele, no celular) para ver o que ela significa e alguns exemplos.
-          </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Instrumentos manuais" class="rounded text-[#006747]">
-              <span>Instrumentos manuais</span>
+              <input type="checkbox" name="categoria" value="Instrumental médico-cirúrgico" class="rounded text-[#006747]">
+              <span>Instrumental médico-cirúrgico</span>
             </label>
             <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Aparelhos e equipamentos" class="rounded text-[#006747]">
-              <span>Aparelhos e equipamentos</span>
+              <input type="checkbox" name="categoria" value="Documento arquivístico" class="rounded text-[#006747]">
+              <span>Documento arquivístico</span>
             </label>
             <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Recipientes e vidraria" class="rounded text-[#006747]">
-              <span>Recipientes e vidraria</span>
+              <input type="checkbox" name="categoria" value="Obra bibliográfica ou raridade" class="rounded text-[#006747]">
+              <span>Obra bibliográfica ou raridade</span>
             </label>
             <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Modelos anatômicos e didáticos" class="rounded text-[#006747]">
-              <span>Modelos anatômicos e didáticos</span>
+              <input type="checkbox" name="categoria" value="Espécime biológico ou anatômico" class="rounded text-[#006747]">
+              <span>Espécime biológico ou anatômico</span>
             </label>
             <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Próteses, órteses e implantes" class="rounded text-[#006747]">
-              <span>Próteses, órteses e implantes</span>
+              <input type="checkbox" name="categoria" value="Mobiliário e equipamento hospitalar histórico" class="rounded text-[#006747]">
+              <span>Mobiliário / equipamento hospitalar</span>
             </label>
             <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Materiais farmacêuticos e medicamentos" class="rounded text-[#006747]">
-              <span>Materiais farmacêuticos e medicamentos</span>
+              <input type="checkbox" name="categoria" value="Iconografia (fotografias, ilustrações, cartazes)" class="rounded text-[#006747]">
+              <span>Iconografia (fotos, gravuras, mapas)</span>
             </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Mobiliário e equipamento hospitalar" class="rounded text-[#006747]">
-              <span>Mobiliário e equipamento hospitalar</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Equipamentos de proteção e vestuário médico" class="rounded text-[#006747]">
-              <span>Equipamentos de proteção e vestuário médico</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Obras visuais e iconografia" class="rounded text-[#006747]">
-              <span>Obras visuais e iconografia</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Documentos e arquivos médicos" class="rounded text-[#006747]">
-              <span>Documentos e arquivos médicos</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Material didático e objetos de ensino" class="rounded text-[#006747]">
-              <span>Material didático e objetos de ensino</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Numismática, medalhas e condecorações" class="rounded text-[#006747]">
-              <span>Numismática, medalhas e condecorações</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Arqueologia médica e objetos rituais de cura" class="rounded text-[#006747]">
-              <span>Arqueologia médica e objetos rituais de cura</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Material audiovisual e objeto digital" class="rounded text-[#006747]">
-              <span>Material audiovisual e objeto digital</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Equipamentos de laboratório e instrumentação científica" class="rounded text-[#006747]">
-              <span>Equipamentos de laboratório e instrumentação científica</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer">
-              <input type="checkbox" name="categoria" value="Outra não listada" class="rounded text-[#006747]">
-              <span>Outra não listada</span>
+            <label class="flex items-center gap-2 p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer sm:col-span-2">
+              <input type="checkbox" name="categoria" value="Objeto tridimensional diverso" class="rounded text-[#006747]">
+              <span>Objeto tridimensional diverso</span>
             </label>
           </div>
         </div>
@@ -392,27 +288,27 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2">
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Denominação do Bem (Nome técnico ou popular) *</label>
-            <input type="text" id="denominacaoBem" name="denominacaoBem" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Microscópio óptico Carl Zeiss" required>
+            <input type="text" id="denominacaoBem" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Microscópio óptico Carl Zeiss" required>
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Quantidade de Itens *</label>
-            <input type="number" id="quantidadeItens" name="quantidadeItens" min="1" value="1" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" required>
+            <input type="number" id="quantidadeItens" min="1" value="1" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" required>
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Descrição Física e Técnica *</label>
-          <textarea id="descricaoFisica" name="descricaoFisica" rows="3" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Material constituinte, dimensões aproximadas (A x L x P ou peso), técnica, marcas de fabricante, números de série..." required></textarea>
+          <textarea id="descricaoFisica" rows="3" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Material constituinte, dimensões aproximadas (A x L x P ou peso), técnica, marcas de fabricante, números de série..." required></textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Datação Estimada *</label>
-            <input type="text" id="datacao" name="datacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex. Fabricado em 1945 / Década de 1960 / 1981" required>
+            <input type="text" id="datacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: c. 1930 / Século XX / 1945" required>
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Estado de Conservação *</label>
-            <select id="estadoConservacao" name="estadoConservacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required>
+            <select id="estadoConservacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required>
               <option value="Bom">Bom (íntegro, pequenos sinais normais de uso)</option>
               <option value="Regular">Regular (oxidações superficiais, desgastes pontuais)</option>
               <option value="Requer intervenção urgente">Requer intervenção urgente (fragilizado / instável)</option>
@@ -423,34 +319,26 @@
         <!-- FOTOGRAFIAS OBRIGATÓRIAS -->
         <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl">
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
-            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (1 a 10 fotos) *
+            <i class="fa-solid fa-camera text-[#009CA6] mr-1"></i> Registro Fotográfico Obrigatório (3 a 10 fotos) *
           </label>
-          <div class="text-[11px] text-gray-600 mb-2 space-y-1 leading-relaxed">
-            <p>Envie fotos nítidas (claras) dos seus objetos.</p>
-            <p>Para objetos tridimensionais (como esculturas ou móveis), envie fotos de diferentes ângulos:</p>
-            <ul class="list-disc pl-4 space-y-0.5 text-gray-500">
-              <li>Frente e verso</li>
-              <li>Marcas, assinaturas ou detalhes importantes</li>
-            </ul>
-            <p>Essas imagens ajudam nossa equipe a identificar o objeto e avaliar se podemos aceitar a doação.</p>
-          </div>
+          <p class="text-[11px] text-gray-500 mb-2">Envie fotografias nítidas em diferentes ângulos: frente, verso e marcas/detalhes.</p>
           <input type="file" id="uploadFotos" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90 cursor-pointer" onchange="previewImages(event)">
 
           <div id="photosPreviewContainer" class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-3"></div>
-          <p id="photosCountWarning" class="text-xs text-red-600 font-semibold mt-2 hidden">É obrigatório selecionar pelo menos 1 fotografia do item.</p>
+          <p id="photosCountWarning" class="text-xs text-red-600 font-semibold mt-2 hidden">É obrigatório selecionar pelo menos 3 fotografias do item.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-amber-50/60 border border-amber-200 rounded-xl">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Riscos Químicos ou Biossegurança? *</label>
-            <select id="riscoBiologico" name="riscoBiologico" class="w-full p-2 border rounded-lg text-xs focus-fmusp bg-white" onchange="updateProgress()">
+            <select id="riscoBiologico" class="w-full p-2 border rounded-lg text-xs focus-fmusp bg-white">
               <option value="Não">Não</option>
               <option value="Sim">Sim (materiais cortantes, químicos, fármacos)</option>
             </select>
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Material Biológico Humano ou Dados de Pacientes? *</label>
-            <select id="dadosSensiveis" name="dadosSensiveis" class="w-full p-2 border rounded-lg text-xs focus-fmusp bg-white" onchange="updateProgress()">
+            <select id="dadosSensiveis" class="w-full p-2 border rounded-lg text-xs focus-fmusp bg-white">
               <option value="Não">Não</option>
               <option value="Sim">Sim (peças anatômicas, prontuários, fichas)</option>
             </select>
@@ -458,41 +346,38 @@
         </div>
       </div>
 
-      <!-- ETAPA 3: HISTÓRICO E ORIGEM DO BEM (PROVENIÊNCIA) -->
+      <!-- ETAPA 3: PROVENIÊNCIA E CUSTÓDIA -->
       <div id="step3" class="step-pane hidden space-y-5">
-        <div class="border-b border-gray-200 pb-2.5 -mt-1">
+        <div class="border-b border-gray-200 pb-3">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">3</span>
-            Histórico e Origem do Bem (Proveniência)
+            Proveniência e Cadeia de Custódia
           </h3>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Origem do Bem (Como e quando foi adquirido) *</label>
-          <textarea id="origemBem" name="origemBem" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Compra, herança, exercício profissional, doação de terceiro..." required></textarea>
+          <textarea id="origemBem" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Compra, herança, exercício profissional, doação de terceiro..." required></textarea>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">A quem pertenceu? (Cadeia de custódia anterior)</label>
-          <textarea id="cadeiaCustodia" name="cadeiaCustodia" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Liste detentores ou instituições anteriores conhecidas por ordem cronológica..."></textarea>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Cadeia de Custódia Anterior (Detentores conhecidos)</label>
+          <textarea id="cadeiaCustodia" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Liste detentores ou instituições anteriores conhecidas por ordem cronológica..."></textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="flex flex-col justify-between">
-            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
-              Situação dos Direitos Autorais <span class="normal-case font-normal text-gray-500">(Selecione a opção que melhor descreve os direitos de reprodução)</span> *
-            </label>
-            <select id="situacaoAutoral" name="situacaoAutoral" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white mt-auto">
-              <option value="Domínio público (O autor faleceu há mais de 70 anos ou o bem é livre de direitos)">Domínio público (O autor faleceu há mais de 70 anos ou o bem é livre de direitos)</option>
-              <option value="Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)">Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)</option>
-              <option value="Direitos pertencem a terceiros (Livros publicados, obras de arte de terceiros, fotografias com fotógrafo identificado)">Direitos pertencem a terceiros (Livros publicados, obras de arte de terceiros, fotografias com fotógrafo identificado)</option>
-              <option value="Direitos com restrições / Protegidos por direitos autorais">Direitos com restrições / Protegidos por direitos autorais</option>
-              <option value="Não sei informar / Situação autoral desconhecida">Não sei informar / Situação autoral desconhecida</option>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Situação Autoral Estimada *</label>
+            <select id="situacaoAutoral" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
+              <option value="Domínio público">Domínio público</option>
+              <option value="Obra órfã (autor desconhecido)">Obra órfã (autor desconhecido)</option>
+              <option value="Direitos ativos de terceiros">Direitos ativos de terceiros</option>
+              <option value="Situação incerta">Situação incerta</option>
             </select>
           </div>
-          <div class="flex flex-col justify-between">
-            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Quantidade Estimada da Doação *</label>
-            <select id="volumeEstimado" name="volumeEstimado" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white mt-auto" onchange="checkVolumeWarning()">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Volume Estimado da Doação *</label>
+            <select id="volumeEstimado" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" onchange="checkVolumeWarning()">
               <option value="Item(ns) individual(is)">Item(ns) individual(is)</option>
               <option value="Pequeno conjunto (até 20 itens)">Pequeno conjunto (até 20 itens)</option>
               <option value="Fundo ou coleção de grande volume (acima de 20 itens)">Fundo ou coleção de grande volume (acima de 20 itens)</option>
@@ -506,15 +391,15 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Histórico ou Vínculo com a História da Medicina (se aplicável)</label>
-          <textarea id="vinculoNotorio" name="vinculoNotorio" rows="2" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Pertenceu ao Prof. Dr. Carlos da Silva Lacaz ou a antigo catedrático da FMUSP..."></textarea>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Vínculo com Notabilidade Histórico-Médica (se aplicável)</label>
+          <input type="text" id="vinculoNotorio" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Ex: Pertenceu ao Prof. Dr. Carlos da Silva Lacaz ou a antigo catedrático da FMUSP">
         </div>
 
         <div class="p-3.5 bg-gray-50 border border-gray-300 rounded-xl">
           <label class="flex items-start gap-2.5 cursor-pointer">
-            <input type="checkbox" id="checkOrigemLicita" name="checkOrigemLicita" class="mt-1 rounded text-[#006747]" required>
+            <input type="checkbox" id="checkOrigemLicita" class="mt-1 rounded text-[#006747]" required>
             <span class="text-xs text-gray-800 font-semibold leading-relaxed">
-              Declaro que o objeto me pertence legalmente, não é fruto de roubo ou perda, e não está envolvido em nenhuma disputa judicial ou processo de herança (autodeclaração obrigatória de boa-fé).
+              Declaro sob compromisso de honra que o bem não é objeto de furto, extravio, apropriação irregular nem litígio judicial de qualquer espécie (autodeclaração obrigatória de boa-fé).
             </span>
           </label>
         </div>
@@ -522,7 +407,7 @@
 
       <!-- ETAPA 4: BIOÉTICA & LGPD (CONDICIONAL) -->
       <div id="step4" class="step-pane hidden space-y-5">
-        <div class="border-b border-gray-200 pb-2.5 -mt-1">
+        <div class="border-b border-gray-200 pb-3">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">4</span>
             Conformidade Bioética e Dados Pessoais (LGPD)
@@ -534,7 +419,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Consentimento Informado Original do Paciente/Família</label>
-            <select id="consentimentoBio" name="consentimentoBio" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
+            <select id="consentimentoBio" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
               <option value="Não se aplica">Não se aplica (histórico / anterior às normas vigentes)</option>
               <option value="Sim">Sim (documentado)</option>
               <option value="Não">Não disponível</option>
@@ -542,7 +427,7 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Anonimização Prévia Realizada?</label>
-            <select id="anonimizacaoPrevia" name="anonimizacaoPrevia" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
+            <select id="anonimizacaoPrevia" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
               <option value="Sim">Sim</option>
               <option value="Não">Não</option>
             </select>
@@ -551,7 +436,7 @@
 
         <div>
           <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Base Legal Indicada (Lei 13.709/2018 - LGPD)</label>
-          <select id="baseLegalLGPD" name="baseLegalLGPD" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
+          <select id="baseLegalLGPD" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white">
             <option value="Interesse legítimo para fins históricos e científicos (art. 7º, IV e art. 11, II, 'c')">Interesse legítimo para fins históricos, científicos e de pesquisa (art. 7º, IV e art. 11, II, 'c')</option>
             <option value="Consentimento explícito do titular">Consentimento explícito do titular</option>
             <option value="Dado já totalmente anonimizado (fora do alcance da LGPD)">Dado já totalmente anonimizado (fora do alcance da LGPD)</option>
@@ -565,10 +450,10 @@
       </div>
 
       <!-- ETAPA 5: CONDIÇÕES E ASSINATURA -->
-      <div id="step5" class="step-pane hidden space-y-5">
-        <div class="border-b border-gray-200 pb-2.5 -mt-1">
+      <div id="step5" class="step-pane hidden space-y-6">
+        <div class="border-b border-gray-200 pb-3">
           <h3 class="text-lg font-heading font-bold text-[#006747] flex items-center gap-2">
-            <span id="step5Badge" class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">4</span>
+            <span class="w-6 h-6 rounded-full bg-[#009CA6] text-white text-xs flex items-center justify-center font-bold">5</span>
             Condições, Cláusulas Legais e Assinatura Digital
           </h3>
         </div>
@@ -576,19 +461,25 @@
         <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
           <h4 class="text-xs font-bold text-[#006747] uppercase tracking-wider">Condições e Restrições Declaradas</h4>
 
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Publicação / Reprodução</label>
-            <input type="text" id="restricoesPublicacao" name="restricoesPublicacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" placeholder="Ex: apenas para fins acadêmicos, restrição de acesso a dados sensíveis/pessoais, etc.">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Exposição (se houver)</label>
+              <input type="text" id="restricoesExposicao" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Ex: vedação a exposição desprotegida">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Restrições de Publicação / Reprodução</label>
+              <input type="text" id="restricoesPublicacao" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Ex: apenas para fins acadêmicos">
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Solicita Crédito em Exposições?</label>
-              <input type="text" id="creditoNominal" name="creditoNominal" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" placeholder="Ex: Doação da Família Dr. Roberto Santos">
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Solicita Crédito Nominal em Exposições?</label>
+              <input type="text" id="creditoNominal" class="w-full p-2 border rounded-lg text-xs focus-fmusp" placeholder="Ex: Doação da Família Dr. Roberto Santos">
             </div>
-            <div class="flex items-center pt-1 md:pt-6">
+            <div class="flex items-center pt-5">
               <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700">
-                <input type="checkbox" id="anonimatoDoador" name="anonimatoDoador" class="rounded text-[#006747]" onchange="aoAlternarAnonimato(this.checked)">
+                <input type="checkbox" id="anonimatoDoador" class="rounded text-[#006747]">
                 <span>Desejo permanecer anônimo na divulgação pública</span>
               </label>
             </div>
@@ -598,7 +489,7 @@
         <div>
           <div class="flex items-center justify-between mb-2">
             <label class="block text-xs font-bold text-[#006747] uppercase">
-              <i class="fa-solid fa-scale-balanced text-[#009CA6] mr-1"></i> Texto Legal do Instrumento (Leitura Obrigatória)
+              <i class="fa-solid fa-scale-balanced text-[#009CA6] mr-1"></i> Parte B — Texto Legal do Instrumento (Leitura Obrigatória)
             </label>
             <span class="text-[11px] text-gray-400">Role para ler na íntegra</span>
           </div>
@@ -635,7 +526,7 @@
 
           <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
             <input type="checkbox" class="check-aceite mt-0.5 rounded text-[#006747]" onchange="verificarAceites()">
-            <span>Li e concordo integralmente com todas as cláusulas jurídicas apresentadas neste instrumento.</span>
+            <span>Li e concordo integralmente com todas as cláusulas jurídicas apresentadas na Parte B deste instrumento.</span>
           </label>
 
           <label class="flex items-start gap-2.5 text-xs text-gray-800 cursor-pointer">
@@ -688,21 +579,27 @@
         <i class="fa-solid fa-check-double"></i>
       </div>
       <div>
-        <h3 class="text-xl sm:text-2xl font-heading font-bold text-[#006747]">Termo de Doação Enviado com Sucesso!</h3>
-        <p class="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto mt-2 leading-relaxed">
-          A sua proposta foi transmitida para o Centro de Pesquisa e Documentação (CPDoc) do Museu Histórico da FMUSP: <span class="font-bold text-[#006747]">cpdoc.museufm@usp.br</span>.<br class="hidden sm:inline">
-          Todos os arquivos anexados e as declarações assinadas foram encaminhados à nossa equipe técnica para análise. O preenchimento deste formulário digital substitui a necessidade de documentação em papel, contribuindo com a sustentabilidade. Entraremos em contato em até 10 (dez) dias úteis.
+        <span class="text-xs font-mono font-bold tracking-widest text-[#009CA6] bg-black px-3.5 py-1 rounded-full uppercase border border-[#009CA6]/40">
+          Termo Homologado com Sucesso
+        </span>
+        <h3 class="text-xl sm:text-2xl font-heading font-bold text-[#006747] mt-3">Termo Assinado e Enviado ao CPDoc!</h3>
+        <p class="text-xs sm:text-sm text-gray-600 max-w-lg mx-auto mt-1">
+          A sua proposta foi transmitida para o endereço oficial do Centro de Pesquisa e Documentação: <span class="font-bold text-[#006747]">cpdoc.museufmusp@usp.br</span> com todos os arquivos anexados.
         </p>
       </div>
 
       <div class="max-w-lg mx-auto p-5 bg-gray-50 rounded-xl border border-gray-300 space-y-2.5 text-xs text-left">
         <div class="flex justify-between border-b pb-1.5">
-          <span class="text-gray-500">Protocolo:</span>
+          <span class="text-gray-500">Número de Protocolo CPDoc:</span>
           <span id="displayProtocol" class="font-mono font-bold text-[#006747] text-sm"></span>
         </div>
         <div class="flex justify-between border-b pb-1.5">
           <span class="text-gray-500">Data e Hora da Assinatura:</span>
           <span id="displayTimestamp" class="font-mono text-gray-800"></span>
+        </div>
+        <div class="flex justify-between border-b pb-1.5">
+          <span class="text-gray-500">Destinatário Oficial:</span>
+          <span class="font-mono text-gray-800">cpdoc.museufmusp@usp.br</span>
         </div>
         <div class="border-b pb-1.5">
           <span class="text-gray-500 block mb-0.5">Hash Criptográfico de Integridade (SHA-256):</span>
@@ -717,7 +614,7 @@
         <button type="button" id="btnDownloadPDF" class="px-5 py-2.5 bg-[#006747] hover:bg-[#005037] text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 border border-[#009CA6]" onclick="baixarPDFNovamente()">
           <i class="fa-solid fa-file-pdf text-[#009CA6] text-base"></i> Baixar Cópia em PDF
         </button>
-        <button type="button" class="px-5 py-2.5 bg-black hover:bg-neutral-900 text-white rounded-xl font-bold text-xs transition border border-[#009CA6]" onclick="limparRascunhoERecarregar()">
+        <button type="button" class="px-5 py-2.5 bg-black hover:bg-neutral-900 text-white rounded-xl font-bold text-xs transition border border-[#009CA6]" onclick="window.location.reload()">
           Preencher Nova Proposta
         </button>
       </div>
@@ -737,125 +634,21 @@
     </div>
   </footer>
 
-  <!-- CAIXA DE EXPLICAÇÃO DAS CATEGORIAS (preenchida por script) -->
-  <div id="catTip" role="tooltip" aria-hidden="true"></div>
-
   <!-- SCRIPT -->
   <script>
+    const TOTAL_STEPS = 5;
     const MAX_FOTOS = 10;
     const MAX_LOTE_B64 = 3500000;   // Base64 por requisição (teto da Vercel: 4,5 MB no corpo inteiro)
     const MAX_PDF_BYTES = 2500000;  // PDFs avulsos (~3,3 MB em Base64)
     const ALVO_IMG_B64 = 600000;    // alvo por imagem (~450 KB)
-    const STORAGE_KEY = 'cpdoc_doacao_rascunho_v1';
 
     let currentStep = 1, fotos = [], enviando = false, envio = null, pdfDoc = null, previewToken = 0;
-    let editouCreditoManualmente = false;
-    let editouCustodiaManualmente = false;
-
     const $ = id => document.getElementById(id);
     const val = id => ($(id)?.value || '').trim();
     const precisaEtapa4 = () => val('dadosSensiveis') === 'Sim' || val('riscoBiologico') === 'Sim';
-    const getEtapasAtivas = () => precisaEtapa4() ? [1, 2, 3, 4, 5] : [1, 2, 3, 5];
     const SPIN = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>';
 
     $('donationForm').addEventListener('submit', e => e.preventDefault());
-
-    /* ---------- Lógica de Autopreenchimento Inteligente Cruzado ---------- */
-    function aoDigitarNomeDoador(nome) {
-      if (!$('anonimatoDoador').checked && !editouCreditoManualmente) {
-        $('creditoNominal').value = nome;
-      }
-      if (val('grauRelacao') === 'Proprietário original' && !editouCustodiaManualmente) {
-        $('cadeiaCustodia').value = nome;
-      }
-      salvarRascunho();
-    }
-
-    function aoMudarGrauRelacao() {
-      const grau = val('grauRelacao');
-      toggleProcuracaoUpload();
-      if (grau === 'Proprietário original') {
-        if (!editouCustodiaManualmente && val('nomeDoador')) {
-          $('cadeiaCustodia').value = val('nomeDoador');
-        }
-        $('situacaoAutoral').value = 'Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)';
-      }
-      salvarRascunho();
-    }
-
-    function aoAlternarAnonimato(anonimo) {
-      if (anonimo) {
-        $('creditoNominal').value = 'Anônimo (a pedido do doador)';
-        $('creditoNominal').disabled = true;
-      } else {
-        $('creditoNominal').disabled = false;
-        $('creditoNominal').value = val('nomeDoador') || '';
-      }
-      salvarRascunho();
-    }
-
-    $('creditoNominal').addEventListener('input', () => { editouCreditoManualmente = true; salvarRascunho(); });
-    $('cadeiaCustodia').addEventListener('input', () => { editouCustodiaManualmente = true; salvarRascunho(); });
-
-    /* ---------- Persistência Automática de Rascunho na Sessão ---------- */
-    const ehCampoDeAceite = el => el.classList.contains('check-aceite') || el.id === 'checkOrigemLicita';
-
-    function salvarRascunho() {
-      try {
-        const dados = {};
-        document.querySelectorAll('#donationForm input, #donationForm select, #donationForm textarea').forEach(el => {
-          if (el.type === 'file') return;
-          if (ehCampoDeAceite(el)) return;
-          if (el.type === 'checkbox') {
-            dados[el.name ? `${el.name}_${el.value}` : el.id] = el.checked;
-          } else {
-            dados[el.id] = el.value;
-          }
-        });
-        dados._editouCredito = editouCreditoManualmente;
-        dados._editouCustodia = editouCustodiaManualmente;
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
-      } catch (e) {}
-    }
-
-    function restaurarRascunho() {
-      try {
-        const salvo = sessionStorage.getItem(STORAGE_KEY);
-        if (!salvo) return;
-        const dados = JSON.parse(salvo);
-        editouCreditoManualmente = !!dados._editouCredito;
-        editouCustodiaManualmente = !!dados._editouCustodia;
-
-        document.querySelectorAll('#donationForm input, #donationForm select, #donationForm textarea').forEach(el => {
-          if (el.type === 'file') return;
-          if (ehCampoDeAceite(el)) return;
-          if (el.type === 'checkbox') {
-            const k = el.name ? `${el.name}_${el.value}` : el.id;
-            if (dados[k] !== undefined) el.checked = dados[k];
-          } else if (dados[el.id] !== undefined) {
-            el.value = dados[el.id];
-          }
-        });
-        toggleProcuracaoUpload();
-        checkVolumeWarning();
-        if ($('anonimatoDoador').checked) $('creditoNominal').disabled = true;
-        verificarAceites();
-      } catch (e) {}
-    }
-
-    function descartarRascunho() {
-      if (!confirm('Apagar todos os dados preenchidos neste navegador e recomeçar?')) return;
-      limparRascunhoERecarregar();
-    }
-
-    function limparRascunhoERecarregar() {
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
-      window.location.reload();
-    }
-
-    // Salva automaticamente a cada caractere ou seleção
-    $('donationForm').addEventListener('input', salvarRascunho);
-    $('donationForm').addEventListener('change', salvarRascunho);
 
     /* ---------- Máscaras e auxiliares ---------- */
     function maskCpfCnpj(input) {
@@ -868,65 +661,30 @@
       }
       input.value = v;
     }
-
     function maskTelefone(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 11);
       if (v.length > 10) v = v.replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d{1,4})$/, '$1-$2');
       else if (v.length > 2) v = v.replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d{1,4})$/, '$1-$2');
       input.value = v;
     }
-
     function maskCep(input) {
       input.value = input.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2');
-      const cepLimpo = input.value.replace(/\D/g, '');
-      if (cepLimpo.length === 8) {
-        buscarCEP();
-      }
     }
-
     function toggleProcuracaoUpload() {
       $('boxProcuracao').classList.toggle('hidden', val('grauRelacao') === 'Proprietário original');
     }
-
     function checkVolumeWarning() {
       $('boxEncargoVolume').classList.toggle('hidden', !val('volumeEstimado').includes('grande volume'));
     }
-
-    async function buscarCEP() {
+    function buscarCEP() {
       const cep = val('cep').replace(/\D/g, '');
       if (cep.length !== 8) return;
-
-      const campoRua = $('logradouro');
-      const campoBairro = $('bairro');
-      const campoCidadeUf = $('cidadeUf');
-      const campoNumero = $('numero');
-
-      const placeholderOriginal = campoRua.placeholder;
-      campoRua.placeholder = 'Buscando endereço nos Correios...';
-
-      try {
-        const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        if (!resposta.ok) throw new Error('Falha na requisição');
-        const dados = await resposta.json();
-        
-        if (dados.erro) {
-          alert('CEP não localizado. Por favor, preencha os dados de endereço manualmente.');
-          return;
-        }
-
-        campoRua.value = dados.logradouro || '';
-        campoBairro.value = dados.bairro || '';
-        campoCidadeUf.value = (dados.localidade && dados.uf) ? `${dados.localidade} / ${dados.uf}` : '';
-        salvarRascunho();
-
-        if (dados.logradouro) {
-          campoNumero?.focus();
-        }
-      } catch (erro) {
-        console.warn('Não foi possível consultar o ViaCEP:', erro);
-      } finally {
-        campoRua.placeholder = placeholderOriginal;
-      }
+      fetch(`https://viacep.com.br/ws/${cep}/json/`).then(r => r.json()).then(d => {
+        if (d.erro) return;
+        $('logradouro').value = d.logradouro || '';
+        $('bairro').value = d.bairro || '';
+        $('cidadeUf').value = `${d.localidade} / ${d.uf}`;
+      }).catch(() => {});
     }
 
     /* ---------- Arquivos e imagens ---------- */
@@ -938,7 +696,6 @@
         r.readAsDataURL(file);
       });
     }
-
     function carregarImagem(file) {
       return new Promise((ok, erro) => {
         const url = URL.createObjectURL(file), img = new Image();
@@ -947,17 +704,15 @@
         img.src = url;
       });
     }
-
     function desenhar(img, max, q) {
       const r = Math.min(1, max / Math.max(img.width, img.height));
       const w = Math.round(img.width * r), h = Math.round(img.height * r);
       const c = document.createElement('canvas'); c.width = w; c.height = h;
       const x = c.getContext('2d');
-      x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);
+      x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);   // PNG transparente não vira fundo preto
       x.drawImage(img, 0, 0, w, h);
       return { dataUrl: c.toDataURL('image/jpeg', q), w, h };
     }
-
     async function processarImagem(file, comMiniatura) {
       const img = await carregarImagem(file);
       let r;
@@ -969,7 +724,6 @@
       if (comMiniatura) out.mini = desenhar(img, 360, .7);
       return out;
     }
-
     async function processarAnexo(file) {
       if (file.type.startsWith('image/')) return processarImagem(file, false);
       if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
@@ -982,13 +736,13 @@
 
     async function previewImages(e) {
       const token = ++previewToken, files = Array.from(e.target.files);
-      const box = $('photosPreviewContainer'), warn = $('photosCountWarning');
+      const box = $('photosPreviewContainer'), warn =$('photosCountWarning');
       box.innerHTML = ''; fotos = [];
       if (files.length > MAX_FOTOS) {
         alert(`Selecione no máximo ${MAX_FOTOS} fotografias.`);
         e.target.value = ''; warn.classList.remove('hidden'); return;
       }
-      warn.classList.toggle('hidden', files.length >= 1);
+      warn.classList.toggle('hidden', files.length >= 3);
       try {
         for (const f of files) {
           const it = await processarImagem(f, true);
@@ -1025,7 +779,7 @@
         if (!(Number(val('quantidadeItens')) >= 1)) return ['quantidadeItens', 'Informe a quantidade de itens.'];
         if (!val('descricaoFisica')) return ['descricaoFisica', 'Informe a descrição física e técnica.'];
         if (!val('datacao')) return ['datacao', 'Informe a datação estimada.'];
-        if (fotos.length < 1) return ['uploadFotos', 'Anexe no mínimo 1 fotografia (aguarde o término do carregamento, se for o caso).'];
+        if (fotos.length < 3) return ['uploadFotos', 'Anexe no mínimo 3 fotografias (aguarde o término do carregamento, se for o caso).'];
       }
       if (n === 3) {
         if (!val('origemBem')) return ['origemBem', 'Descreva a origem do bem.'];
@@ -1033,50 +787,25 @@
       }
       return null;
     }
-
     function updateProgress() {
-      const etapas = getEtapasAtivas();
-      const total = etapas.length;
-      const indiceAtual = etapas.indexOf(currentStep) + 1;
-
-      $('stepProgressBar').style.width = `${(indiceAtual / total) * 100}%`;
-      $('stepIndicatorLabel').textContent = `Etapa ${indiceAtual} de ${total}`;
-
-      const badge5 = $('step5Badge');
-      if (badge5) badge5.textContent = total;
-
-      document.querySelectorAll('.step-pane').forEach((el) => {
-        const stepNum = parseInt(el.id.replace('step', ''), 10);
-        el.classList.toggle('hidden', stepNum !== currentStep);
-      });
-
-      $('btnPrev').classList.toggle('hidden', indiceAtual === 1);
-      $('btnNext').classList.toggle('hidden', indiceAtual === total);
-      $('btnSubmit').classList.toggle('hidden', indiceAtual !== total);
+      $('stepProgressBar').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
+      $('stepIndicatorLabel').textContent = `Etapa ${currentStep} de ${TOTAL_STEPS}`;
+      document.querySelectorAll('.step-pane').forEach((el, i) => el.classList.toggle('hidden', i !== currentStep - 1));
+      $('btnPrev').classList.toggle('hidden', currentStep === 1);
+      $('btnNext').classList.toggle('hidden', currentStep === TOTAL_STEPS);$('btnSubmit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
       window.scrollTo({ top: 120, behavior: 'smooth' });
     }
-
     function nextStep() {
       const e = validarEtapa(currentStep);
       if (e) { alert(e[1]); $(e[0])?.focus(); return; }
-      const etapas = getEtapasAtivas();
-      const idx = etapas.indexOf(currentStep);
-      if (idx < etapas.length - 1) {
-        currentStep = etapas[idx + 1];
-        updateProgress();
-      }
+      currentStep = (currentStep === 3 && !precisaEtapa4()) ? 5 : currentStep + 1;
+      updateProgress();
     }
-
     function prevStep() {
-      envio = null; $('submitError').classList.add('hidden');
-      const etapas = getEtapasAtivas();
-      const idx = etapas.indexOf(currentStep);
-      if (idx > 0) {
-        currentStep = etapas[idx - 1];
-        updateProgress();
-      }
+      envio = null; $('submitError').classList.add('hidden');   // dados podem mudar: descarta o pacote preparado
+      currentStep = (currentStep === 5 && !precisaEtapa4()) ? 3 : currentStep - 1;
+      updateProgress();
     }
-
     function verificarAceites() {
       const ok = Array.from(document.querySelectorAll('.check-aceite')).every(c => c.checked);
       const btn = $('btnSubmit');
@@ -1092,376 +821,122 @@
       const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
-
-    function gerarProtocolo(data = new Date()) {
-      const ano = data.getFullYear();
-      const mes = String(data.getMonth() + 1).padStart(2, '0');
-      const dia = String(data.getDate()).padStart(2, '0');
-      const hora = String(data.getHours()).padStart(2, '0') +
-                   String(data.getMinutes()).padStart(2, '0') +
-                   String(data.getSeconds()).padStart(2, '0');
+    function gerarProtocolo() {
       const alfabeto = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       const r = crypto.getRandomValues(new Uint8Array(6));
-      const aleatorio = Array.from(r).map(b => alfabeto[b % alfabeto.length]).join('');
-      return `MHFMUSP-${ano}-${mes}-CPDoc-${dia}-${hora}-${aleatorio}`;
+      return `FMUSP-CPDOC-${new Date().getFullYear()}-${Array.from(r).map(b => alfabeto[b % alfabeto.length]).join('')}`;
     }
-
     function coletarResumo() {
       const cats = Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(c => c.value).join('; ');
       const end = [val('logradouro'), val('numero'), val('complemento'), val('bairro'), val('cidadeUf'), val('cep')].filter(Boolean).join(', ');
       const r = [
-        ['Tipo de Doador', val('tipoDoador')],
-        ['Grau de Relação com o Bem', val('grauRelacao')],
-        ['CPF ou CNPJ', val('documentoNumero')],
-        ['Telefone / WhatsApp', val('telefoneDoador')],
-        ['Endereço Completo', end],
-        ['Denominação do Bem', val('denominacaoBem')],
-        ['Categoria Museológica', cats],
-        ['Quantidade de Itens', val('quantidadeItens')],
-        ['Descrição Física e Técnica', val('descricaoFisica')],
-        ['Datação Estimada', val('datacao')],
-        ['Estado de Conservação', val('estadoConservacao')],
-        ['Riscos Químicos ou Biossegurança?', val('riscoBiologico')],
-        ['Material Biológico Humano ou Dados de Pacientes?', val('dadosSensiveis')],
-        ['Origem do Bem', val('origemBem')],
-        ['A quem pertenceu? (Cadeia de custódia anterior)', val('cadeiaCustodia')],
-        ['Situação dos Direitos Autorais', val('situacaoAutoral')],
-        ['Quantidade Estimada da Doação', val('volumeEstimado')],
-        ['Histórico ou Vínculo com a História da Medicina (se aplicável)', val('vinculoNotorio')]
+        ['Tipo de doador', val('tipoDoador')], ['Grau de relação com o bem', val('grauRelacao')],
+        ['CPF/CNPJ', val('documentoNumero')], ['Telefone', val('telefoneDoador')], ['Endereço', end],
+        ['Denominação do bem', val('denominacaoBem')], ['Categorias', cats], ['Quantidade de itens', val('quantidadeItens')],
+        ['Descrição física e técnica', val('descricaoFisica')], ['Datação', val('datacao')],
+        ['Estado de conservação', val('estadoConservacao')], ['Risco químico/biossegurança', val('riscoBiologico')],
+        ['Material biológico/dados de pacientes', val('dadosSensiveis')], ['Origem do bem', val('origemBem')],
+        ['Cadeia de custódia', val('cadeiaCustodia')], ['Situação autoral', val('situacaoAutoral')],
+        ['Volume estimado', val('volumeEstimado')], ['Vínculo histórico-médico', val('vinculoNotorio')]
       ];
-      if (precisaEtapa4()) {
-        r.push(
-          ['Consentimento Informado Original do Paciente/Família', val('consentimentoBio')],
-          ['Anonimização Prévia Realizada?', val('anonimizacaoPrevia')],
-          ['Base Legal Indicada (Lei 13.709/2018 - LGPD)', val('baseLegalLGPD')]
-        );
-      }
-      r.push(
-        ['Restrições de Publicação / Reprodução', val('restricoesPublicacao')],
-        ['Solicita Crédito em Exposições?', val('creditoNominal')],
-        ['Desejo permanecer anônimo na divulgação pública', $('anonimatoDoador').checked ? 'Sim' : 'Não']
-      );
+      if (precisaEtapa4()) r.push(['Consentimento original', val('consentimentoBio')],
+        ['Anonimização prévia', val('anonimizacaoPrevia')], ['Base legal (LGPD)', val('baseLegalLGPD')]);
+      r.push(['Restrições de exposição', val('restricoesExposicao')], ['Restrições de publicação', val('restricoesPublicacao')],
+        ['Crédito nominal', val('creditoNominal')], ['Anonimato do doador', $('anonimatoDoador').checked ? 'Sim' : 'Não']);
       return r.map(([rotulo, valor]) => ({ rotulo, valor: valor || 'Não informado' }));
     }
 
-    /* ---------- Procedurais de Cabeçalho e Títulos em Alta Resolução ---------- */
-    function gerarCabecalhoPDFCanvas(logoEl) {
-      const w = 1680;
-      const h = 240;
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      const ctx = c.getContext('2d');
-
-      // 1. Fundo Base Oficial FMUSP Pantone 342 C (#006747)
-      ctx.fillStyle = '#006747';
-      ctx.fillRect(0, 0, w, h);
-
-      // 2. Composição de Gradientes Radiais idênticos ao .fmusp-water-bg da Web
-      const gCentral = ctx.createRadialGradient(w * 0.45, h * 0.45, 10, w * 0.45, h * 0.45, w * 0.85);
-      gCentral.addColorStop(0, 'rgba(0, 103, 71, 0.85)');
-      gCentral.addColorStop(1, 'rgba(2, 43, 30, 0.98)');
-      ctx.fillStyle = gCentral;
-      ctx.fillRect(0, 0, w, h);
-
-      const gTeal = ctx.createRadialGradient(w * 0.20, h * 0.80, 5, w * 0.20, h * 0.80, w * 0.55);
-      gTeal.addColorStop(0, 'rgba(0, 156, 166, 0.50)');
-      gTeal.addColorStop(1, 'rgba(0, 156, 166, 0)');
-      ctx.fillStyle = gTeal;
-      ctx.fillRect(0, 0, w, h);
-
-      const gBright = ctx.createRadialGradient(w * 0.75, h * 0.25, 5, w * 0.75, h * 0.25, w * 0.50);
-      gBright.addColorStop(0, 'rgba(0, 199, 177, 0.45)');
-      gBright.addColorStop(1, 'rgba(0, 199, 177, 0)');
-      ctx.fillStyle = gBright;
-      ctx.fillRect(0, 0, w, h);
-
-      // 3. Reflexos suaves de iluminação aquática
-      ctx.save();
-      ctx.globalCompositeOperation = 'overlay';
-      const gLuz = ctx.createRadialGradient(w * 0.60, h * 0.40, 10, w * 0.60, h * 0.40, w * 0.45);
-      gLuz.addColorStop(0, 'rgba(255, 255, 255, 0.35)');
-      gLuz.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      ctx.fillStyle = gLuz;
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-
-      // 4. Friso Inferior Turquesa Pantone 3265 C (#00C7B1)
-      ctx.fillStyle = '#00C7B1';
-      ctx.fillRect(0, h - 7, w, 7);
-
-      // 5. Logotipo Circular com Aro Dourado
-      const logoSize = 180;
-      const logoX = 56;
-      const logoY = Math.round((h - 7 - logoSize) / 2);
-
-      if (logoEl && logoEl.complete && logoEl.naturalWidth > 0) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.clip();
-        ctx.drawImage(logoEl, logoX, logoY, logoSize, logoSize);
-        ctx.restore();
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2 - 1.5, 0, Math.PI * 2);
-        ctx.strokeStyle = '#c8a248';
-        ctx.lineWidth = 4;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // 6. Tipografia Institucional e Título com Fonte Cinzel na Cor Branca
-      const tx = logoX + logoSize + 42;
-      ctx.fillStyle = '#FFFFFF';
-      ctx.textBaseline = 'alphabetic';
-
-      ctx.font = '500 23px Inter, sans-serif';
-      ctx.fillText('Faculdade de Medicina da Universidade de São Paulo', tx, 58);
-
-      ctx.font = '700 34px Cinzel, serif';
-      ctx.fillText('Museu Histórico "Prof. Carlos da Silva Lacaz"', tx, 104);
-
-      ctx.font = '500 22px Inter, sans-serif';
-      ctx.fillText('Centro de Pesquisa e Documentação - CPDoc', tx, 144);
-
-      ctx.font = '700 32px Cinzel, serif';
-      ctx.fillText('TERMO DE DOAÇÃO DE ACERVO', tx, 196);
-
-      return c.toDataURL('image/jpeg', 0.95);
-    }
-
-    function gerarBannerSecaoCanvas(tituloTexto) {
-      const w = 1456;
-      const h = 64;
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      const ctx = c.getContext('2d');
-
-      ctx.fillStyle = '#006747';
-      ctx.fillRect(0, 0, w, h);
-
-      ctx.fillStyle = '#00C7B1';
-      ctx.fillRect(0, h - 5, w, 5);
-
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = '700 25px Cinzel, serif';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(tituloTexto.toUpperCase(), 24, (h - 5) / 2);
-
-      return c.toDataURL('image/png');
-    }
-
-    function gerarDegradeHorizontalCanvas(tom) {
-      const w = 1456;
-      const h = 40;
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      const ctx = c.getContext('2d');
-
-      const grad = ctx.createLinearGradient(0, 0, w, 0);
-      if (tom === 'A') {
-        grad.addColorStop(0, 'rgba(0, 156, 166, 0.08)');
-        grad.addColorStop(0.35, 'rgba(0, 156, 166, 0.025)');
-        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      } else {
-        grad.addColorStop(0, 'rgba(0, 103, 71, 0.055)');
-        grad.addColorStop(0.35, 'rgba(0, 103, 71, 0.018)');
-        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      }
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
-      return c.toDataURL('image/png');
-    }
-
-    /* ---------- PDF: Layout Executivo com Tipografia e Espaçamentos Precisos ---------- */
+    /* ---------- PDF (layout em fluxo, com quebra de página) ---------- */
     const L = s => String(s ?? '').replace(/[–—]/g, '-').replace(/[“”]/g, '"').replace(/[‘’]/g, "'")
                      .replace(/[^\n\x20-\x7E\u00A0-\u00FF]/g, '?');
 
     function gerarPDF({ protocolo, timestamp, hash, resumo, manifesto }) {
       const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-      const M = 14, CW = 182, FIM = 275;
-      const LW = 72;
-      const VX = 90;
-      const VW = CW - (VX - M);
-      let y = 44;
-
-      const logoImg = document.querySelector('header img');
-      const headerTextureUrl = gerarCabecalhoPDFCanvas(logoImg);
-      const linhaDegradeUrlA = gerarDegradeHorizontalCanvas('A');
-      const linhaDegradeUrlB = gerarDegradeHorizontalCanvas('B');
+      const M = 15, CW = 180, FIM = 280;
+      let y = 36;
 
       const cabecalho = () => {
-        doc.addImage(headerTextureUrl, 'JPEG', 0, 0, 210, 30);
+        doc.setFillColor(0, 103, 71); doc.rect(0, 0, 210, 20, 'F');
+        doc.setFillColor(0, 156, 166); doc.rect(0, 20, 210, 2, 'F');
+        doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5);
+        doc.text('MUSEU HISTÓRICO "PROF. CARLOS DA SILVA LACAZ" - FMUSP', M, 11);
+        doc.setFontSize(8);
+        doc.text('CENTRO DE PESQUISA E DOCUMENTAÇÃO (CPDoc) | TERMO DE DOAÇÃO DE ACERVO', M, 16);
       };
-
       const garantir = h => {
         if (y + h <= FIM) return;
         const tam = doc.getFontSize();
-        doc.addPage();
-        cabecalho();
-        y = 38;
-        doc.setFontSize(tam);
-        doc.setTextColor(0, 0, 0);
-        doc.setFont('helvetica', 'normal');
+        doc.addPage(); cabecalho(); y = 32;
+        doc.setFontSize(tam); doc.setTextColor(0, 0, 0); doc.setFont('helvetica', 'normal');
       };
-
-      const bannerSecao = tituloTexto => {
-        garantir(20);
-        const bannerUrl = gerarBannerSecaoCanvas(tituloTexto);
-        doc.addImage(bannerUrl, 'PNG', M, y, CW, 8);
-        y += 10;
+      const titulo = t => {
+        garantir(12);
+        doc.setFillColor(240, 248, 245); doc.rect(M, y - 4, CW, 6, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 103, 71);
+        doc.text(L(t), M + 2, y); y += 7;
       };
-
-      const campo = (r, v, index = 0) => {
-        const vClean = String(v ?? '').trim().replace(/([^\n])\r?\n([^\n])/g, '$1 $2');
-
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8);
-        const rLines = doc.splitTextToSize(L(r), LW - 2);
-
-        doc.setFont('helvetica', 'normal');
-        const vLines = doc.splitTextToSize(L(vClean), VW - 3);
-
-        const numLinhas = Math.max(rLines.length, vLines.length);
-        const rowH = Math.max(6, numLinhas * 3.8 + 2.4);
-
-        garantir(rowH);
-
-        const degradeUrl = (index % 2 === 0) ? linhaDegradeUrlA : linhaDegradeUrlB;
-        doc.addImage(degradeUrl, 'PNG', M, y, CW, rowH);
-
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(0, 80, 55);
-        rLines.forEach((l, i) => {
-          doc.text(l, M + 3, y + 3.4 + i * 3.8);
-        });
-
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(25, 25, 25);
-        vLines.forEach((l, i) => {
-          doc.text(l, VX, y + 3.4 + i * 3.8);
-        });
-
-        y += rowH;
+      const campo = (r, v) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+        const ls = doc.splitTextToSize(L(v), CW - 50);
+        garantir(5);
+        doc.setFont('helvetica', 'bold'); doc.setTextColor(60, 60, 60); doc.text(L(r), M, y);
+        doc.setFont('helvetica', 'normal'); doc.setTextColor(0, 0, 0);
+        ls.forEach((l, i) => { if (i) garantir(4); doc.text(l, M + 50, y); y += 4; });
+        y += 1.2;
+      };
+      const texto = (t, tam = 7.5) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(tam); doc.setTextColor(40, 40, 40);
+        doc.splitTextToSize(L(t), CW).forEach(l => { garantir(3.5); doc.text(l, M, y); y += 3.4; });
+        y += 1.5;
       };
 
       cabecalho();
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 103, 71);
+      doc.text(`PROTOCOLO: ${protocolo}`, M, 28);
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(80, 80, 80);
+      doc.text(L(`Data e Hora: ${timestamp}`), 120, 28);
 
-      doc.setFillColor(242, 248, 246);
-      doc.roundedRect(M, 33, CW, 7, 1, 1, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8.5);
-      doc.setTextColor(0, 103, 71);
-      doc.text(`PROTOCOLO: ${protocolo}`, M + 2.5, 37.6);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7.5);
-      doc.setTextColor(80, 80, 80);
-      doc.text(L(`Data e Hora: ${timestamp}`), M + CW - 2.5, 37.6, { align: 'right' });
+      titulo('1. DADOS DO DOADOR E DO BEM CULTURAL');
+      campo('Nome / Razão social', val('nomeDoador'));
+      campo('E-mail', val('emailDoador'));
+      resumo.forEach(i => campo(i.rotulo, i.valor));
 
-      y = 44;
-
-      bannerSecao('1. Dados do Doador e do Bem Histórico-Cultural');
-      campo('Nome Completo ou Razão Social', val('nomeDoador'), 0);
-      campo('E-mail de Contato', val('emailDoador'), 1);
-      resumo.forEach((item, idx) => campo(item.rotulo, item.valor, idx + 2));
-
-      garantir(48);
-      bannerSecao('2. Registro Fotográfico');
+      titulo('2. REGISTRO FOTOGRÁFICO');
       fotos.forEach((f, i) => {
-        if (i % 5 === 0) {
-          if (i) y += 35;
-          garantir(35);
-        }
-        const k = Math.min(30 / f.mini.w, 30 / f.mini.h);
-        const px = M + (i % 5) * 36.5;
-        doc.setDrawColor(0, 156, 166);
-        doc.setLineWidth(0.3);
-        doc.rect(px - 0.5, y - 0.5, 31, 31);
-        doc.addImage(f.mini.dataUrl, 'JPEG', px, y, f.mini.w * k, f.mini.h * k);
+        if (i % 5 === 0) { if (i) y += 36; garantir(36); }
+        const k = Math.min(32 / f.mini.w, 32 / f.mini.h);
+        doc.addImage(f.mini.dataUrl, 'JPEG', M + (i % 5) * 37, y, f.mini.w * k, f.mini.h * k);
       });
-      if (fotos.length) y += 35;
+      y += 36;
 
-      garantir(25);
-      bannerSecao('3. Arquivos Anexados (SHA-256)');
-      manifesto.forEach((m, idx) => {
-        garantir(6.5);
-        const bgUrl = (idx % 2 === 0) ? linhaDegradeUrlA : linhaDegradeUrlB;
-        doc.addImage(bgUrl, 'PNG', M, y, CW, 6);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(7);
-        doc.setTextColor(0, 80, 55);
-        doc.text(L(m.filename), M + 3, y + 4);
-        doc.setFont('courier', 'normal');
-        doc.setFontSize(6.5);
-        doc.setTextColor(60, 60, 60);
-        doc.text(m.hash, VX, y + 4);
-        y += 6.5;
-      });
+      titulo('3. ARQUIVOS ANEXADOS (SHA-256)');
+      manifesto.forEach(m => texto(`${m.filename}\n${m.hash}`, 6.5));
 
-      garantir(32);
-      bannerSecao('4. Declarações de Aceite');
-      document.querySelectorAll('.check-aceite').forEach(c => {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(7.5);
-        doc.setTextColor(0, 103, 71);
-        const lns = doc.splitTextToSize(L(c.nextElementSibling.textContent.trim()), CW - 12);
-        garantir(lns.length * 3.5 + 2);
-        doc.text('[X]', M + 2, y + 3.2);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(30, 30, 30);
-        lns.forEach((l, i) => doc.text(l, M + 9, y + 3.2 + i * 3.5));
-        y += lns.length * 3.5 + 2;
-      });
+      titulo('4. DECLARAÇÕES DE ACEITE');
+      document.querySelectorAll('.check-aceite').forEach(c => texto('[X] ' + c.nextElementSibling.textContent.trim()));
 
-      garantir(45);
-      bannerSecao('5. Texto Legal do Instrumento');
-      document.querySelectorAll('#textoLegal p').forEach(p => {
-        const txt = p.textContent.trim();
-        doc.setFont('helvetica', txt.startsWith('TERMO') ? 'bold' : 'normal');
-        doc.setFontSize(6.5);
-        doc.setTextColor(40, 40, 40);
-        const lns = doc.splitTextToSize(L(txt), CW);
-        garantir(lns.length * 3.1 + 1.5);
-        lns.forEach((l, i) => doc.text(l, M, y + 2.8 + i * 3.1));
-        y += lns.length * 3.1 + 2;
-      });
+      titulo('5. PARTE B - TEXTO LEGAL DO INSTRUMENTO');
+      document.querySelectorAll('#textoLegal p').forEach(p => texto(p.textContent.trim()));
 
-      garantir(50);
-      bannerSecao('6. Certificado de Assinatura Eletrônica');
-      campo('Assinado eletronicamente por', val('nomeDoador'), 0);
-      campo('Data e hora da emissão', timestamp, 1);
-      campo('Destino oficial', 'cpdoc.museufm@usp.br', 2);
-      campo('Hash SHA-256 do dossiê', hash, 3);
-      y += 2;
-
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(6.5);
-      doc.setTextColor(60, 60, 60);
-      const disclaimer = 'Aceite eletrônico registrado como assinatura eletrônica simples (Lei nº 14.063/2020 e art. 10, §2º, da MP nº 2.200-2/2001). O hash identifica o conteúdo declarado e os arquivos anexados no momento do envio. A deliberação final sobre aceite, recusa ou tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz".';
-      doc.splitTextToSize(L(disclaimer), CW).forEach(l => {
-        garantir(3.2);
-        doc.text(l, M, y + 3);
-        y += 3.2;
-      });
+      titulo('6. CERTIFICADO DE ASSINATURA ELETRÔNICA');
+      campo('Assinado por', val('nomeDoador'));
+      campo('Data/hora', timestamp);
+      campo('Destino oficial', 'cpdoc.museufmusp@usp.br');
+      campo('Hash SHA-256 do dossiê', hash);
+      texto('Aceite eletrônico registrado como assinatura eletrônica simples (Lei nº 14.063/2020 e art. 10, §2º, da MP nº 2.200-2/2001). O hash identifica o conteúdo declarado e os arquivos anexados no momento do envio. A deliberação final sobre aceite, recusa ou tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz".');
 
       const n = doc.getNumberOfPages();
       for (let p = 1; p <= n; p++) {
-        doc.setPage(p);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(7);
-        doc.setTextColor(110, 110, 110);
-        doc.text(`${protocolo} — Página ${p} de ${n}`, 105, 290, { align: 'center' });
+        doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(120, 120, 120);
+        doc.text(`${protocolo} - Página ${p} de ${n}`, 105, 290, { align: 'center' });
       }
       return doc;
     }
 
     /* ---------- Preparação e envio ---------- */
     async function prepararEnvio() {
-      const dataEnvio = new Date();
-      const protocolo = gerarProtocolo(dataEnvio);
-      const timestamp = dataEnvio.toLocaleString('pt-BR', { timeZoneName: 'short' });
+      const protocolo = gerarProtocolo();
+      const timestamp = new Date().toLocaleString('pt-BR', { timeZoneName: 'short' });
 
       const anexos = [];
       const ident = await processarAnexo($('uploadDocIdentidade').files[0]);
@@ -1480,6 +955,7 @@
       pdfDoc = gerarPDF({ protocolo, timestamp, hash, resumo, manifesto });
       const pdfBase64 = pdfDoc.output('datauristring').split(',')[1];
 
+      // Divide os anexos em lotes que respeitam o limite de payload da Vercel
       const lotes = [{ pdfBase64, anexos: [] }];
       let tam = pdfBase64.length;
       for (const a of anexos) {
@@ -1523,7 +999,7 @@
     async function finalizarAssinatura() {
       if (enviando) return;
       enviando = true;
-      const btn = $('btnSubmit'), box = $('submitError'), rotuloOriginal = btn.innerHTML;
+      const btn = $('btnSubmit'), box =$('submitError'), rotuloOriginal = btn.innerHTML;
       box.classList.add('hidden'); btn.disabled = true;
       try {
         btn.innerHTML = SPIN + ' Preparando arquivos...';
@@ -1534,12 +1010,11 @@
           await enviarLote(envio, i);
           envio.enviados.add(i);
         }
-        try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
         mostrarSucesso();
       } catch (err) {
         const parcial = envio && envio.enviados.size
           ? ` ${envio.enviados.size} de ${envio.lotes.length} parte(s) já chegou(aram); ao tentar de novo, só as pendentes serão reenviadas.` : '';
-        box.textContent = `Sua proposta NÃO foi concluída. ${err.message}${parcial} Tente novamente; se persistir, escreva para cpdoc.museufm@usp.br informando o horário do problema.`;
+        box.textContent = `Sua proposta NÃO foi concluída. ${err.message}${parcial} Tente novamente; se persistir, escreva para cpdoc.museufmusp@usp.br informando o horário do problema.`;
         box.classList.remove('hidden');
         box.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } finally {
@@ -1557,172 +1032,9 @@
       window.scrollTo({ top: 0 });
       baixarPDFNovamente();
     }
-
     function baixarPDFNovamente() {
       if (pdfDoc && envio) pdfDoc.save(`Termo_Doacao_${envio.protocolo}.pdf`);
     }
-
-    // Inicialização ao carregar a página
-    window.addEventListener('DOMContentLoaded', () => {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-      restaurarRascunho();
-    });
-  </script>
-
-  <!-- EXPLICAÇÃO DIDÁTICA DAS CATEGORIAS MUSEOLÓGICAS -->
-  <script>
-  (function () {
-    const INFO = {
-      "Instrumentos manuais": {
-        t: "Instrumento médico-cirúrgico",
-        d: "Ferramentas pequenas e portáteis, quase sempre de metal, que o profissional segura com a mão para examinar, tratar ou operar o paciente.",
-        e: ["Bisturi cirúrgico", "Pinça hemostática e tesoura cirúrgica", "Estetoscópio", "Otoscópio e oftalmoscópio", "Martelo de reflexos", "Espéculo", "Fórceps obstétrico", "Sonda metálica", "Lanceta de vacinação", "Agulhas de acupuntura", "Flebótomo de sangria"]
-      },
-      "Aparelhos e equipamentos": {
-        t: "Equipamento médico-hospitalar",
-        d: "Máquinas e aparelhos de maior porte, que funcionam com energia externa (elétrica, mecânica, hidráulica ou pneumática) ou têm mecanismos mais complexos.",
-        e: ["Pulmão de ferro (respirador artificial)", "Eletrocardiógrafo", "Aparelho de raios-X", "Tomógrafo", "Desfibrilador", "Marcapasso externo", "Bomba de infusão", "Aparelho de anestesia", "Ventilador mecânico", "Bisturi elétrico", "Ecógrafo (ultrassom)", "Monitor de UTI"]
-      },
-      "Recipientes e vidraria": {
-        t: "Recipiente / Vidraria",
-        d: "Qualquer objeto cuja função principal é guardar, armazenar ou transportar substâncias: remédios, amostras, reagentes ou fluidos.",
-        e: ["Frasco de botica de vidro", "Pote de farmácia de cerâmica pintada", "Almofariz com pistilo", "Proveta graduada", "Pipeta", "Tubo de ensaio", "Balão de destilação", "Ampola de vidro", "Frasco de penicilina", "Bisnaga de pomada", "Vidro âmbar"]
-      },
-      "Modelos anatômicos e didáticos": {
-        t: "Modelo anatômico / Maquete",
-        d: "Representações em 3D do corpo humano ou de partes dele, feitas para ensinar, demonstrar ou, em alguns casos, para uso ritual.",
-        e: ["Ceroplastia científica", "Esqueleto humano articulado", "Modelo de cabeça com cérebro desmontável", "Modelo de coração", "Modelo de olho ou de ouvido", "Modelo de coluna vertebral", "Modelo de dentição", "Modelos de cera ou gesso", "Manequim obstétrico", "Estátua anatômica (écorché)", "Quadro mural anatômico"]
-      },
-      "Próteses, órteses e implantes": {
-        t: "Prótese / Órtese",
-        d: "Dispositivos que substituem, completam ou corrigem uma função do corpo. Podem ficar dentro do corpo (implantes) ou ser usados por fora.",
-        e: ["Perna artificial", "Dentadura", "Muletas", "Aparelho auditivo", "Marcapasso implantável", "Stent coronariano", "Válvula cardíaca mecânica", "Prótese mamária", "Placa e parafusos ortopédicos", "Lente intraocular", "Bota ou órtese ortopédica"]
-      },
-      "Materiais farmacêuticos e medicamentos": {
-        t: "Medicamento / Substância farmacêutica",
-        d: "Substâncias preparadas para tratar doenças: remédios industrializados, fórmulas feitas em farmácia, matérias-primas, ervas, vacinas e soros.",
-        e: ["Comprimidos em embalagem original", "Ampola de penicilina", "Frasco de insulina", "Vacina em ampola ou tubo", "Soro antiofídico", "Xarope com rótulo antigo", "Tintura de iodo", "Pomada em bisnaga", "Frasco de láudano", "Glóbulos homeopáticos", "Supositórios"]
-      },
-      "Mobiliário e equipamento hospitalar": {
-        t: "Mobiliário hospitalar",
-        d: "Móveis e estruturas de grande porte usados em hospitais, consultórios, ambulatórios e laboratórios.",
-        e: ["Mesa cirúrgica", "Foco cirúrgico", "Cadeira odontológica", "Poltrona ginecológica", "Maca de transporte", "Cama hospitalar", "Incubadora neonatal", "Armário de instrumental", "Carrinho de parada", "Biombo de exame", "Mesa de exame", "Lavatório cirúrgico"]
-      },
-      "Equipamentos de proteção e vestuário médico": {
-        t: "Vestuário profissional / Equipamento de proteção",
-        d: "Roupas e equipamentos de proteção usados por profissionais de saúde ou por pacientes.",
-        e: ["Jaleco branco", "Uniforme de enfermeira e touca", "Máscara cirúrgica", "Luvas cirúrgicas", "Avental de chumbo (radiologia)", "Óculos de proteção", "Gorro cirúrgico", "Capote cirúrgico", "Botas e propés", "Viseira de proteção", "EPI completo"]
-      },
-      "Obras visuais e iconografia": {
-        t: "Obra visual / Fotografia / Cartaz",
-        d: "Imagens em duas dimensões (pinturas, gravuras, desenhos, fotografias e cartazes) que registram práticas médicas, hospitais, profissionais, doenças e epidemias.",
-        e: ["Cartaz de campanha de vacinação", "Cartaz de saúde pública (tuberculose, dengue, aleitamento)", "Fotografia de hospital", "Fotografia clínica de paciente", "Álbum de fotografias", "Gravura e litografia médica", "Prancha anatômica", "Pintura de sala de cirurgia", "Desenho científico a nanquim"]
-      },
-      "Documentos e arquivos médicos": {
-        t: "Documento arquivístico",
-        d: "Papéis e registros escritos produzidos no meio médico: prontuários, livros de registro, relatórios, cartas, receitas, teses e publicações.",
-        e: ["Prontuário médico", "Ficha de paciente", "Receituário", "Livro de registro de admissões", "Livro de atas", "Correspondência científica", "Caderno de laboratório", "Tese acadêmica", "Periódico médico antigo", "Livro raro", "Relatório de saúde pública"]
-      },
-      "Material didático e objetos de ensino": {
-        t: "Material didático",
-        d: "Objetos feitos especificamente para ensinar medicina e ciências da saúde. Vai além dos modelos anatômicos e inclui outros recursos de ensino.",
-        e: ["Quadro mural anatômico", "Lâmina histológica", "Diapositivo (slide) de vidro", "Atlas anatômico", "Manequim de reanimação", "Simulador de parto", "Moldes de gesso", "Maquete de hospital", "Frascos didáticos com amostras", "Vídeo-cassete ou CD-ROM didático"]
-      },
-      "Numismática, medalhas e condecorações": {
-        t: "Medalha / Condecoração / Numismática",
-        d: "Moedas, medalhas, insígnias e troféus criados para celebrar eventos médicos, pessoas ilustres ou conquistas científicas.",
-        e: ["Medalha comemorativa de congresso", "Medalha de mérito científico", "Condecoração", "Insígnia de sociedade médica", "Plaqueta comemorativa", "Moeda comemorativa", "Medalhão com efigie de médico", "Pin de campanha", "Troféu", "Caduceu em prata ou metal"]
-      },
-      "Arqueologia médica e objetos rituais de cura": {
-        t: "Objeto ritual / Etnográfico",
-        d: "Objetos de épocas muito antigas ou de culturas tradicionais ligados a práticas de cura, crenças e rituais.",
-        e: ["Patuá", "Breve (relicário de pano)", "Figa contra mau-olhado", "Máscara ritual", "Maracá de cabaça", "Estatueta de divindade de cura", "Ferramentas de curandeiro ou raizeiro", "Bolsa de ervas medicinais", "Boneca usada em benzimento", "Navalha de barbeiro-sangrador"]
-      },
-      "Material audiovisual e objeto digital": {
-        t: "Material audiovisual / Objeto digital",
-        d: "Filmes, vídeos, gravações de áudio, programas de computador, bancos de dados e outros registros eletrônicos.",
-        e: ["Fita VHS", "Fita cassete", "Filme de 16 mm", "DVD", "CD-ROM", "Disquete", "Pen-drive", "Disco rígido (HD)", "Arquivo de exame de imagem (DICOM)", "Depoimento oral gravado", "Software ou banco de dados antigo"]
-      },
-      "Equipamentos de laboratório e instrumentação científica": {
-        t: "Equipamento laboratorial / Instrumento científico",
-        d: "Instrumentos e equipamentos usados em laboratórios de análises clínicas, patologia, bioquímica, microbiologia ou pesquisa médica.",
-        e: ["Microscópio óptico", "Autoclave", "Centrífuga", "Estufa bacteriológica", "Balança analítica", "Espectrofotômetro", "pHmetro", "Agitador magnético", "Micrótomo", "Destilador de água", "Câmara de Neubauer", "Termômetro de laboratório"]
-      },
-      "Outra não listada": {
-        t: "Outras tipologias",
-        d: "Use esta opção se o seu objeto não se encaixa em nenhuma das categorias acima. Sem problema: descreva-o com suas palavras nos campos seguintes (denominação e descrição física) e a equipe do Museu fará a classificação.",
-        e: ["Maleta ou bolsa de médico", "Objetos pessoais de profissionais de saúde", "Brinquedos e objetos de hospital infantil", "Souvenirs e peças comemorativas", "Coleções ou conjuntos mistos"]
-      }
-    };
-
-    const tip = document.getElementById('catTip');
-    let alvoAtual = null, timerOcultar = null;
-
-    function conteudo(nome) {
-      const d = INFO[nome];
-      return '<p class="cat-tip-nome">' + nome + '</p>' +
-             '<p class="cat-tip-tipo"><b>' + d.t + '</b></p>' +
-             '<p>' + d.d + '</p>' +
-             '<p class="cat-tip-ex-t">Exemplos</p><ul>' + d.e.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
-             '<button type="button" class="cat-tip-fechar">Entendi, fechar</button>';
-    }
-    function posicionar(el) {
-      if (window.innerWidth < 640) { tip.style.left = ''; tip.style.top = ''; return; }
-      const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
-      let top = r.bottom + 8;
-      if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 8);
-      const left = Math.min(Math.max(8, r.left), window.innerWidth - w - 8);
-      tip.style.top = top + 'px'; tip.style.left = left + 'px';
-    }
-    function mostrar(el, nome) {
-      clearTimeout(timerOcultar);
-      alvoAtual = el;
-      tip.innerHTML = conteudo(nome);
-      tip.setAttribute('aria-hidden', 'false');
-      tip.classList.add('show');
-      posicionar(el);
-      const f = tip.querySelector('.cat-tip-fechar');
-      if (f) f.addEventListener('click', ocultar);
-    }
-    function ocultar() {
-      clearTimeout(timerOcultar);
-      tip.classList.remove('show');
-      tip.setAttribute('aria-hidden', 'true');
-      alvoAtual = null;
-    }
-    function ocultarComAtraso() { clearTimeout(timerOcultar); timerOcultar = setTimeout(ocultar, 120); }
-
-    document.querySelectorAll('input[name="categoria"]').forEach(function (chk) {
-      const nome = chk.value, label = chk.closest('label');
-      if (!INFO[nome] || !label) return;
-
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'cat-info-btn';
-      btn.textContent = 'i';
-      btn.setAttribute('aria-label', 'O que é: ' + nome);
-      label.appendChild(btn);
-
-      btn.addEventListener('click', function (e) {
-        e.preventDefault(); e.stopPropagation();
-        mostrar(btn, nome);
-      });
-      btn.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') mostrar(btn, nome); });
-      btn.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') ocultarComAtraso(); });
-      btn.addEventListener('focus', function () { mostrar(btn, nome); });
-      btn.addEventListener('blur', ocultarComAtraso);
-    });
-
-    tip.addEventListener('pointerenter', function () { clearTimeout(timerOcultar); });
-    tip.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') ocultarComAtraso(); });
-
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') ocultar(); });
-    document.addEventListener('click', function (e) {
-      if (!tip.contains(e.target) && !e.target.closest('.cat-info-btn')) { if (window.innerWidth < 640) ocultar(); }
-    });
-    window.addEventListener('scroll', function () { if (window.innerWidth >= 640) ocultar(); }, { passive: true });
-    window.addEventListener('resize', ocultar);
-  })();
   </script>
 </body>
 </html>
