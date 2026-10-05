@@ -194,6 +194,11 @@
           <div id="stepProgressBar" class="bg-[#009CA6] h-full transition-all duration-300 w-1/4"></div>
         </div>
       </div>
+
+      <!-- BOTÃO DE DESCARTAR RASCUNHO -->
+      <button type="button" onclick="descartarRascunho()" class="mt-3 text-[11px] text-gray-500 underline hover:text-[#006747]">
+        <i class="fa-solid fa-eraser mr-1"></i>Limpar os dados preenchidos neste navegador
+      </button>
     </div>
 
     <!-- BLOCO DO FORMULÁRIO COM AUTOPREENCHIMENTO ATIVADO -->
@@ -792,12 +797,15 @@
     $('creditoNominal').addEventListener('input', () => { editouCreditoManualmente = true; salvarRascunho(); });
     $('cadeiaCustodia').addEventListener('input', () => { editouCustodiaManualmente = true; salvarRascunho(); });
 
-    /* ---------- Persistência Automática de Rascunho (Auto-Save & Restore) ---------- */
+    /* ---------- Persistência Automática de Rascunho na Sessão ---------- */
+    const ehCampoDeAceite = el => el.classList.contains('check-aceite') || el.id === 'checkOrigemLicita';
+
     function salvarRascunho() {
       try {
         const dados = {};
         document.querySelectorAll('#donationForm input, #donationForm select, #donationForm textarea').forEach(el => {
           if (el.type === 'file') return;
+          if (ehCampoDeAceite(el)) return;
           if (el.type === 'checkbox') {
             dados[el.name ? `${el.name}_${el.value}` : el.id] = el.checked;
           } else {
@@ -806,13 +814,13 @@
         });
         dados._editouCredito = editouCreditoManualmente;
         dados._editouCustodia = editouCustodiaManualmente;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
       } catch (e) {}
     }
 
     function restaurarRascunho() {
       try {
-        const salvo = localStorage.getItem(STORAGE_KEY);
+        const salvo = sessionStorage.getItem(STORAGE_KEY);
         if (!salvo) return;
         const dados = JSON.parse(salvo);
         editouCreditoManualmente = !!dados._editouCredito;
@@ -820,6 +828,7 @@
 
         document.querySelectorAll('#donationForm input, #donationForm select, #donationForm textarea').forEach(el => {
           if (el.type === 'file') return;
+          if (ehCampoDeAceite(el)) return;
           if (el.type === 'checkbox') {
             const k = el.name ? `${el.name}_${el.value}` : el.id;
             if (dados[k] !== undefined) el.checked = dados[k];
@@ -834,8 +843,13 @@
       } catch (e) {}
     }
 
+    function descartarRascunho() {
+      if (!confirm('Apagar todos os dados preenchidos neste navegador e recomeçar?')) return;
+      limparRascunhoERecarregar();
+    }
+
     function limparRascunhoERecarregar() {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
       window.location.reload();
     }
 
@@ -1520,7 +1534,7 @@
           await enviarLote(envio, i);
           envio.enviados.add(i);
         }
-        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
         mostrarSucesso();
       } catch (err) {
         const parcial = envio && envio.enviados.size
@@ -1539,8 +1553,7 @@
       $('displayHash').textContent = envio.hash;
       const qr = $('qrcodeDisplay'); qr.innerHTML = '';
       new QRCode(qr, { text: `MHFMUSP|CPDOC|${envio.protocolo}|${envio.hash.slice(0, 16)}`, width: 80, height: 80 });
-      $('donationForm').classList.add('hidden');
-      $('successPanel').classList.remove('hidden');
+      $('donationForm').classList.add('hidden');$('successPanel').classList.remove('hidden');
       window.scrollTo({ top: 0 });
       baixarPDFNovamente();
     }
@@ -1551,6 +1564,7 @@
 
     // Inicialização ao carregar a página
     window.addEventListener('DOMContentLoaded', () => {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
       restaurarRascunho();
     });
   </script>
