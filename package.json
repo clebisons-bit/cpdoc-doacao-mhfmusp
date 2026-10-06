@@ -5,6 +5,6 @@
   "dependencies": {
     "resend": "^3.2.0",
     "@vercel/blob": "^2.6.1",
-    "pdf-lib": "^1.17.9"
+    "pdf-lib": "^1.17.1"
   }
 }
