@@ -226,7 +226,7 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Grau de Relação com o Bem *</label>
-            <select id="grauRelacao" name="grauRelacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required onchange="aoMudarGrauRelacao()">
+            <select id="grauRelacao" name="grauRelacao" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp bg-white" required onchange="toggleProcuracaoUpload(); salvarRascunho();">
               <option value="Proprietário original">Proprietário original</option>
               <option value="Herdeiro-sucessor">Herdeiro-sucessor</option>
               <option value="Adquirente de terceiro">Adquirente de terceiro</option>
@@ -238,7 +238,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nome Completo ou Razão Social *</label>
-            <input type="text" id="nomeDoador" name="name" autocomplete="name" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Nome completo" required oninput="aoDigitarNomeDoador(this.value)">
+            <input type="text" id="nomeDoador" name="name" autocomplete="name" class="w-full p-2.5 border rounded-xl text-sm focus-fmusp" placeholder="Nome completo" required oninput="salvarRascunho()">
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">CPF ou CNPJ *</label>
@@ -296,7 +296,7 @@
             Documento de Identificação (RG, CIN, CNH ou outro com foto) *
           </label>
           <input type="file" id="uploadDocIdentidade" accept=".pdf,image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#006747] file:text-white hover:file:opacity-90 cursor-pointer" required>
-          <p class="text-[10px] text-gray-500 mt-1">Formatos aceitos: PDF (até 2,5 MB), JPG, PNG.</p>
+          <p class="text-[10px] text-gray-500 mt-1">Formatos aceitos: PDF (até 2,0 MB), JPG, PNG.</p>
         </div>
 
         <div id="boxProcuracao" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-xl">
@@ -743,14 +743,12 @@
   <!-- SCRIPT -->
   <script>
     const MAX_FOTOS = 10;
-    const MAX_LOTE_B64 = 4100000;   // Aumentado para 4,1 MB (teto seguro da Vercel: 4,5 MB)
+    const MAX_LOTE_B64 = 4200000;   // Limite seguro por lote
     const MAX_PDF_BYTES = 2000000;  // 2,0 MB
-    const ALVO_IMG_B64 = 280000;    // Alvo ~210 KB por foto em Base64 (garante 1 único e-mail para 10 fotos)
+    const ALVO_IMG_B64 = 240000;    // ~175 KB por foto (permite 10 fotos + documentos em 1 único e-mail)
     const STORAGE_KEY = 'cpdoc_doacao_rascunho_v1';
 
     let currentStep = 1, fotos = [], enviando = false, envio = null, pdfDoc = null, previewToken = 0;
-    let editouCreditoManualmente = false;
-    let editouCustodiaManualmente = false;
 
     const $ = id => document.getElementById(id);
     const val = id => ($(id)?.value || '').trim();
@@ -760,42 +758,16 @@
 
     $('donationForm').addEventListener('submit', e => e.preventDefault());
 
-    /* ---------- Lógica de Autopreenchimento Inteligente Cruzado ---------- */
-    function aoDigitarNomeDoador(nome) {
-      if (!$('anonimatoDoador').checked && !editouCreditoManualmente) {
-        $('creditoNominal').value = nome;
-      }
-      if (val('grauRelacao') === 'Proprietário original' && !editouCustodiaManualmente) {
-        $('cadeiaCustodia').value = nome;
-      }
-      salvarRascunho();
-    }
-
-    function aoMudarGrauRelacao() {
-      const grau = val('grauRelacao');
-      toggleProcuracaoUpload();
-      if (grau === 'Proprietário original') {
-        if (!editouCustodiaManualmente && val('nomeDoador')) {
-          $('cadeiaCustodia').value = val('nomeDoador');
-        }
-        $('situacaoAutoral').value = 'Direitos pertencem ao doador / à família do doador (Bens autorais de fabricação própria, diários, fotos pessoais, etc.)';
-      }
-      salvarRascunho();
-    }
-
     function aoAlternarAnonimato(anonimo) {
       if (anonimo) {
         $('creditoNominal').value = 'Anônimo (a pedido do doador)';
         $('creditoNominal').disabled = true;
       } else {
         $('creditoNominal').disabled = false;
-        $('creditoNominal').value = val('nomeDoador') || '';
+        $('creditoNominal').value = '';
       }
       salvarRascunho();
     }
-
-    $('creditoNominal').addEventListener('input', () => { editouCreditoManualmente = true; salvarRascunho(); });
-    $('cadeiaCustodia').addEventListener('input', () => { editouCustodiaManualmente = true; salvarRascunho(); });
 
     /* ---------- Persistência Automática de Rascunho na Sessão ---------- */
     const ehCampoDeAceite = el => el.classList.contains('check-aceite') || el.id === 'checkOrigemLicita';
@@ -812,8 +784,6 @@
             dados[el.id] = el.value;
           }
         });
-        dados._editouCredito = editouCreditoManualmente;
-        dados._editouCustodia = editouCustodiaManualmente;
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
       } catch (e) {}
     }
@@ -823,8 +793,6 @@
         const salvo = sessionStorage.getItem(STORAGE_KEY);
         if (!salvo) return;
         const dados = JSON.parse(salvo);
-        editouCreditoManualmente = !!dados._editouCredito;
-        editouCustodiaManualmente = !!dados._editouCustodia;
 
         document.querySelectorAll('#donationForm input, #donationForm select, #donationForm textarea').forEach(el => {
           if (el.type === 'file') return;
@@ -966,13 +934,12 @@
     async function processarImagem(file, comMiniatura) {
       const img = await carregarImagem(file);
       let r;
-      // Passos escalonados de compressão para garantir payload consolidado
-      for (const [max, q] of [[1000, .72], [900, .65], [800, .60], [700, .55]]) {
+      for (const [max, q] of [[900, .68], [800, .60], [700, .55], [600, .50]]) {
         r = desenhar(img, max, q);
         if (r.dataUrl.length <= ALVO_IMG_B64) break;
       }
       const out = { filename: file.name.replace(/\.[^.]+$/, '') + '.jpg', base64: r.dataUrl.split(',')[1] };
-      if (comMiniatura) out.mini = desenhar(img, 320, .68);
+      if (comMiniatura) out.mini = desenhar(img, 280, .65);
       return out;
     }
 
@@ -1150,19 +1117,17 @@
       return r.map(([rotulo, valor]) => ({ rotulo, valor: valor || 'Não informado' }));
     }
 
-    /* ---------- Procedurais de Cabeçalho e Títulos em Alta Resolução ---------- */
+    /* ---------- Procedurais Leves e Eficientes para PDF ---------- */
     function gerarCabecalhoPDFCanvas(logoEl) {
-      const w = 1680;
-      const h = 240;
+      const w = 1260; // 150 DPI otimizado
+      const h = 180;
       const c = document.createElement('canvas');
       c.width = w; c.height = h;
       const ctx = c.getContext('2d');
 
-      // 1. Fundo Base Oficial FMUSP Pantone 342 C (#006747)
       ctx.fillStyle = '#006747';
       ctx.fillRect(0, 0, w, h);
 
-      // 2. Composição de Gradientes Radiais idênticos ao .fmusp-water-bg da Web
       const gCentral = ctx.createRadialGradient(w * 0.45, h * 0.45, 10, w * 0.45, h * 0.45, w * 0.85);
       gCentral.addColorStop(0, 'rgba(0, 103, 71, 0.85)');
       gCentral.addColorStop(1, 'rgba(2, 43, 30, 0.98)');
@@ -1181,24 +1146,12 @@
       ctx.fillStyle = gBright;
       ctx.fillRect(0, 0, w, h);
 
-      // 3. Reflexos suaves de iluminação aquática
-      ctx.save();
-      ctx.globalCompositeOperation = 'overlay';
-      const gLuz = ctx.createRadialGradient(w * 0.60, h * 0.40, 10, w * 0.60, h * 0.40, w * 0.45);
-      gLuz.addColorStop(0, 'rgba(255, 255, 255, 0.35)');
-      gLuz.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      ctx.fillStyle = gLuz;
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-
-      // 4. Friso Inferior Turquesa Pantone 3265 C (#00C7B1)
       ctx.fillStyle = '#00C7B1';
-      ctx.fillRect(0, h - 7, w, 7);
+      ctx.fillRect(0, h - 5, w, 5);
 
-      // 5. Logotipo Circular com Aro Dourado
-      const logoSize = 180;
-      const logoX = 56;
-      const logoY = Math.round((h - 7 - logoSize) / 2);
+      const logoSize = 135;
+      const logoX = 42;
+      const logoY = Math.round((h - 5 - logoSize) / 2);
 
       if (logoEl && logoEl.complete && logoEl.naturalWidth > 0) {
         ctx.save();
@@ -1213,34 +1166,33 @@
         ctx.beginPath();
         ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2 - 1.5, 0, Math.PI * 2);
         ctx.strokeStyle = '#c8a248';
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 3;
         ctx.stroke();
         ctx.restore();
       }
 
-      // 6. Tipografia Institucional e Título com Fonte Cinzel na Cor Branca
-      const tx = logoX + logoSize + 42;
+      const tx = logoX + logoSize + 32;
       ctx.fillStyle = '#FFFFFF';
       ctx.textBaseline = 'alphabetic';
 
-      ctx.font = '500 23px Inter, sans-serif';
-      ctx.fillText('Faculdade de Medicina da Universidade de São Paulo', tx, 58);
+      ctx.font = '500 17px Inter, sans-serif';
+      ctx.fillText('Faculdade de Medicina da Universidade de São Paulo', tx, 44);
 
-      ctx.font = '700 34px Cinzel, serif';
-      ctx.fillText('Museu Histórico "Prof. Carlos da Silva Lacaz"', tx, 104);
+      ctx.font = '700 25px Cinzel, serif';
+      ctx.fillText('Museu Histórico "Prof. Carlos da Silva Lacaz"', tx, 78);
 
-      ctx.font = '500 22px Inter, sans-serif';
-      ctx.fillText('Centro de Pesquisa e Documentação - CPDoc', tx, 144);
+      ctx.font = '500 16px Inter, sans-serif';
+      ctx.fillText('Centro de Pesquisa e Documentação - CPDoc', tx, 108);
 
-      ctx.font = '700 32px Cinzel, serif';
-      ctx.fillText('TERMO DE DOAÇÃO DE ACERVO', tx, 196);
+      ctx.font = '700 24px Cinzel, serif';
+      ctx.fillText('TERMO DE DOAÇÃO DE ACERVO', tx, 146);
 
-      return c.toDataURL('image/jpeg', 0.95);
+      return c.toDataURL('image/jpeg', 0.82);
     }
 
     function gerarBannerSecaoCanvas(tituloTexto) {
-      const w = 1456;
-      const h = 64;
+      const w = 1000;
+      const h = 45;
       const c = document.createElement('canvas');
       c.width = w; c.height = h;
       const ctx = c.getContext('2d');
@@ -1249,19 +1201,19 @@
       ctx.fillRect(0, 0, w, h);
 
       ctx.fillStyle = '#00C7B1';
-      ctx.fillRect(0, h - 5, w, 5);
+      ctx.fillRect(0, h - 4, w, 4);
 
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = '700 25px Cinzel, serif';
+      ctx.font = '700 18px Cinzel, serif';
       ctx.textBaseline = 'middle';
-      ctx.fillText(tituloTexto.toUpperCase(), 24, (h - 5) / 2);
+      ctx.fillText(tituloTexto.toUpperCase(), 16, (h - 4) / 2);
 
       return c.toDataURL('image/png');
     }
 
     function gerarDegradeHorizontalCanvas(tom) {
-      const w = 1456;
-      const h = 40;
+      const w = 300; // Leve e reutilizável
+      const h = 15;
       const c = document.createElement('canvas');
       c.width = w; c.height = h;
       const ctx = c.getContext('2d');
@@ -1269,11 +1221,11 @@
       const grad = ctx.createLinearGradient(0, 0, w, 0);
       if (tom === 'A') {
         grad.addColorStop(0, 'rgba(0, 156, 166, 0.08)');
-        grad.addColorStop(0.35, 'rgba(0, 156, 166, 0.025)');
+        grad.addColorStop(0.4, 'rgba(0, 156, 166, 0.02)');
         grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
       } else {
         grad.addColorStop(0, 'rgba(0, 103, 71, 0.055)');
-        grad.addColorStop(0.35, 'rgba(0, 103, 71, 0.018)');
+        grad.addColorStop(0.4, 'rgba(0, 103, 71, 0.015)');
         grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
       }
       ctx.fillStyle = grad;
@@ -1281,12 +1233,12 @@
       return c.toDataURL('image/png');
     }
 
-    /* ---------- PDF: Layout Executivo com Tipografia e Espaçamentos Precisos ---------- */
+    /* ---------- PDF Otimizado e com Compressão Ativada ---------- */
     const L = s => String(s ?? '').replace(/[–—]/g, '-').replace(/[“”]/g, '"').replace(/[‘’]/g, "'")
                      .replace(/[^\n\x20-\x7E\u00A0-\u00FF]/g, '?');
 
     function gerarPDF({ protocolo, timestamp, hash, resumo, manifesto }) {
-      const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+      const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', compress: true });
       const M = 14, CW = 182, FIM = 275;
       const LW = 72;
       const VX = 90;
@@ -1463,7 +1415,7 @@
       return doc;
     }
 
-    /* ---------- Preparação e envio ---------- */
+    /* ---------- Preparação e Envio Consolidado ---------- */
     async function prepararEnvio() {
       const dataEnvio = new Date();
       const protocolo = gerarProtocolo(dataEnvio);
@@ -1486,13 +1438,8 @@
       pdfDoc = gerarPDF({ protocolo, timestamp, hash, resumo, manifesto });
       const pdfBase64 = pdfDoc.output('datauristring').split(',')[1];
 
-      const lotes = [{ pdfBase64, anexos: [] }];
-      let tam = pdfBase64.length;
-      for (const a of anexos) {
-        if (tam + a.base64.length > MAX_LOTE_B64) { lotes.push({ anexos: [] }); tam = 0; }
-        lotes[lotes.length - 1].anexos.push(a);
-        tam += a.base64.length;
-      }
+      // Envia sempre em lote único consolidado
+      const lotes = [{ pdfBase64, anexos }];
       return { protocolo, timestamp, hash, resumo, lotes, enviados: new Set() };
     }
 
@@ -1536,16 +1483,14 @@
         envio = envio || await prepararEnvio();
         for (let i = 0; i < envio.lotes.length; i++) {
           if (envio.enviados.has(i)) continue;
-          btn.innerHTML = `${SPIN} Enviando ${i + 1} de ${envio.lotes.length}...`;
+          btn.innerHTML = `${SPIN} Enviando proposta...`;
           await enviarLote(envio, i);
           envio.enviados.add(i);
         }
         try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) {}
         mostrarSucesso();
       } catch (err) {
-        const parcial = envio && envio.enviados.size
-          ? ` ${envio.enviados.size} de ${envio.lotes.length} parte(s) já chegou(aram); ao tentar de novo, só as pendentes serão reenviadas.` : '';
-        box.textContent = `Sua proposta NÃO foi concluída. ${err.message}${parcial} Tente novamente; se persistir, escreva para cpdoc.museufm@usp.br informando o horário do problema.`;
+        box.textContent = `Sua proposta NÃO foi concluída. ${err.message} Tente novamente; se persistir, escreva para cpdoc.museufm@usp.br informando o horário do problema.`;
         box.classList.remove('hidden');
         box.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } finally {
@@ -1569,7 +1514,6 @@
       if (pdfDoc && envio) pdfDoc.save(`Termo_Doacao_${envio.protocolo}.pdf`);
     }
 
-    // Inicialização ao carregar a página
     window.addEventListener('DOMContentLoaded', () => {
       try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
       restaurarRascunho();
