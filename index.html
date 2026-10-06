@@ -743,9 +743,9 @@
   <!-- SCRIPT -->
   <script>
     const MAX_FOTOS = 10;
-    const MAX_LOTE_B64 = 3500000;   // Base64 por requisição (teto da Vercel: 4,5 MB no corpo inteiro)
-    const MAX_PDF_BYTES = 2500000;  // PDFs avulsos (~3,3 MB em Base64)
-    const ALVO_IMG_B64 = 600000;    // alvo por imagem (~450 KB)
+    const MAX_LOTE_B64 = 4100000;   // Aumentado para 4,1 MB (teto seguro da Vercel: 4,5 MB)
+    const MAX_PDF_BYTES = 2000000;  // 2,0 MB
+    const ALVO_IMG_B64 = 280000;    // Alvo ~210 KB por foto em Base64 (garante 1 único e-mail para 10 fotos)
     const STORAGE_KEY = 'cpdoc_doacao_rascunho_v1';
 
     let currentStep = 1, fotos = [], enviando = false, envio = null, pdfDoc = null, previewToken = 0;
@@ -859,7 +859,6 @@
       window.location.reload();
     }
 
-    // Salva automaticamente a cada caractere ou seleção
     $('donationForm').addEventListener('input', salvarRascunho);
     $('donationForm').addEventListener('change', salvarRascunho);
 
@@ -935,7 +934,7 @@
       }
     }
 
-    /* ---------- Arquivos e imagens ---------- */
+    /* ---------- Otimização de Imagens e Arquivos ---------- */
     function lerBase64(file) {
       return new Promise((ok, erro) => {
         const r = new FileReader();
@@ -967,12 +966,13 @@
     async function processarImagem(file, comMiniatura) {
       const img = await carregarImagem(file);
       let r;
-      for (const [max, q] of [[1200, .8], [1200, .65], [1000, .6], [800, .55]]) {
+      // Passos escalonados de compressão para garantir payload consolidado
+      for (const [max, q] of [[1000, .72], [900, .65], [800, .60], [700, .55]]) {
         r = desenhar(img, max, q);
         if (r.dataUrl.length <= ALVO_IMG_B64) break;
       }
       const out = { filename: file.name.replace(/\.[^.]+$/, '') + '.jpg', base64: r.dataUrl.split(',')[1] };
-      if (comMiniatura) out.mini = desenhar(img, 360, .7);
+      if (comMiniatura) out.mini = desenhar(img, 320, .68);
       return out;
     }
 
@@ -980,7 +980,7 @@
       if (file.type.startsWith('image/')) return processarImagem(file, false);
       if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
         if (file.size > MAX_PDF_BYTES)
-          throw new Error(`O PDF "${file.name}" tem ${(file.size / 1048576).toFixed(1)} MB; o limite é 2,5 MB. Comprima o arquivo ou envie uma foto do documento.`);
+          throw new Error(`O PDF "${file.name}" tem ${(file.size / 1048576).toFixed(1)} MB; o limite é 2,0 MB. Comprima o arquivo ou envie uma foto do documento.`);
         return { filename: file.name, base64: await lerBase64(file) };
       }
       throw new Error(`Formato não aceito: "${file.name}". Use PDF, JPG ou PNG.`);
