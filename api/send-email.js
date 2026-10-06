@@ -97,7 +97,7 @@ function blocoResposta(painel, protocolo) {
       <p style="margin:0 0 8px;font-size:13px;font-weight:bold;color:#006747">Responder ao doador (aceitar ou recusar)</p>
       <p style="margin:0 0 10px;font-size:13px">Acesse o painel do CPDoc, entre com a senha da equipe e escolha o protocolo <b>${esc(protocolo)}</b>.</p>
       <a href="${esc(painel)}" style="display:inline-block;background:#006747;color:#fff;text-decoration:none;font-weight:bold;font-size:14px;padding:11px 22px;border-radius:4px">Abrir painel do CPDoc</a>
-      <p style="margin:10px 0 0;font-size:11px;color:#555">Se o botão não abrir, copie e cole no navegador (e salve nos favoritos): ${esc(painel)}</p></div>`;
+      <p style="margin:10px 0 0;font-size:11px;color:#555">Se o botão não abrir, use o endereço do painel salvo nos favoritos do navegador.</p></div>`;
 }
 
 function montarHtml(d, painel) {
