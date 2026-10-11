@@ -183,7 +183,7 @@
         Termo de Doação de Acervo
       </h2>
       <p class="text-xs sm:text-sm text-gray-700 mt-2 leading-relaxed">
-        Este é o formulário oficial para propor doações de acervo ao Museu Histórico "Prof. Carlos da Silva Lacaz" da FMUSP. Após o preenchimento, você receberá um número de protocolo e o PDF com a sua proposta. A avaliação e a decisão final sobre o recebimento dos itens são de responsabilidade exclusiva do Museu, orientadas pelo Plano Museológico e pela Política de Gestão de Acervos (item 4 do Termo). O Museu confirma o recebimento da proposta em até 3 (três) dias úteis e comunica a decisão fundamentada em até 10 (dez) dias úteis, prorrogáveis mediante comunicação justificada a você (item 4 do Termo).
+        Este é o formulário oficial para propor doações de acervo ao Museu Histórico "Prof. Carlos da Silva Lacaz" da FMUSP. Após o preenchimento, você receberá um número de protocolo e o PDF com a sua proposta. A avaliação e a decisão final sobre o recebimento dos itens são de responsabilidade exclusiva do Museu, orientadas pelo Plano Museológico e pela Política de Acervos (item 4 do Termo). O Museu confirma o recebimento da proposta em até 3 (três) dias úteis e comunica a decisão fundamentada em até 10 (dez) dias úteis, prorrogáveis mediante comunicação justificada a você (item 4 do Termo).
       </p>
 
       <div class="mt-5 sm:mt-6">
@@ -618,8 +618,8 @@
             <p class="pl-4">3.1. Você declara que é o dono legítimo do bem, ou o representante legal do dono. Você responde pela origem lícita do bem, por vícios ocultos (defeitos não visíveis) e por eventuais processos judiciais sobre ele. Nessas situações, o Museu não responde.</p>
 
             <p class="font-bold text-gray-900 mt-2 font-sans">4. AVALIAÇÃO DO MUSEU, PRAZOS E DECISÃO SOBRE O ACEITE</p>
-            <p class="pl-4">4.1. A equipe do Museu, com autonomia técnica, fará a triagem curatorial e avaliará se os bens têm relação com o Plano Museológico e com a Política de Gestão de Acervos.</p>
-            <p class="pl-4">4.2. A decisão sobre o aceite definitivo, ou a recusa com indicação dos motivos, é da Coordenação e da Curadoria Científica do Museu.</p>
+            <p class="pl-4">4.1. A equipe do Museu, com autonomia técnica, fará a triagem curatorial e avaliará se os bens têm relação com o Plano Museológico e com a Política de Acervos.</p>
+            <p class="pl-4">4.2. A decisão sobre o aceite definitivo, ou a recusa com indicação dos motivos, é da Coordenação do Museu.</p>
             <p class="pl-4">4.3. O Museu confirma o recebimento da proposta de doação em até 3 (três) dias úteis e comunica a decisão fundamentada em até 10 (dez) dias úteis, prorrogáveis mediante comunicação justificada a você.</p>
             <p class="pl-4">4.4. Se a doação for aprovada, o bem será registrado (tombado) no livro ou sistema de inventário institucional, seguindo as regras de inventário e de processo museológico do Decreto nº 8.124/2013.</p>
 
@@ -636,7 +636,7 @@
             <p class="pl-4">8.1. Em casos excepcionais de desincorporação (saída de bem do acervo), o Museu seguirá rigorosamente as normas técnicas museológicas vigentes, inclusive o Estatuto de Museus (Lei nº 11.904/2009) e o Decreto nº 8.124/2013.</p>
 
             <p class="font-bold text-gray-900 mt-2 font-sans">9. PROTEÇÃO DE DADOS (LGPD)</p>
-            <p class="pl-4">9.1. Os seus dados cadastrais serão tratados conforme a Lei nº 13.709/2018 (LGPD), para os fins documentais, históricos e estatísticos do Museu.</p>
+            <p class="pl-4">9.1. Os seus dados cadastrais serão tratados conforme a Lei nº 13.709/2018 (LGPD), para os fins documentais, históricos e estatutários do Museu.</p>
             <p class="pl-4">9.2. Seus dados são guardados pelo prazo da Tabela de Temporalidade de Documentos da USP (Portaria GR nº 7.656/2021) e, depois disso, eliminados ou anonimizados.</p>
             <p class="pl-4">9.3. A USP aplica a LGPD conforme a Portaria GR nº 7.674/2021.</p>
 
@@ -1151,7 +1151,7 @@
 
     /* ---------- Procedurais Leves e Eficientes para PDF ---------- */
     function gerarCabecalhoPDFCanvas(logoEl) {
-      const w = 1260; // 150 DPI otimizado
+      const w = 1260;
       const h = 180;
       const c = document.createElement('canvas');
       c.width = w; c.height = h;
@@ -1433,7 +1433,7 @@
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(6.5);
       doc.setTextColor(60, 60, 60);
-      const disclaimer = 'Aceite eletrônico registrado como assinatura eletrônica simples (Lei nº 14.063/2020 e art. 10, § 2º, da MP nº 2.200-2/2001). O hash identifica o conteúdo declarado e os arquivos anexados no momento do envio. A deliberação final sobre aceite, recusa ou tombamento cabe exclusivamente à Coordenação do Museu Histórico "Prof. Carlos da Silva Lacaz".';
+      const disclaimer = 'Aceite eletrônico registrado como assinatura eletrônica simples (Lei nº 14.063/2020 e art. 10, § 2º, da MP nº 2.200-2/2001). O hash identifica o conteúdo declarado e os arquivos anexados no momento do envio. A deliberação final sobre aceite, recusa ou tombamento cabe exclusivamente à Coordenação e Curadoria Científica do Museu Histórico "Prof. Carlos da Silva Lacaz" da FMUSP.';
       doc.splitTextToSize(L(disclaimer), CW).forEach(l => {
         garantir(3.2);
         doc.text(l, M, y + 3);
